@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem MTTR & MTBF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-lkm-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .no-lkm-input input {
+            width: 100px;
+        }
+        
+        .no-lkm-preview {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sistem Monitoring MTTR & MTBF</h1>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('input')">Input Breakdown</button>
+            <button class="tab" onclick="switchTab('breakdown')">Data Breakdown</button>
+            <button class="tab" onclick="switchTab('mttr')">Dashboard MTTR</button>
+            <button class="tab" onclick="switchTab('mtbf')">Dashboard MTBF</button>
+        </div>
+        
+        <!-- Tab Input Breakdown -->
+        <div id="input" class="tab-content active">
+            <h2>Form Input Data Breakdown</h2>
+            <div id="alert"></div>
+            
+            <form id="formBreakdown">
+                <div class="form-group">
+                    <label>No LKM *</label>
+                    <div class="no-lkm-input">
+                        <input type="text" id="no_lkm_number" placeholder="001" required maxlength="3">
+                        <span class="no-lkm-preview" id="noLkmPreview">/LKM/MTC/KMI/XII/25</span>
+                    </div>
+                    <small>Nomor terakhir: <span id="lastNoLkm">Loading...</span> | Saran: <span id="suggestedNoLkm">Loading...</span></small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Mesin *</label>
+                        <select id="id_mesin" required>
+                            <option value="">-- Pilih Mesin --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Nama Mesin *</label>
+                        <input type="text" id="nama_mesin" readonly>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tanggal Breakdown *</label>
+                        <input type="date" id="tanggal_breakdown" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Jam Breakdown *</label>
+                        <input type="time" id="jam_breakdown" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tanggal Mulai Perbaikan *</label>
+                        <input type="date" id="tanggal_mulai_perbaikan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Jam Mulai Perbaikan *</label>
+                        <input type="time" id="jam_mulai_perbaikan" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tanggal Selesai Perbaikan *</label>
+                        <input type="date" id="tanggal_selesai_perbaikan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Jam Selesai Perbaikan *</label>
+                        <input type="time" id="jam_selesai_perbaikan" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Problem Mesin *</label>
+                    <textarea id="problem_mesin" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Penyebab Breakdown *</label>
+                    <textarea id="penyebab_breakdown" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tindakan Perbaikan *</label>
+                    <textarea id="tindakan_perbaikan" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>PIC Maintenance *</label>
+                    <input type="text" id="pic_maintenance" required>
+                </div>
+                
+                <button type="submit" id="btnSubmit">Simpan Data</button>
+            </form>
+        </div>
+        
+        <!-- Tab Data Breakdown -->
+        <div id="breakdown" class="tab-content">
+            <h2>Data Breakdown</h2>
+            <div id="breakdownTable"></div>
+        </div>
+        
+        <!-- Tab Dashboard MTTR -->
+        <div id="mttr" class="tab-content">
+            <h2>Dashboard MTTR (Mean Time To Repair)</h2>
+            <div id="mttrTable"></div>
+        </div>
+        
+        <!-- Tab Dashboard MTBF -->
+        <div id="mtbf" class="tab-content">
+            <h2>Dashboard MTBF (Mean Time Between Failures)</h2>
+            <div id="mtbfTable"></div>
+        </div>
+    </div>
+
+    <script>
+        // GANTI DENGAN URL DEPLOYMENT APPS SCRIPT ANDA
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9fCdp8H_mTmtFw8bjjMTn1g4yT6m67MPjA5YauQTc-IvU0z0z4U87mU6VwGHbBA5nQQ/exec';
+        
+        // State
+        let masterMesinData = [];
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMasterMesin();
+            loadLastNoLKM();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Auto-fill nama mesin when id_mesin selected
+            document.getElementById('id_mesin').addEventListener('change', function() {
+                const selectedId = this.value;
+                const mesin = masterMesinData.find(m => m.id_mesin === selectedId);
+                document.getElementById('nama_mesin').value = mesin ? mesin.nama_mesin : '';
+            });
+            
+            // Update no_lkm preview when number or date changes
+            document.getElementById('no_lkm_number').addEventListener('input', updateNoLkmPreview);
+            document.getElementById('tanggal_breakdown').addEventListener('change', updateNoLkmPreview);
+            
+            // Form submit
+            document.getElementById('formBreakdown').addEventListener('submit', handleSubmit);
+        }
+        
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            // Load data for selected tab
+            if (tabName === 'breakdown') loadBreakdownData();
+            if (tabName === 'mttr') loadMTTRDashboard();
+            if (tabName === 'mtbf') loadMTBFDashboard();
+        }
+        
+        // Load Master Mesin
+        async function loadMasterMesin() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getMasterMesin`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    masterMesinData = result.data;
+                    
+                    const select = document.getElementById('id_mesin');
+                    select.innerHTML = '<option value="">-- Pilih Mesin --</option>';
+                    
+                    result.data.forEach(mesin => {
+                        const option = document.createElement('option');
+                        option.value = mesin.id_mesin;
+                        option.textContent = `${mesin.id_mesin} - ${mesin.nama_mesin}`;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading master mesin:', error);
+                showAlert('Gagal memuat data mesin', 'error');
+            }
+        }
+        
+        // Load Last No LKM
+        async function loadLastNoLKM() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getLastNoLKM`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    document.getElementById('lastNoLkm').textContent = result.lastNumber;
+                    document.getElementById('suggestedNoLkm').textContent = result.suggestedNumber;
+                    document.getElementById('no_lkm_number').placeholder = result.suggestedNumber;
+                }
+            } catch (error) {
+                console.error('Error loading last no LKM:', error);
+            }
+        }
+        
+        // Update No LKM Preview
+        function updateNoLkmPreview() {
+            const number = document.getElementById('no_lkm_number').value || '000';
+            const breakdownDate = document.getElementById('tanggal_breakdown').value;
+            
+            if (breakdownDate) {
+                const date = new Date(breakdownDate);
+                const month = toRoman(date.getMonth() + 1);
+                const year = date.getFullYear().toString().slice(-2);
+                
+                document.getElementById('noLkmPreview').textContent = 
+                    `${number}/LKM/MTC/KMI/${month}/${year}`;
+            }
+        }
+        
+        // Convert to Roman
+        function toRoman(num) {
+            const romanNumerals = [
+                { value: 12, numeral: 'XII' },
+                { value: 11, numeral: 'XI' },
+                { value: 10, numeral: 'X' },
+                { value: 9, numeral: 'IX' },
+                { value: 8, numeral: 'VIII' },
+                { value: 7, numeral: 'VII' },
+                { value: 6, numeral: 'VI' },
+                { value: 5, numeral: 'V' },
+                { value: 4, numeral: 'IV' },
+                { value: 3, numeral: 'III' },
+                { value: 2, numeral: 'II' },
+                { value: 1, numeral: 'I' }
+            ];
+            
+            for (let i = 0; i < romanNumerals.length; i++) {
+                if (num === romanNumerals[i].value) {
+                    return romanNumerals[i].numeral;
+                }
+            }
+            return 'I';
+        }
+        
+        // Handle Form Submit
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            btn.textContent = 'Menyimpan...';
+            
+            const formData = {
+                action: 'addBreakdown',
+                no_lkm_number: document.getElementById('no_lkm_number').value,
+                id_mesin: document.getElementById('id_mesin').value,
+                nama_mesin: document.getElementById('nama_mesin').value,
+                tanggal_breakdown: document.getElementById('tanggal_breakdown').value,
+                jam_breakdown: document.getElementById('jam_breakdown').value,
+                tanggal_mulai_perbaikan: document.getElementById('tanggal_mulai_perbaikan').value,
+                jam_mulai_perbaikan: document.getElementById('jam_mulai_perbaikan').value,
+                tanggal_selesai_perbaikan: document.getElementById('tanggal_selesai_perbaikan').value,
+                jam_selesai_perbaikan: document.getElementById('jam_selesai_perbaikan').value,
+                problem_mesin: document.getElementById('problem_mesin').value,
+                penyebab_breakdown: document.getElementById('penyebab_breakdown').value,
+                tindakan_perbaikan: document.getElementById('tindakan_perbaikan').value,
+                pic_maintenance: document.getElementById('pic_maintenance').value
+            };
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    showAlert(`Data berhasil disimpan! No LKM: ${result.data.no_lkm}<br>
+                              Status: ${result.data.status_breakdown}<br>
+                              Repair Time: ${result.data.repair_time.toFixed(2)} jam<br>
+                              Total Downtime: ${result.data.total_downtime.toFixed(2)} jam`, 'success');
+                    
+                    document.getElementById('formBreakdown').reset();
+                    loadLastNoLKM();
+                } else {
+                    showAlert(result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                showAlert('Gagal menyimpan data: ' + error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Simpan Data';
+            }
+        }
+        
+        // Load Breakdown Data
+        async function loadBreakdownData() {
+            document.getElementById('breakdownTable').innerHTML = '<div class="loading">Memuat data...</div>';
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getBreakdownData`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    displayTable('breakdownTable', result.data, [
+                        'no_lkm', 'nama_mesin', 'tanggal_breakdown', 'problem_mesin', 
+                        'status_breakdown', 'repair_time', 'total_downtime', 'pic_maintenance'
+                    ]);
+                }
+            } catch (error) {
+                console.error('Error loading breakdown data:', error);
+                document.getElementById('breakdownTable').innerHTML = 
+                    '<div class="alert alert-error">Gagal memuat data breakdown</div>';
+            }
+        }
+        
+        // Load MTTR Dashboard
+        async function loadMTTRDashboard() {
+            document.getElementById('mttrTable').innerHTML = '<div class="loading">Memuat data...</div>';
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getMTTRDashboard`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    displayTable('mttrTable', result.data, [
+                        'id_mesin', 'nama_mesin', 'total_breakdown', 
+                        'total_repair_time', 'mttr_hours', 'mttr_days'
+                    ]);
+                }
+            } catch (error) {
+                console.error('Error loading MTTR dashboard:', error);
+                document.getElementById('mttrTable').innerHTML = 
+                    '<div class="alert alert-error">Gagal memuat dashboard MTTR</div>';
+            }
+        }
+        
+        // Load MTBF Dashboard
+        async function loadMTBFDashboard() {
+            document.getElementById('mtbfTable').innerHTML = '<div class="loading">Memuat data...</div>';
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getMTBFDashboard`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    displayTable('mtbfTable', result.data, [
+                        'id_mesin', 'nama_mesin', 'tanggal_instalasi',
+                        'total_breakdown', 'operating_days', 'mtbf_days', 'mtbf_hours'
+                    ]);
+                }
+            } catch (error) {
+                console.error('Error loading MTBF dashboard:', error);
+                document.getElementById('mtbfTable').innerHTML = 
+                    '<div class="alert alert-error">Gagal memuat dashboard MTBF</div>';
+            }
+        }
+        
+        // Display Table
+        function displayTable(elementId, data, columns) {
+            if (!data || data.length === 0) {
+                document.getElementById(elementId).innerHTML = '<p>Tidak ada data</p>';
+                return;
+            }
+            
+            let html = '<table><thead><tr>';
+            
+            columns.forEach(col => {
+                html += `<th>${col.replace(/_/g, ' ').toUpperCase()}</th>`;
+            });
+            
+            html += '</tr></thead><tbody>';
+            
+            data.forEach(row => {
+                html += '<tr>';
+                columns.forEach(col => {
+                    let value = row[col];
+                    
+                    // Format numbers
+                    if (typeof value === 'number') {
+                        value = value.toFixed(2);
+                    }
+                    
+                    // Format dates
+                    if (col.includes('tanggal') && value) {
+                        const date = new Date(value);
+                        if (!isNaN(date.getTime())) {
+                            value = date.toLocaleDateString('id-ID');
+                        }
+                    }
+                    
+                    html += `<td>${value || '-'}</td>`;
+                });
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            
+            document.getElementById(elementId).innerHTML = html;
+        }
+        
+        // Show Alert
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                alertDiv.innerHTML = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
