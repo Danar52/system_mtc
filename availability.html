@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard MTTR - MTTR & MTBF System</title>
-    <link rel="stylesheet" href="assets/style/style_dashboard_mttr.css">
+    <title>Dashboard Availability - MTTR & MTBF System</title>
+    <link rel="stylesheet" href="assets/style/style_availability.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
                     </svg>
                     <span>Data Breakdown</span>
                 </a>
-                <a href="dashboard_mttr.html" class="nav-item active">
+                <a href="dashboard_mttr.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="8" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                         <rect x="8" y="3" width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
@@ -58,7 +58,7 @@
                     </svg>
                     <span>Dashboard MTBF</span>
                 </a>
-                <a href="availability.html" class="nav-item">
+                <a href="availability.html" class="nav-item active">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -72,11 +72,11 @@
         <main class="main-content">
             <div class="content-header">
                 <div class="header-left">
-                    <h2>Dashboard MTTR</h2>
-                    <p>Mean Time To Repair - Rata-rata waktu perbaikan per mesin</p>
+                    <h2>Dashboard Availability</h2>
+                    <p>Persentase ketersediaan mesin untuk beroperasi</p>
                 </div>
                 <div class="header-right">
-                    <button class="btn-refresh" onclick="loadMTTRData()">
+                    <button class="btn-refresh" onclick="loadAvailabilityData()">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9C2 5.13401 5.13401 2 9 2C11.7 2 14 3.6 15.4 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                             <path d="M15 2V6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -119,8 +119,8 @@
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3 id="totalBreakdown">-</h3>
-                        <p>Total Breakdown</p>
+                        <h3 id="avgAvailability">-</h3>
+                        <p>Rata-rata Availability</p>
                     </div>
                 </div>
 
@@ -128,13 +128,13 @@
                     <div class="card-icon warning">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="currentColor"/>
+                            <path d="M12 7V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="16" r="1" fill="currentColor"/>
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3 id="avgMTTR">-</h3>
-                        <p>Rata-rata MTTR</p>
+                        <h3 id="totalUptime">-</h3>
+                        <p>Total Uptime Hours</p>
                     </div>
                 </div>
 
@@ -146,8 +146,8 @@
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3 id="maxMTTR">-</h3>
-                        <p>MTTR Tertinggi</p>
+                        <h3 id="totalDowntime">-</h3>
+                        <p>Total Downtime Hours</p>
                     </div>
                 </div>
             </div>
@@ -163,7 +163,7 @@
                         <input 
                             type="text" 
                             id="searchMesin" 
-                            placeholder="Cari berdasarkan ID Mesin atau Nama Mesin..."
+                            placeholder="Cari berdasarkan ID Mesin..."
                         >
                     </div>
                     
@@ -185,24 +185,28 @@
                     </div>
                     <div class="table-legend">
                         <span class="legend-item">
+                            <span class="legend-dot excellent"></span>
+                            Excellent (≥ 95%)
+                        </span>
+                        <span class="legend-item">
                             <span class="legend-dot good"></span>
-                            Baik (&lt; 2 jam)
+                            Good (85-95%)
                         </span>
                         <span class="legend-item">
-                            <span class="legend-dot warning"></span>
-                            Perhatian (2-4 jam)
+                            <span class="legend-dot fair"></span>
+                            Fair (75-85%)
                         </span>
                         <span class="legend-item">
-                            <span class="legend-dot critical"></span>
-                            Kritis (&gt; 4 jam)
+                            <span class="legend-dot poor"></span>
+                            Poor (< 75%)
                         </span>
                     </div>
                 </div>
                 
-                <div class="table-wrapper" id="mttrTable">
+                <div class="table-wrapper" id="availabilityTable">
                     <div class="loading-state">
                         <div class="spinner"></div>
-                        <p>Memuat data MTTR...</p>
+                        <p>Memuat data Availability...</p>
                     </div>
                 </div>
             </div>
@@ -214,7 +218,7 @@
         <div class="modal-overlay" onclick="closeModal('modalDetail')"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Detail MTTR Mesin</h2>
+                <h2>Detail Availability Mesin</h2>
                 <button class="btn-close" onclick="closeModal('modalDetail')">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -232,18 +236,20 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdmtsD_5BY38UqiQM_U_8anFSeUGBKU3PYrgBXCPHO1pzvgmSWC1dgHJlqcpDfUVNV3g/exec';
 
 // State Management
-let allMTTRData = [];
-let filteredMTTRData = [];
+let allAvailabilityData = [];
+let filteredAvailabilityData = [];
 
 // ========================================
 // INITIALIZATION
 // ========================================
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Page loaded, initializing...'); // DEBUG
     initializeApp();
 });
 
 function initializeApp() {
-    loadMTTRData();
+    console.log('📡 Calling loadAvailabilityData...'); // DEBUG
+    loadAvailabilityData();
     setupEventListeners();
 }
 
@@ -251,94 +257,119 @@ function initializeApp() {
 // EVENT LISTENERS
 // ========================================
 function setupEventListeners() {
-    document.getElementById('searchMesin').addEventListener('input', applyFilters);
+    const searchInput = document.getElementById('searchMesin');
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+        console.log('✅ Search listener attached'); // DEBUG
+    }
 }
 
 // ========================================
-// LOAD MTTR DATA
+// LOAD AVAILABILITY DATA
 // ========================================
-async function loadMTTRData() {
+async function loadAvailabilityData() {
+    console.log('🔄 Starting to load availability data...'); // DEBUG
     showLoadingState();
     
     try {
-        const url = `${SCRIPT_URL}?action=getMTTRDashboard&_=${Date.now()}`;
+        const url = `${SCRIPT_URL}?action=getAvailabilityDashboard&_=${Date.now()}`;
+        console.log('🌐 Fetching from:', url); // DEBUG
+        
         const response = await fetch(url, {
             method: 'GET',
             redirect: 'follow'
         });
         
+        console.log('📥 Response received:', response.status); // DEBUG
+        
         const result = await response.json();
+        console.log('📦 Parsed result:', result); // DEBUG
         
         if (result.status === 'success') {
-            allMTTRData = result.data;
-            filteredMTTRData = result.data;
-            displayMTTRTable(result.data);
+            console.log('✅ Data loaded successfully, count:', result.data.length); // DEBUG
+            allAvailabilityData = result.data;
+            filteredAvailabilityData = result.data;
+            displayAvailabilityTable(result.data);
             updateInfoCards(result.data);
             updateDataCount(result.data.length);
         } else {
-            showError('Gagal memuat data MTTR');
+            console.error('❌ API returned error:', result.message); // DEBUG
+            showError('Gagal memuat data Availability: ' + result.message);
         }
     } catch (error) {
-        console.error('Error loading MTTR data:', error);
-        showError('Gagal memuat data MTTR. Periksa koneksi Anda.');
+        console.error('❌ Error loading availability data:', error); // DEBUG
+        showError('Gagal memuat data Availability. Periksa koneksi Anda.');
     }
 }
 
 function showLoadingState() {
-    document.getElementById('mttrTable').innerHTML = `
-        <div class="loading-state">
-            <div class="spinner"></div>
-            <p>Memuat data MTTR...</p>
-        </div>
-    `;
+    const table = document.getElementById('availabilityTable');
+    if (table) {
+        table.innerHTML = `
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Memuat data Availability...</p>
+            </div>
+        `;
+    }
 }
 
 function showError(message) {
-    document.getElementById('mttrTable').innerHTML = `
-        <div class="loading-state">
-            <p style="color: var(--color-error);">${message}</p>
-        </div>
-    `;
+    const table = document.getElementById('availabilityTable');
+    if (table) {
+        table.innerHTML = `
+            <div class="loading-state">
+                <p style="color: var(--color-error);">${message}</p>
+            </div>
+        `;
+    }
 }
 
 // ========================================
 // UPDATE INFO CARDS
 // ========================================
 function updateInfoCards(data) {
+    console.log('📊 Updating info cards with data:', data); // DEBUG
+    
     if (!data || data.length === 0) {
         document.getElementById('totalMesin').textContent = '0';
-        document.getElementById('totalBreakdown').textContent = '0';
-        document.getElementById('avgMTTR').textContent = '-';
-        document.getElementById('maxMTTR').textContent = '-';
+        document.getElementById('avgAvailability').textContent = '-';
+        document.getElementById('totalUptime').textContent = '-';
+        document.getElementById('totalDowntime').textContent = '-';
         return;
     }
     
     // Total Mesin
     document.getElementById('totalMesin').textContent = data.length;
     
-    // Total Breakdown
-    const totalBreakdown = data.reduce((sum, item) => sum + (item.total_breakdown || 0), 0);
-    document.getElementById('totalBreakdown').textContent = totalBreakdown;
+    // Average Availability
+    const avgAvailability = data.reduce((sum, item) => sum + (item.availability_percentage || 0), 0) / data.length;
+    document.getElementById('avgAvailability').textContent = avgAvailability.toFixed(2) + '%';
     
-    // Average MTTR
-    const avgMTTR = data.reduce((sum, item) => sum + (item.mttr_hours || 0), 0) / data.length;
-    document.getElementById('avgMTTR').textContent = avgMTTR.toFixed(2) + ' jam';
+    // Total Uptime
+    const totalUptime = data.reduce((sum, item) => sum + (item.uptime_hours || 0), 0);
+    document.getElementById('totalUptime').textContent = formatNumber(totalUptime) + ' jam';
     
-    // Max MTTR
-    const maxMTTR = Math.max(...data.map(item => item.mttr_hours || 0));
-    document.getElementById('maxMTTR').textContent = maxMTTR.toFixed(2) + ' jam';
+    // Total Downtime
+    const totalDowntime = data.reduce((sum, item) => sum + (item.total_downtime_hours || 0), 0);
+    document.getElementById('totalDowntime').textContent = formatNumber(totalDowntime) + ' jam';
+    
+    console.log('✅ Info cards updated'); // DEBUG
 }
 
 // ========================================
 // DISPLAY TABLE
 // ========================================
-function displayMTTRTable(data) {
-    const container = document.getElementById('mttrTable');
+function displayAvailabilityTable(data) {
+    console.log('📋 Displaying table with data:', data); // DEBUG
+    
+    const container = document.getElementById('availabilityTable');
     
     if (!data || data.length === 0) {
+        console.warn('⚠️ No data to display'); // DEBUG
         container.innerHTML = `
             <div class="loading-state">
-                <p>Tidak ada data MTTR yang ditemukan</p>
+                <p>Tidak ada data Availability yang ditemukan</p>
             </div>
         `;
         return;
@@ -350,11 +381,10 @@ function displayMTTRTable(data) {
                 <tr>
                     <th>No</th>
                     <th>ID Mesin</th>
-                    <th>Nama Mesin</th>
-                    <th>Total Breakdown</th>
-                    <th>Total Repair Time</th>
-                    <th>MTTR (Jam)</th>
-                    <th>MTTR (Hari)</th>
+                    <th>Total Operating Hours</th>
+                    <th>Uptime Hours</th>
+                    <th>Downtime Hours</th>
+                    <th>Availability (%)</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
@@ -363,19 +393,21 @@ function displayMTTRTable(data) {
     `;
     
     data.forEach((row, index) => {
-        const mttrClass = getMTTRClass(row.mttr_hours);
-        const mttrStatus = getMTTRStatus(row.mttr_hours);
+        console.log(`Processing row ${index}:`, row); // DEBUG
+        
+        const availabilityPct = row.availability_percentage || 0;
+        const availabilityClass = getAvailabilityClass(availabilityPct);
+        const availabilityStatus = getAvailabilityStatus(availabilityPct);
         
         html += `
             <tr>
                 <td><strong>${index + 1}</strong></td>
                 <td><strong>${row.id_mesin || '-'}</strong></td>
-                <td>${row.nama_mesin || '-'}</td>
-                <td>${row.total_breakdown || 0}</td>
-                <td>${formatNumber(row.total_repair_time)} jam</td>
-                <td><span class="mttr-indicator ${mttrClass}">${formatNumber(row.mttr_hours)} jam</span></td>
-                <td>${formatNumber(row.mttr_days)} hari</td>
-                <td><span class="mttr-indicator ${mttrClass}">${mttrStatus}</span></td>
+                <td>${formatNumber(row.total_operating_hours || 0)} jam</td>
+                <td>${formatNumber(row.uptime_hours || 0)} jam</td>
+                <td>${formatNumber(row.total_downtime_hours || 0)} jam</td>
+                <td><span class="availability-indicator ${availabilityClass}">${formatNumber(availabilityPct)}%</span></td>
+                <td><span class="availability-indicator ${availabilityClass}">${availabilityStatus}</span></td>
                 <td>
                     <button class="btn-detail" onclick='viewDetail(${index})'>
                         Detail
@@ -391,18 +423,21 @@ function displayMTTRTable(data) {
     `;
     
     container.innerHTML = html;
+    console.log('✅ Table rendered successfully'); // DEBUG
 }
 
-function getMTTRClass(mttrHours) {
-    if (mttrHours < 2) return 'mttr-good';
-    if (mttrHours < 4) return 'mttr-warning';
-    return 'mttr-critical';
+function getAvailabilityClass(percentage) {
+    if (percentage >= 95) return 'availability-excellent';
+    if (percentage >= 85) return 'availability-good';
+    if (percentage >= 75) return 'availability-fair';
+    return 'availability-poor';
 }
 
-function getMTTRStatus(mttrHours) {
-    if (mttrHours < 2) return 'Baik';
-    if (mttrHours < 4) return 'Perhatian';
-    return 'Kritis';
+function getAvailabilityStatus(percentage) {
+    if (percentage >= 95) return 'Excellent';
+    if (percentage >= 85) return 'Good';
+    if (percentage >= 75) return 'Fair';
+    return 'Poor';
 }
 
 // ========================================
@@ -411,89 +446,87 @@ function getMTTRStatus(mttrHours) {
 function applyFilters() {
     const searchTerm = document.getElementById('searchMesin').value.toLowerCase();
     
-    filteredMTTRData = allMTTRData.filter(row => {
+    filteredAvailabilityData = allAvailabilityData.filter(row => {
         const matchesSearch = !searchTerm || 
-            (row.id_mesin && row.id_mesin.toLowerCase().includes(searchTerm)) ||
-            (row.nama_mesin && row.nama_mesin.toLowerCase().includes(searchTerm));
+            (row.id_mesin && row.id_mesin.toLowerCase().includes(searchTerm));
         
         return matchesSearch;
     });
     
-    displayMTTRTable(filteredMTTRData);
-    updateInfoCards(filteredMTTRData);
-    updateDataCount(filteredMTTRData.length);
+    displayAvailabilityTable(filteredAvailabilityData);
+    updateInfoCards(filteredAvailabilityData);
+    updateDataCount(filteredAvailabilityData.length);
 }
 
 function resetFilters() {
     document.getElementById('searchMesin').value = '';
-    filteredMTTRData = allMTTRData;
-    displayMTTRTable(allMTTRData);
-    updateInfoCards(allMTTRData);
-    updateDataCount(allMTTRData.length);
+    filteredAvailabilityData = allAvailabilityData;
+    displayAvailabilityTable(allAvailabilityData);
+    updateInfoCards(allAvailabilityData);
+    updateDataCount(allAvailabilityData.length);
 }
 
 function updateDataCount(count) {
-    document.getElementById('totalData').textContent = count;
+    const countEl = document.getElementById('totalData');
+    if (countEl) {
+        countEl.textContent = count;
+    }
 }
 
 // ========================================
 // VIEW DETAIL
 // ========================================
 function viewDetail(index) {
-    const data = filteredMTTRData[index];
+    const data = filteredAvailabilityData[index];
     if (!data) return;
     
-    const mttrClass = getMTTRClass(data.mttr_hours);
-    const mttrStatus = getMTTRStatus(data.mttr_hours);
+    const availabilityClass = getAvailabilityClass(data.availability_percentage);
+    const availabilityStatus = getAvailabilityStatus(data.availability_percentage);
     
     let html = `
         <div style="display: grid; gap: 1.5rem;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="detail-group">
-                    <div class="detail-label">ID Mesin</div>
-                    <div class="detail-value" style="font-weight: 700; font-size: 1.25rem;">
-                        ${data.id_mesin || '-'}
-                    </div>
-                </div>
-                <div class="detail-group">
-                    <div class="detail-label">Nama Mesin</div>
-                    <div class="detail-value" style="font-weight: 700; font-size: 1.25rem;">
-                        ${data.nama_mesin || '-'}
-                    </div>
+            <div class="detail-group">
+                <div class="detail-label">ID Mesin</div>
+                <div class="detail-value" style="font-weight: 700; font-size: 1.5rem;">
+                    ${data.id_mesin || '-'}
                 </div>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="detail-group">
-                    <div class="detail-label">Total Breakdown</div>
-                    <div class="detail-value" style="font-weight: 700; font-size: 1.5rem; color: var(--color-info);">
-                        ${data.total_breakdown || 0} kali
+                    <div class="detail-label">Total Operating Hours</div>
+                    <div class="detail-value" style="font-weight: 700; font-size: 1.25rem; color: var(--color-info);">
+                        ${formatNumber(data.total_operating_hours)} jam
                     </div>
                 </div>
                 <div class="detail-group">
-                    <div class="detail-label">Total Repair Time</div>
-                    <div class="detail-value" style="font-weight: 700; font-size: 1.5rem; color: var(--color-warning);">
-                        ${formatNumber(data.total_repair_time)} jam
+                    <div class="detail-label">Uptime Hours</div>
+                    <div class="detail-value" style="font-weight: 700; font-size: 1.25rem; color: var(--color-success);">
+                        ${formatNumber(data.uptime_hours)} jam
                     </div>
+                </div>
+            </div>
+            
+            <div class="detail-group">
+                <div class="detail-label">Downtime Hours</div>
+                <div class="detail-value" style="font-weight: 700; font-size: 1.25rem; color: var(--color-error);">
+                    ${formatNumber(data.total_downtime_hours)} jam
                 </div>
             </div>
             
             <div style="padding: 1.5rem; background: linear-gradient(135deg, var(--color-gray-50), var(--color-gray-100)); border-radius: 1rem; border: 2px solid var(--color-gray-200);">
                 <div style="text-align: center;">
                     <div style="font-size: 0.875rem; font-weight: 700; color: var(--color-gray-600); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">
-                        Mean Time To Repair (MTTR)
+                        Machine Availability
                     </div>
                     <div style="display: flex; align-items: baseline; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
                         <span style="font-size: 3rem; font-weight: 700; font-family: var(--font-mono); color: var(--color-gray-900);">
-                            ${formatNumber(data.mttr_hours)}
+                            ${formatNumber(data.availability_percentage)}
                         </span>
-                        <span style="font-size: 1.5rem; color: var(--color-gray-600);">jam</span>
+                        <span style="font-size: 1.5rem; color: var(--color-gray-600);">%</span>
                     </div>
-                    <div style="font-size: 1rem; color: var(--color-gray-600); margin-bottom: 1rem;">
-                        atau setara dengan <strong style="color: var(--color-gray-900);">${formatNumber(data.mttr_days)} hari</strong>
-                    </div>
-                    <span class="mttr-indicator ${mttrClass}" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
-                        ${mttrStatus}
+                    <span class="availability-indicator ${availabilityClass}" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
+                        ${availabilityStatus}
                     </span>
                 </div>
             </div>
@@ -502,13 +535,15 @@ function viewDetail(index) {
                 <div class="detail-label">Keterangan</div>
                 <div class="detail-value">
                     <p style="margin-bottom: 0.5rem;">
-                        <strong>MTTR (Mean Time To Repair)</strong> adalah rata-rata waktu yang dibutuhkan untuk memperbaiki mesin setelah terjadi breakdown.
+                        <strong>Availability</strong> adalah persentase waktu mesin dalam kondisi siap untuk beroperasi (tidak breakdown).
                     </p>
-                    <p style="margin-bottom: 0.5rem;">Kategori MTTR:</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>Formula:</strong> Availability = (Uptime Hours / Total Operating Hours) × 100%</p>
+                    <p style="margin-bottom: 0.5rem;">Kategori Availability:</p>
                     <ul style="margin-left: 1.5rem; color: var(--color-gray-700);">
-                        <li><strong style="color: var(--color-success);">Baik:</strong> MTTR &lt; 2 jam</li>
-                        <li><strong style="color: var(--color-warning);">Perhatian:</strong> 2 jam ≤ MTTR &lt; 4 jam</li>
-                        <li><strong style="color: var(--color-error);">Kritis:</strong> MTTR ≥ 4 jam</li>
+                        <li><strong style="color: var(--color-success);">Excellent:</strong> ≥ 95% - Mesin sangat reliable</li>
+                        <li><strong style="color: var(--color-info);">Good:</strong> 85% - 95% - Mesin dalam kondisi baik</li>
+                        <li><strong style="color: var(--color-warning);">Fair:</strong> 75% - 85% - Perlu perhatian</li>
+                        <li><strong style="color: var(--color-error);">Poor:</strong> < 75% - Memerlukan tindakan segera</li>
                     </ul>
                 </div>
             </div>
@@ -516,7 +551,7 @@ function viewDetail(index) {
             <div class="detail-group">
                 <div class="detail-label">Rekomendasi</div>
                 <div class="detail-value">
-                    ${getRecommendation(data.mttr_hours)}
+                    ${getRecommendation(data.availability_percentage)}
                 </div>
             </div>
         </div>
@@ -526,35 +561,48 @@ function viewDetail(index) {
     openModal('modalDetail');
 }
 
-function getRecommendation(mttrHours) {
-    if (mttrHours < 2) {
+function getRecommendation(availability) {
+    if (availability >= 95) {
         return `
-            <p style="color: var(--color-success-dark); font-weight: 600;">✅ Performa perbaikan mesin sudah baik.</p>
+            <p style="color: var(--color-success-dark); font-weight: 600;">✅ Availability sangat baik!</p>
             <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
-                <li>Pertahankan kecepatan respon tim maintenance</li>
-                <li>Lakukan preventive maintenance secara rutin</li>
-                <li>Dokumentasikan best practices untuk referensi</li>
+                <li>Pertahankan jadwal preventive maintenance</li>
+                <li>Dokumentasikan best practices yang sudah diterapkan</li>
+                <li>Monitor trend untuk deteksi dini potensi masalah</li>
+                <li>Share knowledge dengan tim untuk mesin lain</li>
             </ul>
         `;
-    } else if (mttrHours < 4) {
+    } else if (availability >= 85) {
         return `
-            <p style="color: var(--color-warning-dark); font-weight: 600;">⚠️ Waktu perbaikan perlu perhatian.</p>
+            <p style="color: var(--color-info-dark); font-weight: 600;">✓ Availability dalam kondisi baik.</p>
             <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
-                <li>Review proses diagnosis kerusakan</li>
-                <li>Pastikan ketersediaan spare part yang memadai</li>
-                <li>Tingkatkan keterampilan tim maintenance</li>
-                <li>Pertimbangkan penambahan tool atau equipment</li>
+                <li>Review pola breakdown untuk identifikasi area improvement</li>
+                <li>Optimalkan jadwal maintenance untuk minimize downtime</li>
+                <li>Tingkatkan stock spare part critical</li>
+                <li>Lakukan root cause analysis untuk recurring issues</li>
+            </ul>
+        `;
+    } else if (availability >= 75) {
+        return `
+            <p style="color: var(--color-warning-dark); font-weight: 600;">⚠️ Availability perlu ditingkatkan.</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
+                <li>Analisa mendalam penyebab downtime terbesar</li>
+                <li>Evaluasi efektivitas maintenance strategy</li>
+                <li>Review competency tim maintenance</li>
+                <li>Pertimbangkan predictive maintenance</li>
+                <li>Audit spare part management system</li>
             </ul>
         `;
     } else {
         return `
-            <p style="color: var(--color-error-dark); font-weight: 600;">🚨 Waktu perbaikan kritis, perlu tindakan segera!</p>
+            <p style="color: var(--color-error-dark); font-weight: 600;">🚨 Availability kritis - Tindakan segera diperlukan!</p>
             <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
-                <li>Audit mendalam terhadap proses maintenance</li>
-                <li>Review stock dan supply chain spare part</li>
-                <li>Evaluasi kompetensi dan jumlah tim maintenance</li>
-                <li>Pertimbangkan upgrade atau replacement mesin</li>
-                <li>Implementasi sistem monitoring real-time</li>
+                <li>Lakukan comprehensive audit terhadap mesin</li>
+                <li>Pertimbangkan major overhaul atau replacement</li>
+                <li>Review total cost of ownership vs replacement cost</li>
+                <li>Implementasi temporary backup solution</li>
+                <li>Escalate ke management untuk decision making</li>
+                <li>Setup dedicated task force untuk recovery plan</li>
             </ul>
         `;
     }
@@ -564,16 +612,16 @@ function getRecommendation(mttrHours) {
 // EXPORT TO EXCEL
 // ========================================
 function exportToExcel() {
-    if (!filteredMTTRData || filteredMTTRData.length === 0) {
+    if (!filteredAvailabilityData || filteredAvailabilityData.length === 0) {
         showAlert('⚠️ Tidak ada data untuk diekspor', 'error');
         return;
     }
     
-    let csv = 'No,ID Mesin,Nama Mesin,Total Breakdown,Total Repair Time (jam),MTTR (jam),MTTR (hari),Status\n';
+    let csv = 'No,ID Mesin,Total Operating Hours,Uptime Hours,Downtime Hours,Availability (%),Status\n';
     
-    filteredMTTRData.forEach((row, index) => {
-        const mttrStatus = getMTTRStatus(row.mttr_hours);
-        csv += `${index + 1},"${row.id_mesin || ''}","${row.nama_mesin || ''}",${row.total_breakdown || 0},"${formatNumber(row.total_repair_time)}","${formatNumber(row.mttr_hours)}","${formatNumber(row.mttr_days)}","${mttrStatus}"\n`;
+    filteredAvailabilityData.forEach((row, index) => {
+        const availabilityStatus = getAvailabilityStatus(row.availability_percentage);
+        csv += `${index + 1},"${row.id_mesin || ''}","${formatNumber(row.total_operating_hours)}","${formatNumber(row.uptime_hours)}","${formatNumber(row.total_downtime_hours)}","${formatNumber(row.availability_percentage)}","${availabilityStatus}"\n`;
     });
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -581,27 +629,33 @@ function exportToExcel() {
     const url = URL.createObjectURL(blob);
     
     link.setAttribute('href', url);
-    link.setAttribute('download', `mttr_dashboard_${formatDateForFilename(new Date())}.csv`);
+    link.setAttribute('download', `availability_dashboard_${formatDateForFilename(new Date())}.csv`);
     link.style.visibility = 'hidden';
     
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
-    showAlert('✅ Data MTTR berhasil diekspor!', 'success');
+    showAlert('✅ Data Availability berhasil diekspor!', 'success');
 }
 
 // ========================================
 // MODAL FUNCTIONS
 // ========================================
 function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-    document.body.style.overflow = 'auto';
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 }
 
 // ========================================
@@ -621,6 +675,8 @@ function formatDateForFilename(date) {
 
 function showAlert(message, type) {
     const container = document.getElementById('alertContainer');
+    if (!container) return;
+    
     const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
     
     const alertDiv = document.createElement('div');
@@ -650,6 +706,8 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+console.log('✅ Script loaded successfully'); // DEBUG
     </script>
 </body>
 </html>
