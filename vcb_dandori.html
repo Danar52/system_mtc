@@ -937,6 +937,8 @@ tbody tr:hover {
                                 <th>Date</th>
                                 <th>Machine</th>
                                 <th>Part Name</th>
+                                <th>ID Proses</th>
+                                <th>Nama Proses</th>
                                 <th>Start</th>
                                 <th>End</th>
                                 <th>Duration</th>
@@ -1500,6 +1502,8 @@ function populateTable(data) {
             <td>${formatDate(row.tanggal)}</td>
             <td><strong>${row.mesin}</strong></td>
             <td>${row.part_name}</td>
+            <td>${row.id_proses}</td>
+            <td>${row.nama_proses}</td>
             <td>${jamMulai}</td>
             <td>${jamSelesai}</td>
             <td><strong>${row.selisih_dandori}</strong> min</td>
