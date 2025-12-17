@@ -1,623 +1,375 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Data Breakdown - Maintenance Mesin System</title>
-    <link rel="stylesheet" href="assets/style/style_input_data.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard - DANAR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a2332;
+            overflow-x: hidden;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background-color: #1a2332;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            padding: 40px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-section h1 {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        .nav-menu {
+            padding: 30px 0;
+        }
+
+        .nav-menu .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 14px 30px;
+            margin: 8px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav-menu .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .nav-menu .nav-link.active {
+            background-color: #ffffff;
+            color: #1a2332;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-menu .nav-link i {
+            margin-right: 14px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* User Profile in Sidebar */
+        .user-profile {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .user-profile .user-name {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .user-profile .user-role {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            margin: 0;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 280px;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-right: 140px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            margin: 0;
+        }
+
+        /* Avatar Circle */
+        .avatar-circle {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1a2332 0%, #2d3a4f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 8px 24px rgba(26, 35, 50, 0.2);
+            transition: all 0.4s ease;
+            animation: scaleIn 0.6s ease 0.3s backwards;
+        }
+
+        .avatar-circle:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(26, 35, 50, 0.3);
+        }
+
+        .avatar-circle i {
+            font-size: 56px;
+            color: #ffffff;
+        }
+
+        .welcome-header h2 {
+            font-size: 52px;
+            font-weight: 700;
+            color: #1a2332;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .welcome-header p {
+            font-size: 22px;
+            color: #64748b;
+            font-weight: 400;
+            letter-spacing: -0.3px;
+            margin: 0;
+            animation: fadeInUp 1s ease 0.6s backwards;
+        }
+
+        /* Decorative Elements */
+        .decorative-line {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #1a2332, transparent);
+            margin: 30px auto;
+            border-radius: 2px;
+            animation: expandWidth 1s ease 0.8s backwards;
+        }
+
+        .subtitle-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            color: #1a2332;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 1s backwards;
+        }
+
+        .subtitle-badge:hover {
+            background-color: #1a2332;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 50, 0.2);
+        }
+
+        .subtitle-badge i {
+            margin-right: 6px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes expandWidth {
+            from {
+                width: 0;
+            }
+            to {
+                width: 80px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 240px;
+            }
+
+            .main-content {
+                margin-left: 240px;
+                padding: 40px 30px;
+            }
+
+            .welcome-header h2 {
+                font-size: 40px;
+            }
+
+            .welcome-header p {
+                font-size: 18px;
+            }
+
+            .avatar-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .avatar-circle i {
+                font-size: 48px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 30px 20px;
+            }
+
+            .welcome-header h2 {
+                font-size: 32px;
+            }
+
+            .welcome-header p {
+                font-size: 16px;
+            }
+
+            .avatar-circle {
+                width: 80px;
+                height: 80px;
+            }
+
+            .avatar-circle i {
+                font-size: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="page-wrapper">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="32" height="32" rx="8" fill="white"/>
-                            <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" stroke="black" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M16 16L8 12M16 16L24 12M16 16V24" stroke="black" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div class="logo-text">
-                        <h1>MTC MACHINE</h1>
-                        <p>Monitoring System</p>
-                    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <div class="logo-section">
+                    <h1>WORKSPACE</h1>
                 </div>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item active">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 3L3 7V13L10 17L17 13V7L10 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Input Breakdown</span>
-                </a>
-                <a href="data_breakdown.html" class="nav-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M3 8H17M8 3V17" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>Data Breakdown</span>
-                </a>
-                <a href="dashboard_mttr.html" class="nav-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="8" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                        <rect x="8" y="3" width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                        <rect x="13" y="10" width="4" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>Dashboard MTTR</span>
-                </a>
-                <a href="dashboard_mtbf.html" class="nav-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 10L7 6L11 10L17 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M13 4H17V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Dashboard MTBF</span>
-                </a>
-                <a href="availability.html" class="nav-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                    <span>Dashboard Availability</span>
-                </a>
-            </nav>
-        </aside>
+                
+                <nav class="nav-menu">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="produksi_pg.html">
+                                <i class="bi bi-box-seam"></i>
+                                Produksi
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="dies_pg.html">
+                                <i class="bi bi-tools"></i>
+                                MTC Dies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="mesin_pg.html">
+                                <i class="bi bi-gear-wide-connected"></i>
+                                MTC Mesin
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="content-header">
-                <div class="header-left">
-                    <h2>Input Data Breakdown</h2>
-                    <p>Form pengisian data breakdown mesin untuk monitoring MTTR & MTBF</p>
-                </div>
-                <div class="header-right">
-                    <div class="info-badge">
-                        <span class="badge-label">No. LKM Terakhir:</span>
-                        <span class="badge-value" id="lastNoLkm">Loading...</span>
+                <div class="user-profile">
+                    <div class="user-name">
+                        <i class="bi bi-person-circle me-2"></i>DANAR
                     </div>
+                    <p class="user-role">Administrator</p>
                 </div>
             </div>
 
-            <!-- Alert Container -->
-            <div id="alertContainer"></div>
-
-            <!-- Form Container -->
-            <div class="form-container">
-                <form id="formBreakdown">
-                    <!-- Section: Informasi LKM -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Informasi LKM</h3>
-                            <p>Nomor Laporan Kerusakan Mesin</p>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field full-width">
-                                <label for="no_lkm_number" class="field-label required">
-                                    Nomor LKM
-                                </label>
-                                <div class="lkm-input-group">
-                                    <input 
-                                        type="text" 
-                                        id="no_lkm_number" 
-                                        class="field-input lkm-number" 
-                                        placeholder="001" 
-                                        required 
-                                        maxlength="3"
-                                    >
-                                    <div class="lkm-preview" id="noLkmPreview">/LKM/MTC/KMI/XII/25</div>
-                                </div>
-                                <div class="field-hint">
-                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
-                                        <path d="M7 10V7M7 4H7.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                    </svg>
-                                    <span>Nomor disarankan: <strong id="suggestedNoLkm">Loading...</strong></span>
-                                </div>
-                            </div>
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <div class="welcome-section">
+                    <div class="avatar-circle">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    
+                    <div class="welcome-header">
+                        <h2>Welcome, DANAR!</h2>
+                        <div class="decorative-line"></div>
+                        <p>Here's your page to excellent work</p>
+                        <div class="subtitle-badge">
+                            <i class="bi bi-stars"></i>
+                            Ready to Get Started
                         </div>
                     </div>
-
-                    <!-- Section: Data Mesin -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Data Mesin</h3>
-                            <p>Identitas mesin yang mengalami breakdown</p>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="id_mesin" class="field-label required">
-                                    ID Mesin
-                                </label>
-                                <select id="id_mesin" class="field-input" required>
-                                    <option value="">Pilih mesin...</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label for="nama_mesin" class="field-label required">
-                                    Nama Mesin
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="nama_mesin" 
-                                    class="field-input" 
-                                    placeholder="Otomatis terisi" 
-                                    readonly
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section: Waktu Breakdown -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Waktu Breakdown</h3>
-                            <p>Tanggal dan jam terjadinya breakdown</p>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="tanggal_breakdown" class="field-label required">
-                                    Tanggal Breakdown
-                                </label>
-                                <input 
-                                    type="date" 
-                                    id="tanggal_breakdown" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                            <div class="form-field">
-                                <label for="jam_breakdown" class="field-label required">
-                                    Jam Breakdown
-                                </label>
-                                <input 
-                                    type="time" 
-                                    id="jam_breakdown" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section: Waktu Perbaikan -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Waktu Perbaikan</h3>
-                            <p>Jadwal mulai dan selesai proses perbaikan</p>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="tanggal_mulai_perbaikan" class="field-label required">
-                                    Tanggal Mulai Perbaikan
-                                </label>
-                                <input 
-                                    type="date" 
-                                    id="tanggal_mulai_perbaikan" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                            <div class="form-field">
-                                <label for="jam_mulai_perbaikan" class="field-label required">
-                                    Jam Mulai Perbaikan
-                                </label>
-                                <input 
-                                    type="time" 
-                                    id="jam_mulai_perbaikan" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                            <div class="form-field">
-                                <label for="tanggal_selesai_perbaikan" class="field-label required">
-                                    Tanggal Selesai Perbaikan
-                                </label>
-                                <input 
-                                    type="date" 
-                                    id="tanggal_selesai_perbaikan" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                            <div class="form-field">
-                                <label for="jam_selesai_perbaikan" class="field-label required">
-                                    Jam Selesai Perbaikan
-                                </label>
-                                <input 
-                                    type="time" 
-                                    id="jam_selesai_perbaikan" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section: Detail Breakdown -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Detail Breakdown</h3>
-                            <p>Informasi lengkap mengenai kerusakan dan perbaikan</p>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field full-width">
-                                <label for="problem_mesin" class="field-label required">
-                                    Problem Mesin
-                                </label>
-                                <textarea 
-                                    id="problem_mesin" 
-                                    class="field-textarea" 
-                                    rows="3"
-                                    placeholder="Deskripsikan masalah yang terjadi pada mesin..."
-                                    required
-                                ></textarea>
-                            </div>
-                            <div class="form-field full-width">
-                                <label for="penyebab_breakdown" class="field-label required">
-                                    Penyebab Breakdown
-                                </label>
-                                <textarea 
-                                    id="penyebab_breakdown" 
-                                    class="field-textarea" 
-                                    rows="3"
-                                    placeholder="Jelaskan penyebab terjadinya breakdown..."
-                                    required
-                                ></textarea>
-                            </div>
-                            <div class="form-field full-width">
-                                <label for="tindakan_perbaikan" class="field-label required">
-                                    Tindakan Perbaikan
-                                </label>
-                                <textarea 
-                                    id="tindakan_perbaikan" 
-                                    class="field-textarea" 
-                                    rows="3"
-                                    placeholder="Deskripsikan tindakan perbaikan yang dilakukan..."
-                                    required
-                                ></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section: PIC -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Person In Charge</h3>
-                            <p>Penanggung jawab maintenance</p>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field full-width">
-                                <label for="pic_maintenance" class="field-label required">
-                                    PIC Maintenance
-                                </label>
-                                <select 
-                                    id="pic_maintenance" 
-                                    class="field-input" 
-                                    required
-                                >
-                                    <option value="">Pilih PIC Maintenance...</option>
-                                    <option value="Sarijan">Sarijan</option>
-                                    <option value="Gunawan">Gunawan</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Form Actions -->
-                    <div class="form-actions">
-                        <button type="button" class="btn-secondary" onclick="resetForm()">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 9C2 5.13401 5.13401 2 9 2C12.866 2 16 5.13401 16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M9 5V9L11.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
-                            Reset Form
-                        </button>
-                        <button type="submit" class="btn-primary" id="btnSubmit">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 9L9 15L3 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M9 3V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
-                            Simpan Data
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </main>
+        </div>
     </div>
 
-    <script>
-        // ========================================
-// CONFIGURATION
-// ========================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdmtsD_5BY38UqiQM_U_8anFSeUGBKU3PYrgBXCPHO1pzvgmSWC1dgHJlqcpDfUVNV3g/exec';
-
-// State Management
-let masterMesinData = [];
-
-// ========================================
-// INITIALIZATION
-// ========================================
-document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-});
-
-function initializeApp() {
-    loadMasterMesin();
-    loadLastNoLKM();
-    setupEventListeners();
-    setDefaultDates();
-}
-
-// ========================================
-// EVENT LISTENERS
-// ========================================
-function setupEventListeners() {
-    // Mesin selection change
-    document.getElementById('id_mesin').addEventListener('change', handleMesinChange);
-    
-    // LKM number input
-    document.getElementById('no_lkm_number').addEventListener('input', updateNoLkmPreview);
-    
-    // Breakdown date change
-    document.getElementById('tanggal_breakdown').addEventListener('change', updateNoLkmPreview);
-    
-    // Form submission
-    document.getElementById('formBreakdown').addEventListener('submit', handleFormSubmit);
-}
-
-function setDefaultDates() {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('tanggal_breakdown').value = today;
-    document.getElementById('tanggal_mulai_perbaikan').value = today;
-    document.getElementById('tanggal_selesai_perbaikan').value = today;
-}
-
-// ========================================
-// MASTER MESIN FUNCTIONS
-// ========================================
-async function loadMasterMesin() {
-    try {
-        const url = `${SCRIPT_URL}?action=getMasterMesin&_=${Date.now()}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            redirect: 'follow'
-        });
-        
-        const result = await response.json();
-        
-        if (result.status === 'success') {
-            masterMesinData = result.data;
-            populateMesinDropdown(result.data);
-        } else {
-            showAlert('Gagal memuat data mesin: ' + result.message, 'error');
-        }
-    } catch (error) {
-        console.error('Error loading master mesin:', error);
-        showAlert('Gagal memuat data mesin. Periksa koneksi dan URL deployment.', 'error');
-    }
-}
-
-function populateMesinDropdown(data) {
-    const select = document.getElementById('id_mesin');
-    select.innerHTML = '<option value="">Pilih mesin...</option>';
-    
-    data.forEach(mesin => {
-        const option = document.createElement('option');
-        option.value = mesin.id_mesin;
-        option.textContent = `${mesin.id_mesin} - ${mesin.nama_mesin}`;
-        select.appendChild(option);
-    });
-}
-
-function handleMesinChange(e) {
-    const selectedId = e.target.value;
-    const mesin = masterMesinData.find(m => m.id_mesin === selectedId);
-    document.getElementById('nama_mesin').value = mesin ? mesin.nama_mesin : '';
-}
-
-// ========================================
-// LKM NUMBER FUNCTIONS
-// ========================================
-async function loadLastNoLKM() {
-    try {
-        const url = `${SCRIPT_URL}?action=getLastNoLKM&_=${Date.now()}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            redirect: 'follow'
-        });
-        
-        const result = await response.json();
-        
-        if (result.status === 'success') {
-            document.getElementById('lastNoLkm').textContent = result.lastNumber || '-';
-            document.getElementById('suggestedNoLkm').textContent = result.suggestedNumber || '001';
-            document.getElementById('no_lkm_number').placeholder = result.suggestedNumber || '001';
-        }
-    } catch (error) {
-        console.error('Error loading last no LKM:', error);
-        document.getElementById('lastNoLkm').textContent = 'Error';
-        document.getElementById('suggestedNoLkm').textContent = 'Error';
-    }
-}
-
-function updateNoLkmPreview() {
-    const number = document.getElementById('no_lkm_number').value.padStart(3, '0') || '000';
-    const breakdownDate = document.getElementById('tanggal_breakdown').value;
-    
-    if (breakdownDate) {
-        const date = new Date(breakdownDate);
-        const month = toRoman(date.getMonth() + 1);
-        const year = date.getFullYear().toString().slice(-2);
-        
-        document.getElementById('noLkmPreview').textContent = 
-            `/${number}/LKM/MTC/KMI/${month}/${year}`;
-    } else {
-        document.getElementById('noLkmPreview').textContent = 
-            `/${number}/LKM/MTC/KMI/XII/25`;
-    }
-}
-
-function toRoman(num) {
-    const romanNumerals = [
-        { value: 12, numeral: 'XII' },
-        { value: 11, numeral: 'XI' },
-        { value: 10, numeral: 'X' },
-        { value: 9, numeral: 'IX' },
-        { value: 8, numeral: 'VIII' },
-        { value: 7, numeral: 'VII' },
-        { value: 6, numeral: 'VI' },
-        { value: 5, numeral: 'V' },
-        { value: 4, numeral: 'IV' },
-        { value: 3, numeral: 'III' },
-        { value: 2, numeral: 'II' },
-        { value: 1, numeral: 'I' }
-    ];
-    
-    for (let i = 0; i < romanNumerals.length; i++) {
-        if (num === romanNumerals[i].value) {
-            return romanNumerals[i].numeral;
-        }
-    }
-    return 'I';
-}
-
-// ========================================
-// FORM SUBMISSION
-// ========================================
-async function handleFormSubmit(e) {
-    e.preventDefault();
-    
-    const btn = document.getElementById('btnSubmit');
-    const originalText = btn.innerHTML;
-    
-    // Disable button and show loading state
-    btn.disabled = true;
-    btn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation: spin 1s linear infinite;">
-            <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" stroke-dasharray="32" stroke-dashoffset="8"/>
-        </svg>
-        <style>
-            @keyframes spin {
-                to { transform: rotate(360deg); }
-            }
-        </style>
-        Menyimpan...
-    `;
-    
-    // Prepare form data
-    const formData = new URLSearchParams();
-    formData.append('action', 'addBreakdown');
-    formData.append('no_lkm_number', document.getElementById('no_lkm_number').value);
-    formData.append('id_mesin', document.getElementById('id_mesin').value);
-    formData.append('nama_mesin', document.getElementById('nama_mesin').value);
-    formData.append('tanggal_breakdown', document.getElementById('tanggal_breakdown').value);
-    formData.append('jam_breakdown', document.getElementById('jam_breakdown').value);
-    formData.append('tanggal_mulai_perbaikan', document.getElementById('tanggal_mulai_perbaikan').value);
-    formData.append('jam_mulai_perbaikan', document.getElementById('jam_mulai_perbaikan').value);
-    formData.append('tanggal_selesai_perbaikan', document.getElementById('tanggal_selesai_perbaikan').value);
-    formData.append('jam_selesai_perbaikan', document.getElementById('jam_selesai_perbaikan').value);
-    formData.append('problem_mesin', document.getElementById('problem_mesin').value);
-    formData.append('penyebab_breakdown', document.getElementById('penyebab_breakdown').value);
-    formData.append('tindakan_perbaikan', document.getElementById('tindakan_perbaikan').value);
-    formData.append('pic_maintenance', document.getElementById('pic_maintenance').value);
-    
-    try {
-        const response = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: formData,
-            redirect: 'follow'
-        });
-        
-        const result = await response.json();
-        
-        if (result.status === 'success') {
-            const successMessage = `
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                    <div style="font-weight: 600; font-size: 1rem;">✅ Data berhasil disimpan!</div>
-                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem; font-size: 0.875rem;">
-                        <span style="font-weight: 500;">No LKM:</span>
-                        <span style="font-family: 'Courier New', monospace;">${result.data.no_lkm}</span>
-                        <span style="font-weight: 500;">Status:</span>
-                        <span>${result.data.status_breakdown}</span>
-                        <span style="font-weight: 500;">Repair Time:</span>
-                        <span>${result.data.repair_time.toFixed(2)} jam</span>
-                        <span style="font-weight: 500;">Total Downtime:</span>
-                        <span>${result.data.total_downtime.toFixed(2)} jam</span>
-                    </div>
-                </div>
-            `;
-            showAlert(successMessage, 'success');
-            
-            // Reset form
-            document.getElementById('formBreakdown').reset();
-            setDefaultDates();
-            loadLastNoLKM();
-            updateNoLkmPreview();
-            
-            // Scroll to top to show success message
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            showAlert('❌ ' + result.message, 'error');
-        }
-    } catch (error) {
-        console.error('Error submitting form:', error);
-        showAlert('❌ Gagal menyimpan data: ' + error.message, 'error');
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-    }
-}
-
-// ========================================
-// UTILITY FUNCTIONS
-// ========================================
-function showAlert(message, type) {
-    const container = document.getElementById('alertContainer');
-    const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
-    
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert ${alertClass}`;
-    alertDiv.innerHTML = message;
-    
-    container.appendChild(alertDiv);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        alertDiv.style.animation = 'slideUp 200ms cubic-bezier(0.4, 0, 0.2, 1)';
-        setTimeout(() => alertDiv.remove(), 200);
-    }, 5000);
-}
-
-function resetForm() {
-    if (confirm('Apakah Anda yakin ingin mereset form? Semua data yang belum disimpan akan hilang.')) {
-        document.getElementById('formBreakdown').reset();
-        setDefaultDates();
-        updateNoLkmPreview();
-        document.getElementById('alertContainer').innerHTML = '';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
-
-// Add slide up animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideUp {
-        from {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        to {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-    }
-`;
-document.head.appendChild(style);
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
