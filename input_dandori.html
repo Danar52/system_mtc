@@ -3,672 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Input - VCB Dandori</title>
-    
+    <title>Input Data Dandori - VCB Dandori System</title>
+    <link rel="stylesheet" href="assets/style/style_input_dandori.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <style>
-:root {
-    --color-primary: #1a1a1a;
-    --color-secondary: #6b7280;
-    --color-bg-primary: #ffffff;
-    --color-bg-secondary: #f9fafb;
-    --color-bg-tertiary: #f3f4f6;
-    --color-border: #e5e7eb;
-    --color-success: #10b981;
-    --color-danger: #ef4444;
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 0.75rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --radius-sm: 0.5rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1rem;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--color-bg-primary);
-    color: var(--color-primary);
-    line-height: 1.6;
-    min-height: 100vh;
-}
-
-.navbar {
-    background-color: var(--color-bg-primary);
-    border-bottom: 1px solid var(--color-border);
-    padding: var(--spacing-md) 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-xl);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-brand {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-primary);
-}
-
-.nav-menu {
-    display: flex;
-    gap: var(--spacing-sm);
-}
-
-.nav-link {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm) var(--spacing-md);
-    color: var(--color-secondary);
-    text-decoration: none;
-    border-radius: var(--radius-sm);
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.nav-link:hover {
-    background-color: var(--color-bg-tertiary);
-    color: var(--color-primary);
-}
-
-.nav-link.active {
-    background-color: var(--color-primary);
-    color: var(--color-bg-primary);
-}
-
-.main-content {
-    padding: var(--spacing-xl) 0;
-    background-color: var(--color-bg-secondary);
-    min-height: calc(100vh - 80px);
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-lg);
-}
-
-.page-header {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-}
-
-.page-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-xs);
-}
-
-.page-subtitle {
-    color: var(--color-secondary);
-    font-size: 1rem;
-}
-
-.form-card {
-    background-color: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.form-section {
-    margin-bottom: var(--spacing-xl);
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 2px solid var(--color-border);
-}
-
-.section-header h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-lg);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.form-label {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
-}
-
-.required {
-    color: var(--color-danger);
-}
-
-.optional {
-    color: var(--color-secondary);
-    text-transform: none;
-    font-weight: 400;
-}
-
-.form-input, .form-select, .form-textarea {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background-color: var(--color-bg-primary);
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.938rem;
-    transition: var(--transition);
-}
-
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.05);
-}
-
-.form-textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-/* ✅ SEARCHABLE DROPDOWN STYLES */
-.searchable-dropdown {
-    position: relative;
-    width: 100%;
-}
-
-.search-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.search-input-wrapper i {
-    position: absolute;
-    left: var(--spacing-md);
-    color: var(--color-secondary);
-    pointer-events: none;
-}
-
-.searchable-input {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 2.5rem;
-    background-color: var(--color-bg-primary);
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.938rem;
-    transition: var(--transition);
-}
-
-.searchable-input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.05);
-}
-
-.searchable-input::placeholder {
-    color: var(--color-secondary);
-}
-
-.dropdown-list {
-    position: absolute;
-    top: calc(100% + 0.25rem);
-    left: 0;
-    right: 0;
-    max-height: 250px;
-    overflow-y: auto;
-    background-color: var(--color-bg-primary);
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: none;
-}
-
-.dropdown-list.show {
-    display: block;
-}
-
-.dropdown-item {
-    padding: var(--spacing-sm) var(--spacing-md);
-    cursor: pointer;
-    transition: var(--transition);
-    border-bottom: 1px solid var(--color-bg-tertiary);
-}
-
-.dropdown-item:last-child {
-    border-bottom: none;
-}
-
-.dropdown-item:hover {
-    background-color: var(--color-bg-tertiary);
-}
-
-.dropdown-item.active {
-    background-color: var(--color-primary);
-    color: var(--color-bg-primary);
-}
-
-.dropdown-empty {
-    padding: var(--spacing-md);
-    text-align: center;
-    color: var(--color-secondary);
-    font-size: 0.875rem;
-}
-
-.info-box {
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-md);
-    background-color: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    display: none;
-}
-
-.info-box.show {
-    display: block;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-}
-
-.info-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.info-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-secondary);
-    text-transform: uppercase;
-}
-
-.info-value {
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.duration-display {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.duration-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-xs);
-}
-
-.duration-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-secondary);
-    text-transform: uppercase;
-}
-
-.duration-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-.status-ontime {
-    background-color: rgba(16, 185, 129, 0.1);
-    color: var(--color-success);
-}
-
-.status-delay {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: var(--color-danger);
-}
-
-.status-cancel {
-    background-color: rgba(107, 114, 128, 0.1);
-    color: var(--color-secondary);
-}
-
-.checkbox-wrapper {
-    margin-top: var(--spacing-md);
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    cursor: pointer;
-    padding: var(--spacing-sm);
-    border-radius: var(--radius-sm);
-    transition: var(--transition);
-}
-
-.checkbox-label:hover {
-    background-color: var(--color-bg-tertiary);
-}
-
-.form-checkbox {
-    width: 1.25rem;
-    height: 1.25rem;
-    cursor: pointer;
-}
-
-.checkbox-text {
-    font-size: 0.938rem;
-    font-weight: 500;
-}
-
-.form-actions {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: flex-end;
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-xl);
-    border-top: 1px solid var(--color-border);
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.938rem;
-    font-weight: 600;
-    border: none;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-bg-primary);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(26, 26, 26, 0.15);
-}
-
-.btn-secondary {
-    background-color: transparent;
-    color: var(--color-secondary);
-    border: 1.5px solid var(--color-border);
-}
-
-.btn-secondary:hover {
-    background-color: var(--color-bg-tertiary);
-}
-
-.loading-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: var(--spacing-md);
-}
-
-.loading-overlay.show {
-    display: flex;
-}
-
-.loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid var(--color-border);
-    border-top-color: var(--color-primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-    padding: var(--spacing-lg);
-}
-
-.modal-overlay.show {
-    display: flex;
-}
-
-.modal-content {
-    background-color: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.modal-icon {
-    font-size: 4rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.modal-icon.success i {
-    color: var(--color-success);
-}
-
-.modal-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-md);
-}
-
-.modal-body {
-    color: var(--color-secondary);
-    margin-bottom: var(--spacing-xl);
-}
-
-.modal-actions {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@media (max-width: 768px) {
-    .form-grid, .info-grid {
-        grid-template-columns: 1fr;
-    }
-    .form-actions {
-        flex-direction: column-reverse;
-    }
-    .btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <i class="bi bi-clipboard-data"></i>
-                <span>VCB Dandori System</span>
+    <div class="page-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="32" height="32" rx="8" fill="white"/>
+                            <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M16 16L8 12M16 16L24 12M16 16V24" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>VCB DANDORI</h1>
+                        <p>Monitoring System</p>
+                    </div>
+                </div>
             </div>
-            <div class="nav-menu">
-                <a href="vcb_dandori.html" class="nav-link">
-                    <i class="bi bi-graph-up"></i>
+            
+            <nav class="sidebar-nav">
+                <a href="vcb_dandori.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="8" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="8" y="3" width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="13" y="10" width="4" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
                     <span>Dashboard</span>
                 </a>
-                <a href="input_dandori.html" class="nav-link active">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>Data Input</span>
+                <a href="input_dandori.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 3L3 7V13L10 17L17 13V7L10 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Input Data Dandori</span>
                 </a>
-            </div>
-        </div>
-    </nav>
+                <a href="data_dandori.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M3 8H17M8 3V17" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>Data Dandori</span>
+                </a>
+                <a href="index.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 17H16C16.5523 17 17 16.5523 17 16V4C17 3.44772 16.5523 3 16 3H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M8 13L3 10M3 10L8 7M3 10H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Kembali ke Menu</span>
+                </a>
+            </nav>
+        </aside>
 
-    <main class="main-content">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">
-                    <i class="bi bi-pencil-square"></i>
-                    Data Breakdown
-                </h1>
-                <p class="page-subtitle">Input dandori activity record</p>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <div class="header-left">
+                    <h2>Input Data Dandori</h2>
+                    <p>Form pengisian data dandori activity untuk monitoring waktu dan status</p>
+                </div>
             </div>
 
-            <div class="form-card">
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+
+            <!-- Form Container -->
+            <div class="form-container">
                 <form id="dandoriForm">
-                    
+                    <!-- Section: General Information -->
                     <div class="form-section">
                         <div class="section-header">
-                            <i class="bi bi-info-circle"></i>
                             <h3>General Information</h3>
+                            <p>Informasi umum aktivitas dandori</p>
                         </div>
                         <div class="form-grid">
-                            <div class="form-group">
-                                <label for="tanggal" class="form-label">
-                                    <i class="bi bi-calendar3"></i>
-                                    Date <span class="required">*</span>
+                            <div class="form-field">
+                                <label for="tanggal" class="field-label required">
+                                    Tanggal
                                 </label>
-                                <input type="date" id="tanggal" name="tanggal" class="form-input" required>
+                                <input 
+                                    type="date" 
+                                    id="tanggal" 
+                                    class="field-input" 
+                                    required
+                                >
                             </div>
-                            <div class="form-group">
-                                <label for="pic_dandori" class="form-label">
-                                    <i class="bi bi-person"></i>
-                                    PIC Name <span class="required">*</span>
+                            <div class="form-field">
+                                <label for="pic_dandori" class="field-label required">
+                                    PIC Name
                                 </label>
-                                <input type="text" id="pic_dandori" name="pic_dandori" class="form-input" placeholder="Enter PIC name" required>
+                                <input 
+                                    type="text" 
+                                    id="pic_dandori" 
+                                    class="field-input" 
+                                    placeholder="Masukkan nama PIC"
+                                    required
+                                >
                             </div>
                         </div>
                     </div>
 
+                    <!-- Section: Machine & Part -->
                     <div class="form-section">
                         <div class="section-header">
-                            <i class="bi bi-gear"></i>
                             <h3>Machine & Part</h3>
+                            <p>Pilih mesin dan part yang akan di-dandori</p>
                         </div>
                         <div class="form-grid">
-                            <!-- ✅ SEARCHABLE MACHINE DROPDOWN -->
-                            <div class="form-group">
-                                <label for="mesin_search" class="form-label">
-                                    <i class="bi bi-cpu"></i>
-                                    Machine <span class="required">*</span>
+                            <div class="form-field">
+                                <label for="mesin_search" class="field-label required">
+                                    Machine
                                 </label>
                                 <div class="searchable-dropdown" id="mesinDropdown">
                                     <div class="search-input-wrapper">
-                                        <i class="bi bi-search"></i>
                                         <input 
                                             type="text" 
                                             id="mesin_search" 
-                                            class="searchable-input" 
-                                            placeholder="Type to search machine..."
+                                            class="field-input searchable-input" 
+                                            placeholder="Ketik untuk mencari mesin..."
                                             autocomplete="off"
                                             required
                                         >
+                                        <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M12 12L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
                                     </div>
                                     <div class="dropdown-list" id="mesinList"></div>
                                 </div>
                             </div>
-
-                            <!-- ✅ SEARCHABLE PART DROPDOWN -->
-                            <div class="form-group">
-                                <label for="part_search" class="form-label">
-                                    <i class="bi bi-box-seam"></i>
-                                    Part Name <span class="required">*</span>
+                            <div class="form-field">
+                                <label for="part_search" class="field-label required">
+                                    Part Name
                                 </label>
                                 <div class="searchable-dropdown" id="partDropdown">
                                     <div class="search-input-wrapper">
-                                        <i class="bi bi-search"></i>
                                         <input 
                                             type="text" 
                                             id="part_search" 
-                                            class="searchable-input" 
-                                            placeholder="Type to search part..."
+                                            class="field-input searchable-input" 
+                                            placeholder="Ketik untuk mencari part..."
                                             autocomplete="off"
                                             required
                                         >
+                                        <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M12 12L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
                                     </div>
                                     <div class="dropdown-list" id="partList"></div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Info Display -->
                         <div class="info-box" id="mesinPartInfo">
                             <div class="info-grid">
                                 <div class="info-item">
@@ -691,35 +185,45 @@ body {
                         </div>
                     </div>
 
+                    <!-- Section: Dandori Time -->
                     <div class="form-section">
                         <div class="section-header">
-                            <i class="bi bi-stopwatch"></i>
                             <h3>Dandori Time</h3>
+                            <p>Waktu mulai dan selesai aktivitas dandori</p>
                         </div>
                         <div class="form-grid">
-                            <div class="form-group">
-                                <label for="jam_mulai" class="form-label">
-                                    <i class="bi bi-play-circle"></i>
-                                    Start Time <span class="required">*</span>
+                            <div class="form-field">
+                                <label for="jam_mulai" class="field-label required">
+                                    Start Time
                                 </label>
-                                <input type="time" id="jam_mulai" name="jam_mulai" class="form-input" required>
+                                <input 
+                                    type="time" 
+                                    id="jam_mulai" 
+                                    class="field-input" 
+                                    required
+                                >
                             </div>
-                            <div class="form-group">
-                                <label for="jam_selesai" class="form-label">
-                                    <i class="bi bi-stop-circle"></i>
-                                    End Time <span class="required">*</span>
+                            <div class="form-field">
+                                <label for="jam_selesai" class="field-label required">
+                                    End Time
                                 </label>
-                                <input type="time" id="jam_selesai" name="jam_selesai" class="form-input" required>
+                                <input 
+                                    type="time" 
+                                    id="jam_selesai" 
+                                    class="field-input" 
+                                    required
+                                >
                             </div>
                         </div>
 
-                        <div class="info-box" id="waktuInfo">
+                        <!-- Duration Display -->
+                        <div class="info-box duration-box" id="waktuInfo">
                             <div class="duration-display">
                                 <div class="duration-item">
                                     <span class="duration-label">Duration</span>
                                     <span class="duration-value" id="displayDurasi">-</span>
                                 </div>
-                                <div style="width: 1px; height: 40px; background: var(--color-border);"></div>
+                                <div class="duration-divider"></div>
                                 <div class="duration-item">
                                     <span class="duration-label">Status</span>
                                     <span id="displayStatus">-</span>
@@ -728,397 +232,428 @@ body {
                         </div>
                     </div>
 
+                    <!-- Section: Problem Notes -->
                     <div class="form-section">
                         <div class="section-header">
-                            <i class="bi bi-exclamation-triangle"></i>
                             <h3>Problem Notes</h3>
+                            <p>Catatan kendala atau masalah (opsional)</p>
                         </div>
-                        <div class="form-group">
-                            <label for="problem_dandori" class="form-label">
-                                Description <span class="optional">(Optional)</span>
-                            </label>
-                            <textarea id="problem_dandori" name="problem_dandori" class="form-textarea" placeholder="Describe any problems..." rows="4"></textarea>
+                        <div class="form-grid">
+                            <div class="form-field full-width">
+                                <label for="problem_dandori" class="field-label">
+                                    Description
+                                    <span class="optional-label">(Optional)</span>
+                                </label>
+                                <textarea 
+                                    id="problem_dandori" 
+                                    class="field-textarea" 
+                                    rows="4"
+                                    placeholder="Deskripsikan kendala atau masalah yang terjadi..."
+                                ></textarea>
+                            </div>
                         </div>
 
+                        <!-- Cancel Checkbox -->
                         <div class="checkbox-wrapper">
                             <label class="checkbox-label">
-                                <input type="checkbox" id="isCancel" name="isCancel" class="form-checkbox">
-                                <span class="checkbox-text">
-                                    <i class="bi bi-x-circle"></i>
-                                    Cancel this dandori activity
-                                </span>
+                                <input type="checkbox" id="isCancel" class="field-checkbox">
+                                <svg class="checkbox-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="checkbox-text">Cancel this dandori activity</span>
                             </label>
                         </div>
                     </div>
 
+                    <!-- Form Actions -->
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                            <i class="bi bi-arrow-counterclockwise"></i>
+                        <button type="button" class="btn-secondary" onclick="resetForm()">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 9C2 5.13401 5.13401 2 9 2C12.866 2 16 5.13401 16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M9 5V9L11.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
                             Reset Form
                         </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save"></i>
-                            Save Data
+                        <button type="submit" class="btn-primary" id="btnSubmit">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 9L9 15L3 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 3V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            Simpan Data
                         </button>
                     </div>
-
-                    <div class="loading-overlay" id="loading">
-                        <div class="loading-spinner"></div>
-                        <p>Saving data...</p>
-                    </div>
-
                 </form>
             </div>
-        </div>
-    </main>
-
-    <div class="modal-overlay" id="successModal">
-        <div class="modal-content">
-            <div class="modal-icon success">
-                <i class="bi bi-check-circle"></i>
-            </div>
-            <h3 class="modal-title">Data Saved Successfully!</h3>
-            <div class="modal-body" id="modalMessage"></div>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeModal()">
-                    <i class="bi bi-check-lg"></i>
-                    OK
-                </button>
-                <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
-                    <i class="bi bi-graph-up"></i>
-                    View Dashboard
-                </button>
-            </div>
-        </div>
+        </main>
     </div>
 
     <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbxEJ2R8WF2iKGjEM9fOKhwlXxquCUIZ9bzmvTtdrALw848aj-DCXIJUAQs95Zb60rJY/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxEJ2R8WF2iKGjEM9fOKhwlXxquCUIZ9bzmvTtdrALw848aj-DCXIJUAQs95Zb60rJY/exec';
 
-let masterMesin = [];
-let masterDies = [];
-let selectedMesin = null;
-let selectedPart = null;
+        let masterMesin = [];
+        let masterDies = [];
+        let selectedMesin = null;
+        let selectedPart = null;
 
-window.addEventListener('DOMContentLoaded', () => {
-    initializeForm();
-    attachEventListeners();
-    loadMasterData();
-});
-
-function initializeForm() {
-    const today = new Date();
-    document.getElementById('tanggal').valueAsDate = today;
-}
-
-function attachEventListeners() {
-    document.getElementById('dandoriForm').addEventListener('submit', handleFormSubmit);
-    
-    // ✅ SEARCHABLE DROPDOWN EVENTS
-    const mesinSearch = document.getElementById('mesin_search');
-    const partSearch = document.getElementById('part_search');
-    
-    mesinSearch.addEventListener('input', (e) => filterDropdown(e.target.value, 'mesin'));
-    mesinSearch.addEventListener('focus', () => showDropdown('mesin'));
-    
-    partSearch.addEventListener('input', (e) => filterDropdown(e.target.value, 'part'));
-    partSearch.addEventListener('focus', () => showDropdown('part'));
-    
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.searchable-dropdown')) {
-            hideAllDropdowns();
-        }
-    });
-    
-    document.getElementById('jam_mulai').addEventListener('change', calculateDuration);
-    document.getElementById('jam_selesai').addEventListener('change', calculateDuration);
-    document.getElementById('isCancel').addEventListener('change', calculateDuration);
-}
-
-async function loadMasterData() {
-    try {
-        const mesinResponse = await fetch(`${API_URL}?action=getMasterMesin`);
-        const mesinData = await mesinResponse.json();
-        
-        if (mesinData.success) {
-            masterMesin = mesinData.data;
-            renderMesinDropdown(masterMesin);
-        }
-
-        const diesResponse = await fetch(`${API_URL}?action=getMasterDies`);
-        const diesData = await diesResponse.json();
-        
-        if (diesData.success) {
-            masterDies = diesData.data;
-            renderPartDropdown(masterDies);
-        }
-    } catch (error) {
-        console.error('Error loading master data:', error);
-        showError('Failed to connect to server');
-    }
-}
-
-// ✅ RENDER MACHINE DROPDOWN
-function renderMesinDropdown(data) {
-    const list = document.getElementById('mesinList');
-    
-    if (data.length === 0) {
-        list.innerHTML = '<div class="dropdown-empty">No machine found</div>';
-        return;
-    }
-    
-    list.innerHTML = data.map(mesin => `
-        <div class="dropdown-item" data-value="${mesin.nama_mesin}" data-mesin='${JSON.stringify(mesin)}'>
-            <strong>${mesin.nama_mesin}</strong>
-            <div style="font-size: 0.813rem; color: var(--color-secondary);">
-                Line: ${mesin.line} | Standard: ${mesin.standard_dandori} min
-            </div>
-        </div>
-    `).join('');
-    
-    // Add click event to each item
-    list.querySelectorAll('.dropdown-item').forEach(item => {
-        item.addEventListener('click', () => selectMesin(item));
-    });
-}
-
-// ✅ RENDER PART DROPDOWN
-function renderPartDropdown(data) {
-    const list = document.getElementById('partList');
-    
-    if (data.length === 0) {
-        list.innerHTML = '<div class="dropdown-empty">No part found</div>';
-        return;
-    }
-    
-    list.innerHTML = data.map(part => `
-        <div class="dropdown-item" data-value="${part.part_name}" data-part='${JSON.stringify(part)}'>
-            <strong>${part.part_name}</strong>
-            <div style="font-size: 0.813rem; color: var(--color-secondary);">
-                Part No: ${part.part_no} | Process: ${part.nama_proses}
-            </div>
-        </div>
-    `).join('');
-    
-    // Add click event to each item
-    list.querySelectorAll('.dropdown-item').forEach(item => {
-        item.addEventListener('click', () => selectPart(item));
-    });
-}
-
-// ✅ FILTER DROPDOWN
-function filterDropdown(query, type) {
-    const data = type === 'mesin' ? masterMesin : masterDies;
-    const searchField = type === 'mesin' ? 'nama_mesin' : 'part_name';
-    
-    const filtered = data.filter(item => 
-        item[searchField].toLowerCase().includes(query.toLowerCase())
-    );
-    
-    if (type === 'mesin') {
-        renderMesinDropdown(filtered);
-    } else {
-        renderPartDropdown(filtered);
-    }
-    
-    showDropdown(type);
-}
-
-// ✅ SHOW/HIDE DROPDOWN
-function showDropdown(type) {
-    const listId = type === 'mesin' ? 'mesinList' : 'partList';
-    document.getElementById(listId).classList.add('show');
-}
-
-function hideAllDropdowns() {
-    document.getElementById('mesinList').classList.remove('show');
-    document.getElementById('partList').classList.remove('show');
-}
-
-// ✅ SELECT MACHINE
-function selectMesin(item) {
-    const mesinData = JSON.parse(item.dataset.mesin);
-    selectedMesin = mesinData;
-    
-    document.getElementById('mesin_search').value = mesinData.nama_mesin;
-    displayMesinInfo();
-    calculateDuration();
-    hideAllDropdowns();
-}
-
-// ✅ SELECT PART
-function selectPart(item) {
-    const partData = JSON.parse(item.dataset.part);
-    selectedPart = partData;
-    
-    document.getElementById('part_search').value = partData.part_name;
-    displayPartInfo();
-    hideAllDropdowns();
-}
-
-function displayMesinInfo() {
-    document.getElementById('displayLine').textContent = selectedMesin.line;
-    document.getElementById('displayStandard').textContent = `${selectedMesin.standard_dandori} min`;
-    document.getElementById('mesinPartInfo').classList.add('show');
-}
-
-function displayPartInfo() {
-    document.getElementById('displayPartNo').textContent = selectedPart.part_no;
-    document.getElementById('displayIdProses').textContent = selectedPart.id_proses;
-}
-
-function calculateDuration() {
-    const jamMulai = document.getElementById('jam_mulai').value;
-    const jamSelesai = document.getElementById('jam_selesai').value;
-    const isCancel = document.getElementById('isCancel').checked;
-
-    if (!jamMulai || !jamSelesai || !selectedMesin) return;
-
-    const startTime = new Date(`1970-01-01T${jamMulai}`);
-    const endTime = new Date(`1970-01-01T${jamSelesai}`);
-    const durationMinutes = Math.round((endTime - startTime) / (1000 * 60));
-
-    if (durationMinutes <= 0) {
-        showError('End time must be greater than start time');
-        return;
-    }
-
-    document.getElementById('displayDurasi').textContent = `${durationMinutes} min`;
-
-    const status = determineStatus(durationMinutes, selectedMesin.standard_dandori, isCancel);
-    displayStatus(status);
-
-    document.getElementById('waktuInfo').classList.add('show');
-}
-
-function determineStatus(duration, standard, isCancel) {
-    if (isCancel) {
-        return { text: 'Cancel', class: 'status-cancel', icon: 'bi-x-circle' };
-    }
-    if (duration <= standard) {
-        return { text: 'On Time', class: 'status-ontime', icon: 'bi-check-circle' };
-    }
-    const delay = duration - standard;
-    return { text: `Delay (+${delay} min)`, class: 'status-delay', icon: 'bi-exclamation-circle' };
-}
-
-function displayStatus(status) {
-    document.getElementById('displayStatus').innerHTML = `
-        <span class="status-badge ${status.class}">
-            <i class="bi ${status.icon}"></i>
-            ${status.text}
-        </span>
-    `;
-}
-
-async function handleFormSubmit(e) {
-    e.preventDefault();
-
-    if (!selectedMesin || !selectedPart) {
-        showError('Please select both machine and part');
-        return;
-    }
-
-    const formData = {
-        action: 'addDataDandori',
-        tanggal: document.getElementById('tanggal').value,
-        mesin: selectedMesin.nama_mesin,
-        part_no: selectedPart.part_no,
-        part_name: selectedPart.part_name,
-        id_proses: selectedPart.id_proses,
-        nama_proses: selectedPart.nama_proses,
-        jam_mulai_dandori: document.getElementById('jam_mulai').value,
-        jam_selesai_dandori: document.getElementById('jam_selesai').value,
-        standard_dandori: selectedMesin.standard_dandori,
-        problem_dandori: document.getElementById('problem_dandori').value.trim(),
-        pic_dandori: document.getElementById('pic_dandori').value.trim(),
-        isCancel: document.getElementById('isCancel').checked
-    };
-
-    showLoading();
-
-    try {
-        const params = new URLSearchParams(formData);
-        
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            body: params
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
         });
 
-        const result = await response.json();
-
-        if (result.success) {
-            showSuccessModal(formData, result.data);
-            resetForm();
-        } else {
-            showError(`Failed: ${result.error || 'Unknown error'}`);
+        function initializeApp() {
+            setDefaultDate();
+            setupEventListeners();
+            loadMasterData();
         }
-    } catch (error) {
-        console.error('Submit error:', error);
-        showError(`Error: ${error.message}`);
-    } finally {
-        hideLoading();
-    }
-}
 
-function showSuccessModal(formData, resultData) {
-    document.getElementById('modalMessage').innerHTML = `
-        <div style="text-align: left; display: grid; gap: 0.75rem;">
-            <div style="display: flex; justify-content: space-between;">
-                <strong>Machine:</strong>
-                <span>${formData.mesin}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <strong>Part:</strong>
-                <span>${formData.part_name}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <strong>Duration:</strong>
-                <span>${resultData.selisih} minutes</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <strong>Status:</strong>
-                <span style="color: ${resultData.status === 'On Time' ? '#10b981' : '#ef4444'};">
-                    ${resultData.status}
-                </span>
-            </div>
-        </div>
-    `;
-    
-    document.getElementById('successModal').classList.add('show');
-}
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal').value = today;
+        }
 
-function closeModal() {
-    document.getElementById('successModal').classList.remove('show');
-}
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        function setupEventListeners() {
+            document.getElementById('dandoriForm').addEventListener('submit', handleFormSubmit);
+            
+            const mesinSearch = document.getElementById('mesin_search');
+            const partSearch = document.getElementById('part_search');
+            
+            mesinSearch.addEventListener('input', (e) => filterDropdown(e.target.value, 'mesin'));
+            mesinSearch.addEventListener('focus', () => showDropdown('mesin'));
+            
+            partSearch.addEventListener('input', (e) => filterDropdown(e.target.value, 'part'));
+            partSearch.addEventListener('focus', () => showDropdown('part'));
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.searchable-dropdown')) {
+                    hideAllDropdowns();
+                }
+            });
+            
+            document.getElementById('jam_mulai').addEventListener('change', calculateDuration);
+            document.getElementById('jam_selesai').addEventListener('change', calculateDuration);
+            document.getElementById('isCancel').addEventListener('change', calculateDuration);
+        }
 
-function resetForm() {
-    document.getElementById('dandoriForm').reset();
-    document.getElementById('tanggal').valueAsDate = new Date();
-    document.getElementById('mesin_search').value = '';
-    document.getElementById('part_search').value = '';
-    document.getElementById('mesinPartInfo').classList.remove('show');
-    document.getElementById('waktuInfo').classList.remove('show');
-    selectedMesin = null;
-    selectedPart = null;
-    hideAllDropdowns();
-}
+        // ========================================
+        // LOAD MASTER DATA
+        // ========================================
+        async function loadMasterData() {
+            try {
+                const mesinResponse = await fetch(`${API_URL}?action=getMasterMesin&_=${Date.now()}`, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                const mesinData = await mesinResponse.json();
+                
+                if (mesinData.success) {
+                    masterMesin = mesinData.data;
+                    renderMesinDropdown(masterMesin);
+                }
 
-function showLoading() {
-    document.getElementById('loading').classList.add('show');
-}
+                const diesResponse = await fetch(`${API_URL}?action=getMasterDies&_=${Date.now()}`, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                const diesData = await diesResponse.json();
+                
+                if (diesData.success) {
+                    masterDies = diesData.data;
+                    renderPartDropdown(masterDies);
+                }
+            } catch (error) {
+                console.error('Error loading master data:', error);
+                showAlert('Gagal memuat data master. Periksa koneksi dan URL deployment.', 'error');
+            }
+        }
 
-function hideLoading() {
-    document.getElementById('loading').classList.remove('show');
-}
+        // ========================================
+        // RENDER DROPDOWNS
+        // ========================================
+        function renderMesinDropdown(data) {
+            const list = document.getElementById('mesinList');
+            
+            if (data.length === 0) {
+                list.innerHTML = '<div class="dropdown-empty">Tidak ada mesin ditemukan</div>';
+                return;
+            }
+            
+            list.innerHTML = data.map(mesin => `
+                <div class="dropdown-item" data-value="${mesin.nama_mesin}" data-mesin='${JSON.stringify(mesin)}'>
+                    <div class="dropdown-item-title">${mesin.nama_mesin}</div>
+                    <div class="dropdown-item-subtitle">Line: ${mesin.line} | Standard: ${mesin.standard_dandori} min</div>
+                </div>
+            `).join('');
+            
+            list.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', () => selectMesin(item));
+            });
+        }
 
-function showError(message) {
-    alert(message);
-}
+        function renderPartDropdown(data) {
+            const list = document.getElementById('partList');
+            
+            if (data.length === 0) {
+                list.innerHTML = '<div class="dropdown-empty">Tidak ada part ditemukan</div>';
+                return;
+            }
+            
+            list.innerHTML = data.map(part => `
+                <div class="dropdown-item" data-value="${part.part_name}" data-part='${JSON.stringify(part)}'>
+                    <div class="dropdown-item-title">${part.part_name}</div>
+                    <div class="dropdown-item-subtitle">Part No: ${part.part_no} | Process: ${part.nama_proses}</div>
+                </div>
+            `).join('');
+            
+            list.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', () => selectPart(item));
+            });
+        }
 
-window.resetForm = resetForm;
-window.closeModal = closeModal;
+        // ========================================
+        // DROPDOWN FUNCTIONS
+        // ========================================
+        function filterDropdown(query, type) {
+            const data = type === 'mesin' ? masterMesin : masterDies;
+            const searchField = type === 'mesin' ? 'nama_mesin' : 'part_name';
+            
+            const filtered = data.filter(item => 
+                item[searchField].toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (type === 'mesin') {
+                renderMesinDropdown(filtered);
+            } else {
+                renderPartDropdown(filtered);
+            }
+            
+            showDropdown(type);
+        }
+
+        function showDropdown(type) {
+            const listId = type === 'mesin' ? 'mesinList' : 'partList';
+            document.getElementById(listId).classList.add('show');
+        }
+
+        function hideAllDropdowns() {
+            document.getElementById('mesinList').classList.remove('show');
+            document.getElementById('partList').classList.remove('show');
+        }
+
+        function selectMesin(item) {
+            const mesinData = JSON.parse(item.dataset.mesin);
+            selectedMesin = mesinData;
+            
+            document.getElementById('mesin_search').value = mesinData.nama_mesin;
+            displayMesinInfo();
+            calculateDuration();
+            hideAllDropdowns();
+        }
+
+        function selectPart(item) {
+            const partData = JSON.parse(item.dataset.part);
+            selectedPart = partData;
+            
+            document.getElementById('part_search').value = partData.part_name;
+            displayPartInfo();
+            hideAllDropdowns();
+        }
+
+        // ========================================
+        // DISPLAY INFO
+        // ========================================
+        function displayMesinInfo() {
+            document.getElementById('displayLine').textContent = selectedMesin.line;
+            document.getElementById('displayStandard').textContent = `${selectedMesin.standard_dandori} min`;
+            document.getElementById('mesinPartInfo').classList.add('show');
+        }
+
+        function displayPartInfo() {
+            document.getElementById('displayPartNo').textContent = selectedPart.part_no;
+            document.getElementById('displayIdProses').textContent = selectedPart.id_proses;
+        }
+
+        // ========================================
+        // CALCULATE DURATION
+        // ========================================
+        function calculateDuration() {
+            const jamMulai = document.getElementById('jam_mulai').value;
+            const jamSelesai = document.getElementById('jam_selesai').value;
+            const isCancel = document.getElementById('isCancel').checked;
+
+            if (!jamMulai || !jamSelesai || !selectedMesin) return;
+
+            const startTime = new Date(`1970-01-01T${jamMulai}`);
+            const endTime = new Date(`1970-01-01T${jamSelesai}`);
+            const durationMinutes = Math.round((endTime - startTime) / (1000 * 60));
+
+            if (durationMinutes <= 0) {
+                showAlert('Waktu selesai harus lebih besar dari waktu mulai', 'error');
+                return;
+            }
+
+            document.getElementById('displayDurasi').textContent = `${durationMinutes} min`;
+
+            const status = determineStatus(durationMinutes, selectedMesin.standard_dandori, isCancel);
+            displayStatus(status);
+
+            document.getElementById('waktuInfo').classList.add('show');
+        }
+
+        function determineStatus(duration, standard, isCancel) {
+            if (isCancel) {
+                return { text: 'Cancel', class: 'status-cancel' };
+            }
+            if (duration <= standard) {
+                return { text: 'On Time', class: 'status-ontime' };
+            }
+            const delay = duration - standard;
+            return { text: `Delay (+${delay} min)`, class: 'status-delay' };
+        }
+
+        function displayStatus(status) {
+            document.getElementById('displayStatus').innerHTML = `
+                <span class="status-badge ${status.class}">${status.text}</span>
+            `;
+        }
+
+        // ========================================
+        // FORM SUBMISSION
+        // ========================================
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            if (!selectedMesin || !selectedPart) {
+                showAlert('Silakan pilih mesin dan part terlebih dahulu', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btnSubmit');
+            const originalText = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation: spin 1s linear infinite;">
+                    <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" stroke-dasharray="32" stroke-dashoffset="8"/>
+                </svg>
+                <style>
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                </style>
+                Menyimpan...
+            `;
+
+            const formData = new URLSearchParams();
+            formData.append('action', 'addDataDandori');
+            formData.append('tanggal', document.getElementById('tanggal').value);
+            formData.append('mesin', selectedMesin.nama_mesin);
+            formData.append('part_no', selectedPart.part_no);
+            formData.append('part_name', selectedPart.part_name);
+            formData.append('id_proses', selectedPart.id_proses);
+            formData.append('nama_proses', selectedPart.nama_proses);
+            formData.append('jam_mulai_dandori', document.getElementById('jam_mulai').value);
+            formData.append('jam_selesai_dandori', document.getElementById('jam_selesai').value);
+            formData.append('standard_dandori', selectedMesin.standard_dandori);
+            formData.append('problem_dandori', document.getElementById('problem_dandori').value.trim());
+            formData.append('pic_dandori', document.getElementById('pic_dandori').value.trim());
+            formData.append('isCancel', document.getElementById('isCancel').checked);
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData,
+                    redirect: 'follow'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const successMessage = `
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div style="font-weight: 600; font-size: 1rem;">✅ Data berhasil disimpan!</div>
+                            <div style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem; font-size: 0.875rem;">
+                                <span style="font-weight: 500;">Mesin:</span>
+                                <span>${selectedMesin.nama_mesin}</span>
+                                <span style="font-weight: 500;">Part:</span>
+                                <span>${selectedPart.part_name}</span>
+                                <span style="font-weight: 500;">Duration:</span>
+                                <span>${result.data.selisih} minutes</span>
+                                <span style="font-weight: 500;">Status:</span>
+                                <span style="color: ${result.data.status === 'On Time' ? '#10b981' : '#ef4444'};">${result.data.status}</span>
+                            </div>
+                        </div>
+                    `;
+                    showAlert(successMessage, 'success');
+                    
+                    resetForm();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    showAlert('❌ ' + (result.error || 'Gagal menyimpan data'), 'error');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                showAlert('❌ Gagal menyimpan data: ' + error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function showAlert(message, type) {
+            const container = document.getElementById('alertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass}`;
+            alertDiv.innerHTML = message;
+            
+            container.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.style.animation = 'slideUp 200ms cubic-bezier(0.4, 0, 0.2, 1)';
+                setTimeout(() => alertDiv.remove(), 200);
+            }, 5000);
+        }
+
+        function resetForm() {
+            if (confirm('Apakah Anda yakin ingin mereset form? Semua data yang belum disimpan akan hilang.')) {
+                document.getElementById('dandoriForm').reset();
+                setDefaultDate();
+                document.getElementById('mesin_search').value = '';
+                document.getElementById('part_search').value = '';
+                document.getElementById('mesinPartInfo').classList.remove('show');
+                document.getElementById('waktuInfo').classList.remove('show');
+                selectedMesin = null;
+                selectedPart = null;
+                hideAllDropdowns();
+                document.getElementById('alertContainer').innerHTML = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
