@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard MTTR - Maintenance Mesin System</title>
-    <link rel="stylesheet" href="assets/style/style_dashboard_mttr.css">
+    <title>Dashboard MTBF - Maintenance Mesin System</title>
+    <link rel="stylesheet" href="assets/style/style_dashboard_mtbf.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -30,20 +30,20 @@
             </div>
             
             <nav class="sidebar-nav">
-                <a href="mesin_pg.html" class="nav-item">
+                <a href="mc_inputpg.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 3L3 7V13L10 17L17 13V7L10 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
                     </svg>
                     <span>Input Breakdown</span>
                 </a>
-                <a href="data_breakdown.html" class="nav-item">
+                <a href="mc_breakdown.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M3 8H17M8 3V17" stroke="currentColor" stroke-width="1.5"/>
                     </svg>
                     <span>Data Breakdown</span>
                 </a>
-                <a href="dashboard_mttr.html" class="nav-item active">
+                <a href="mc_mttr.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="8" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                         <rect x="8" y="3" width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
@@ -51,14 +51,14 @@
                     </svg>
                     <span>Dashboard MTTR</span>
                 </a>
-                <a href="dashboard_mtbf.html" class="nav-item">
+                <a href="mc_mtbf.html" class="nav-item active">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 10L7 6L11 10L17 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M13 4H17V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     <span>Dashboard MTBF</span>
                 </a>
-                <a href="availability.html" class="nav-item">
+                <a href="mc_availability.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -79,11 +79,11 @@
         <main class="main-content">
             <div class="content-header">
                 <div class="header-left">
-                    <h2>Dashboard MTTR</h2>
-                    <p>Mean Time To Repair - Rata-rata waktu perbaikan per mesin</p>
+                    <h2>Dashboard MTBF</h2>
+                    <p>Mean Time Between Failures - Rata-rata waktu antar kegagalan mesin</p>
                 </div>
                 <div class="header-right">
-                    <button class="btn-refresh" onclick="loadMTTRData()">
+                    <button class="btn-refresh" onclick="loadMTBFData()">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9C2 5.13401 5.13401 2 9 2C11.7 2 14 3.6 15.4 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                             <path d="M15 2V6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -119,10 +119,11 @@
                 </div>
 
                 <div class="info-card">
-                    <div class="card-icon success">
+                    <div class="card-icon warning">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="currentColor"/>
                         </svg>
                     </div>
                     <div class="card-content">
@@ -132,16 +133,15 @@
                 </div>
 
                 <div class="info-card">
-                    <div class="card-icon warning">
+                    <div class="card-icon success">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="currentColor"/>
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3 id="avgMTTR">-</h3>
-                        <p>Rata-rata MTTR</p>
+                        <h3 id="avgMTBF">-</h3>
+                        <p>Rata-rata MTBF</p>
                     </div>
                 </div>
 
@@ -153,8 +153,8 @@
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3 id="maxMTTR">-</h3>
-                        <p>MTTR Tertinggi</p>
+                        <h3 id="minMTBF">-</h3>
+                        <p>MTBF Terendah</p>
                     </div>
                 </div>
             </div>
@@ -192,24 +192,28 @@
                     </div>
                     <div class="table-legend">
                         <span class="legend-item">
+                            <span class="legend-dot excellent"></span>
+                            Excellent (&gt; 30 hari)
+                        </span>
+                        <span class="legend-item">
                             <span class="legend-dot good"></span>
-                            Baik (&lt; 2 jam)
+                            Baik (15-30 hari)
                         </span>
                         <span class="legend-item">
                             <span class="legend-dot warning"></span>
-                            Perhatian (2-4 jam)
+                            Perhatian (7-15 hari)
                         </span>
                         <span class="legend-item">
                             <span class="legend-dot critical"></span>
-                            Kritis (&gt; 4 jam)
+                            Kritis (&lt; 7 hari)
                         </span>
                     </div>
                 </div>
                 
-                <div class="table-wrapper" id="mttrTable">
+                <div class="table-wrapper" id="mtbfTable">
                     <div class="loading-state">
                         <div class="spinner"></div>
-                        <p>Memuat data MTTR...</p>
+                        <p>Memuat data MTBF...</p>
                     </div>
                 </div>
             </div>
@@ -221,7 +225,7 @@
         <div class="modal-overlay" onclick="closeModal('modalDetail')"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Detail MTTR Mesin</h2>
+                <h2>Detail MTBF Mesin</h2>
                 <button class="btn-close" onclick="closeModal('modalDetail')">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -239,8 +243,8 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdmtsD_5BY38UqiQM_U_8anFSeUGBKU3PYrgBXCPHO1pzvgmSWC1dgHJlqcpDfUVNV3g/exec';
 
 // State Management
-let allMTTRData = [];
-let filteredMTTRData = [];
+let allMTBFData = [];
+let filteredMTBFData = [];
 
 // ========================================
 // INITIALIZATION
@@ -250,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeApp() {
-    loadMTTRData();
+    loadMTBFData();
     setupEventListeners();
 }
 
@@ -262,13 +266,13 @@ function setupEventListeners() {
 }
 
 // ========================================
-// LOAD MTTR DATA
+// LOAD MTBF DATA
 // ========================================
-async function loadMTTRData() {
+async function loadMTBFData() {
     showLoadingState();
     
     try {
-        const url = `${SCRIPT_URL}?action=getMTTRDashboard&_=${Date.now()}`;
+        const url = `${SCRIPT_URL}?action=getMTBFDashboard&_=${Date.now()}`;
         const response = await fetch(url, {
             method: 'GET',
             redirect: 'follow'
@@ -277,31 +281,31 @@ async function loadMTTRData() {
         const result = await response.json();
         
         if (result.status === 'success') {
-            allMTTRData = result.data;
-            filteredMTTRData = result.data;
-            displayMTTRTable(result.data);
+            allMTBFData = result.data;
+            filteredMTBFData = result.data;
+            displayMTBFTable(result.data);
             updateInfoCards(result.data);
             updateDataCount(result.data.length);
         } else {
-            showError('Gagal memuat data MTTR');
+            showError('Gagal memuat data MTBF');
         }
     } catch (error) {
-        console.error('Error loading MTTR data:', error);
-        showError('Gagal memuat data MTTR. Periksa koneksi Anda.');
+        console.error('Error loading MTBF data:', error);
+        showError('Gagal memuat data MTBF. Periksa koneksi Anda.');
     }
 }
 
 function showLoadingState() {
-    document.getElementById('mttrTable').innerHTML = `
+    document.getElementById('mtbfTable').innerHTML = `
         <div class="loading-state">
             <div class="spinner"></div>
-            <p>Memuat data MTTR...</p>
+            <p>Memuat data MTBF...</p>
         </div>
     `;
 }
 
 function showError(message) {
-    document.getElementById('mttrTable').innerHTML = `
+    document.getElementById('mtbfTable').innerHTML = `
         <div class="loading-state">
             <p style="color: var(--color-error);">${message}</p>
         </div>
@@ -315,8 +319,8 @@ function updateInfoCards(data) {
     if (!data || data.length === 0) {
         document.getElementById('totalMesin').textContent = '0';
         document.getElementById('totalBreakdown').textContent = '0';
-        document.getElementById('avgMTTR').textContent = '-';
-        document.getElementById('maxMTTR').textContent = '-';
+        document.getElementById('avgMTBF').textContent = '-';
+        document.getElementById('minMTBF').textContent = '-';
         return;
     }
     
@@ -327,25 +331,25 @@ function updateInfoCards(data) {
     const totalBreakdown = data.reduce((sum, item) => sum + (item.total_breakdown || 0), 0);
     document.getElementById('totalBreakdown').textContent = totalBreakdown;
     
-    // Average MTTR
-    const avgMTTR = data.reduce((sum, item) => sum + (item.mttr_hours || 0), 0) / data.length;
-    document.getElementById('avgMTTR').textContent = avgMTTR.toFixed(2) + ' jam';
+    // Average MTBF
+    const avgMTBF = data.reduce((sum, item) => sum + (item.mtbf_days || 0), 0) / data.length;
+    document.getElementById('avgMTBF').textContent = avgMTBF.toFixed(1) + ' hari';
     
-    // Max MTTR
-    const maxMTTR = Math.max(...data.map(item => item.mttr_hours || 0));
-    document.getElementById('maxMTTR').textContent = maxMTTR.toFixed(2) + ' jam';
+    // Min MTBF (Terendah)
+    const minMTBF = Math.min(...data.map(item => item.mtbf_days || 0));
+    document.getElementById('minMTBF').textContent = minMTBF.toFixed(1) + ' hari';
 }
 
 // ========================================
 // DISPLAY TABLE
 // ========================================
-function displayMTTRTable(data) {
-    const container = document.getElementById('mttrTable');
+function displayMTBFTable(data) {
+    const container = document.getElementById('mtbfTable');
     
     if (!data || data.length === 0) {
         container.innerHTML = `
             <div class="loading-state">
-                <p>Tidak ada data MTTR yang ditemukan</p>
+                <p>Tidak ada data MTBF yang ditemukan</p>
             </div>
         `;
         return;
@@ -358,10 +362,11 @@ function displayMTTRTable(data) {
                     <th>No</th>
                     <th>ID Mesin</th>
                     <th>Nama Mesin</th>
+                    <th>Tanggal Instalasi</th>
                     <th>Total Breakdown</th>
-                    <th>Total Repair Time</th>
-                    <th>MTTR (Jam)</th>
-                    <th>MTTR (Hari)</th>
+                    <th>Operating Days</th>
+                    <th>MTBF (Hari)</th>
+                    <th>MTBF (Jam)</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
@@ -370,19 +375,20 @@ function displayMTTRTable(data) {
     `;
     
     data.forEach((row, index) => {
-        const mttrClass = getMTTRClass(row.mttr_hours);
-        const mttrStatus = getMTTRStatus(row.mttr_hours);
+        const mtbfClass = getMTBFClass(row.mtbf_days);
+        const mtbfStatus = getMTBFStatus(row.mtbf_days);
         
         html += `
             <tr>
                 <td><strong>${index + 1}</strong></td>
                 <td><strong>${row.id_mesin || '-'}</strong></td>
                 <td>${row.nama_mesin || '-'}</td>
+                <td>${formatDate(row.tanggal_instalasi)}</td>
                 <td>${row.total_breakdown || 0}</td>
-                <td>${formatNumber(row.total_repair_time)} jam</td>
-                <td><span class="mttr-indicator ${mttrClass}">${formatNumber(row.mttr_hours)} jam</span></td>
-                <td>${formatNumber(row.mttr_days)} hari</td>
-                <td><span class="mttr-indicator ${mttrClass}">${mttrStatus}</span></td>
+                <td>${formatNumber(row.operating_days)} hari</td>
+                <td><span class="mtbf-indicator ${mtbfClass}">${formatNumber(row.mtbf_days)} hari</span></td>
+                <td>${formatNumber(row.mtbf_hours)} jam</td>
+                <td><span class="mtbf-indicator ${mtbfClass}">${mtbfStatus}</span></td>
                 <td>
                     <button class="btn-detail" onclick='viewDetail(${index})'>
                         Detail
@@ -400,15 +406,17 @@ function displayMTTRTable(data) {
     container.innerHTML = html;
 }
 
-function getMTTRClass(mttrHours) {
-    if (mttrHours < 2) return 'mttr-good';
-    if (mttrHours < 4) return 'mttr-warning';
-    return 'mttr-critical';
+function getMTBFClass(mtbfDays) {
+    if (mtbfDays > 30) return 'mtbf-excellent';
+    if (mtbfDays >= 15) return 'mtbf-good';
+    if (mtbfDays >= 7) return 'mtbf-warning';
+    return 'mtbf-critical';
 }
 
-function getMTTRStatus(mttrHours) {
-    if (mttrHours < 2) return 'Baik';
-    if (mttrHours < 4) return 'Perhatian';
+function getMTBFStatus(mtbfDays) {
+    if (mtbfDays > 30) return 'Excellent';
+    if (mtbfDays >= 15) return 'Baik';
+    if (mtbfDays >= 7) return 'Perhatian';
     return 'Kritis';
 }
 
@@ -418,7 +426,7 @@ function getMTTRStatus(mttrHours) {
 function applyFilters() {
     const searchTerm = document.getElementById('searchMesin').value.toLowerCase();
     
-    filteredMTTRData = allMTTRData.filter(row => {
+    filteredMTBFData = allMTBFData.filter(row => {
         const matchesSearch = !searchTerm || 
             (row.id_mesin && row.id_mesin.toLowerCase().includes(searchTerm)) ||
             (row.nama_mesin && row.nama_mesin.toLowerCase().includes(searchTerm));
@@ -426,17 +434,17 @@ function applyFilters() {
         return matchesSearch;
     });
     
-    displayMTTRTable(filteredMTTRData);
-    updateInfoCards(filteredMTTRData);
-    updateDataCount(filteredMTTRData.length);
+    displayMTBFTable(filteredMTBFData);
+    updateInfoCards(filteredMTBFData);
+    updateDataCount(filteredMTBFData.length);
 }
 
 function resetFilters() {
     document.getElementById('searchMesin').value = '';
-    filteredMTTRData = allMTTRData;
-    displayMTTRTable(allMTTRData);
-    updateInfoCards(allMTTRData);
-    updateDataCount(allMTTRData.length);
+    filteredMTBFData = allMTBFData;
+    displayMTBFTable(allMTBFData);
+    updateInfoCards(allMTBFData);
+    updateDataCount(allMTBFData.length);
 }
 
 function updateDataCount(count) {
@@ -447,11 +455,11 @@ function updateDataCount(count) {
 // VIEW DETAIL
 // ========================================
 function viewDetail(index) {
-    const data = filteredMTTRData[index];
+    const data = filteredMTBFData[index];
     if (!data) return;
     
-    const mttrClass = getMTTRClass(data.mttr_hours);
-    const mttrStatus = getMTTRStatus(data.mttr_hours);
+    const mtbfClass = getMTBFClass(data.mtbf_days);
+    const mtbfStatus = getMTBFStatus(data.mtbf_days);
     
     let html = `
         <div style="display: grid; gap: 1.5rem;">
@@ -472,35 +480,42 @@ function viewDetail(index) {
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="detail-group">
-                    <div class="detail-label">Total Breakdown</div>
-                    <div class="detail-value" style="font-weight: 700; font-size: 1.5rem; color: var(--color-info);">
-                        ${data.total_breakdown || 0} kali
+                    <div class="detail-label">Tanggal Instalasi</div>
+                    <div class="detail-value" style="font-weight: 600;">
+                        ${formatDate(data.tanggal_instalasi)}
                     </div>
                 </div>
                 <div class="detail-group">
-                    <div class="detail-label">Total Repair Time</div>
+                    <div class="detail-label">Total Breakdown</div>
                     <div class="detail-value" style="font-weight: 700; font-size: 1.5rem; color: var(--color-warning);">
-                        ${formatNumber(data.total_repair_time)} jam
+                        ${data.total_breakdown || 0} kali
                     </div>
+                </div>
+            </div>
+            
+            <div class="detail-group">
+                <div class="detail-label">Operating Days (Hari Operasional)</div>
+                <div class="detail-value" style="font-weight: 700; font-size: 1.5rem; color: var(--color-info);">
+                    ${formatNumber(data.operating_days)} hari
                 </div>
             </div>
             
             <div style="padding: 1.5rem; background: linear-gradient(135deg, var(--color-gray-50), var(--color-gray-100)); border-radius: 1rem; border: 2px solid var(--color-gray-200);">
                 <div style="text-align: center;">
                     <div style="font-size: 0.875rem; font-weight: 700; color: var(--color-gray-600); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">
-                        Mean Time To Repair (MTTR)
+                        Mean Time Between Failures (MTBF)
                     </div>
-                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 1rem; margin-bottom: 0.5rem;">
                         <span style="font-size: 3rem; font-weight: 700; font-family: var(--font-mono); color: var(--color-gray-900);">
-                            ${formatNumber(data.mttr_hours)}
+                            ${formatNumber(data.mtbf_days)}
                         </span>
-                        <span style="font-size: 1.5rem; color: var(--color-gray-600);">jam</span>
+                        <span style="font-size: 1.5rem; color: var(--color-gray-600);">hari</span>
                     </div>
                     <div style="font-size: 1rem; color: var(--color-gray-600); margin-bottom: 1rem;">
-                        atau setara dengan <strong style="color: var(--color-gray-900);">${formatNumber(data.mttr_days)} hari</strong>
+                        atau setara dengan <strong style="color: var(--color-gray-900);">${formatNumber(data.mtbf_hours)} jam</strong>
                     </div>
-                    <span class="mttr-indicator ${mttrClass}" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
-                        ${mttrStatus}
+                    <span class="mtbf-indicator ${mtbfClass}" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
+                        ${mtbfStatus}
                     </span>
                 </div>
             </div>
@@ -509,21 +524,25 @@ function viewDetail(index) {
                 <div class="detail-label">Keterangan</div>
                 <div class="detail-value">
                     <p style="margin-bottom: 0.5rem;">
-                        <strong>MTTR (Mean Time To Repair)</strong> adalah rata-rata waktu yang dibutuhkan untuk memperbaiki mesin setelah terjadi breakdown.
+                        <strong>MTBF (Mean Time Between Failures)</strong> adalah rata-rata waktu antara satu kegagalan dengan kegagalan berikutnya pada mesin.
                     </p>
-                    <p style="margin-bottom: 0.5rem;">Kategori MTTR:</p>
+                    <p style="margin-bottom: 0.5rem;">
+                        <strong>Perhitungan:</strong> MTBF = Operating Days / Total Breakdown
+                    </p>
+                    <p style="margin-bottom: 0.5rem;">Kategori MTBF:</p>
                     <ul style="margin-left: 1.5rem; color: var(--color-gray-700);">
-                        <li><strong style="color: var(--color-success);">Baik:</strong> MTTR &lt; 2 jam</li>
-                        <li><strong style="color: var(--color-warning);">Perhatian:</strong> 2 jam ≤ MTTR &lt; 4 jam</li>
-                        <li><strong style="color: var(--color-error);">Kritis:</strong> MTTR ≥ 4 jam</li>
+                        <li><strong style="color: var(--color-success);">Excellent:</strong> MTBF &gt; 30 hari</li>
+                        <li><strong style="color: var(--color-info);">Baik:</strong> 15 hari ≤ MTBF ≤ 30 hari</li>
+                        <li><strong style="color: var(--color-warning);">Perhatian:</strong> 7 hari ≤ MTBF &lt; 15 hari</li>
+                        <li><strong style="color: var(--color-error);">Kritis:</strong> MTBF &lt; 7 hari</li>
                     </ul>
                 </div>
             </div>
             
             <div class="detail-group">
-                <div class="detail-label">Rekomendasi</div>
+                <div class="detail-label">Analisis & Rekomendasi</div>
                 <div class="detail-value">
-                    ${getRecommendation(data.mttr_hours)}
+                    ${getRecommendation(data.mtbf_days, data.total_breakdown)}
                 </div>
             </div>
         </div>
@@ -533,35 +552,49 @@ function viewDetail(index) {
     openModal('modalDetail');
 }
 
-function getRecommendation(mttrHours) {
-    if (mttrHours < 2) {
+function getRecommendation(mtbfDays, totalBreakdown) {
+    if (mtbfDays > 30) {
         return `
-            <p style="color: var(--color-success-dark); font-weight: 600;">✅ Performa perbaikan mesin sudah baik.</p>
+            <p style="color: var(--color-success-dark); font-weight: 600;">✅ Performa reliability mesin sangat baik!</p>
             <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
-                <li>Pertahankan kecepatan respon tim maintenance</li>
-                <li>Lakukan preventive maintenance secara rutin</li>
-                <li>Dokumentasikan best practices untuk referensi</li>
+                <li>Mesin memiliki tingkat keandalan yang excellent</li>
+                <li>Lanjutkan program preventive maintenance yang ada</li>
+                <li>Dokumentasikan best practices untuk diterapkan pada mesin lain</li>
+                <li>Pertimbangkan untuk memperpanjang interval maintenance</li>
             </ul>
         `;
-    } else if (mttrHours < 4) {
+    } else if (mtbfDays >= 15) {
         return `
-            <p style="color: var(--color-warning-dark); font-weight: 600;">⚠️ Waktu perbaikan perlu perhatian.</p>
+            <p style="color: var(--color-info-dark); font-weight: 600;">✓ Performa reliability mesin baik.</p>
             <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
-                <li>Review proses diagnosis kerusakan</li>
-                <li>Pastikan ketersediaan spare part yang memadai</li>
-                <li>Tingkatkan keterampilan tim maintenance</li>
-                <li>Pertimbangkan penambahan tool atau equipment</li>
+                <li>Tingkat keandalan mesin dalam kategori baik</li>
+                <li>Lakukan monitoring rutin untuk mempertahankan performa</li>
+                <li>Review program preventive maintenance secara berkala</li>
+                <li>Identifikasi pola breakdown jika ada</li>
+            </ul>
+        `;
+    } else if (mtbfDays >= 7) {
+        return `
+            <p style="color: var(--color-warning-dark); font-weight: 600;">⚠️ Reliability mesin perlu perhatian khusus.</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
+                <li>Frekuensi breakdown mulai tinggi (${totalBreakdown} kali breakdown)</li>
+                <li>Tingkatkan frekuensi inspeksi dan preventive maintenance</li>
+                <li>Analisis root cause dari setiap breakdown</li>
+                <li>Review kualitas spare parts yang digunakan</li>
+                <li>Evaluasi competency operator dan maintenance team</li>
             </ul>
         `;
     } else {
         return `
-            <p style="color: var(--color-error-dark); font-weight: 600;">🚨 Waktu perbaikan kritis, perlu tindakan segera!</p>
+            <p style="color: var(--color-error-dark); font-weight: 600;">🚨 Reliability mesin dalam kondisi kritis!</p>
             <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
-                <li>Audit mendalam terhadap proses maintenance</li>
-                <li>Review stock dan supply chain spare part</li>
-                <li>Evaluasi kompetensi dan jumlah tim maintenance</li>
-                <li>Pertimbangkan upgrade atau replacement mesin</li>
-                <li>Implementasi sistem monitoring real-time</li>
+                <li>Frekuensi breakdown sangat tinggi (${totalBreakdown} kali breakdown)</li>
+                <li>Lakukan audit menyeluruh terhadap kondisi mesin</li>
+                <li>Pertimbangkan overhaul atau replacement mesin</li>
+                <li>Implementasi predictive maintenance dengan monitoring sensor</li>
+                <li>Review operating procedures dan training operator</li>
+                <li>Analisis cost-benefit antara repair vs replacement</li>
+                <li>Tingkatkan inventory critical spare parts</li>
             </ul>
         `;
     }
@@ -571,16 +604,16 @@ function getRecommendation(mttrHours) {
 // EXPORT TO EXCEL
 // ========================================
 function exportToExcel() {
-    if (!filteredMTTRData || filteredMTTRData.length === 0) {
+    if (!filteredMTBFData || filteredMTBFData.length === 0) {
         showAlert('⚠️ Tidak ada data untuk diekspor', 'error');
         return;
     }
     
-    let csv = 'No,ID Mesin,Nama Mesin,Total Breakdown,Total Repair Time (jam),MTTR (jam),MTTR (hari),Status\n';
+    let csv = 'No,ID Mesin,Nama Mesin,Tanggal Instalasi,Total Breakdown,Operating Days (hari),MTBF (hari),MTBF (jam),Status\n';
     
-    filteredMTTRData.forEach((row, index) => {
-        const mttrStatus = getMTTRStatus(row.mttr_hours);
-        csv += `${index + 1},"${row.id_mesin || ''}","${row.nama_mesin || ''}",${row.total_breakdown || 0},"${formatNumber(row.total_repair_time)}","${formatNumber(row.mttr_hours)}","${formatNumber(row.mttr_days)}","${mttrStatus}"\n`;
+    filteredMTBFData.forEach((row, index) => {
+        const mtbfStatus = getMTBFStatus(row.mtbf_days);
+        csv += `${index + 1},"${row.id_mesin || ''}","${row.nama_mesin || ''}","${formatDate(row.tanggal_instalasi)}",${row.total_breakdown || 0},"${formatNumber(row.operating_days)}","${formatNumber(row.mtbf_days)}","${formatNumber(row.mtbf_hours)}","${mtbfStatus}"\n`;
     });
     
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -588,14 +621,14 @@ function exportToExcel() {
     const url = URL.createObjectURL(blob);
     
     link.setAttribute('href', url);
-    link.setAttribute('download', `mttr_dashboard_${formatDateForFilename(new Date())}.csv`);
+    link.setAttribute('download', `mtbf_dashboard_${formatDateForFilename(new Date())}.csv`);
     link.style.visibility = 'hidden';
     
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
-    showAlert('✅ Data MTTR berhasil diekspor!', 'success');
+    showAlert('✅ Data MTBF berhasil diekspor!', 'success');
 }
 
 // ========================================
@@ -614,9 +647,16 @@ function closeModal(modalId) {
 // ========================================
 // UTILITY FUNCTIONS
 // ========================================
+function formatDate(dateString) {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
 function formatNumber(num) {
     if (num === null || num === undefined) return '-';
-    return parseFloat(num).toFixed(2);
+    return parseFloat(num).toFixed(1);
 }
 
 function formatDateForFilename(date) {
