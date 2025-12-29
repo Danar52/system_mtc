@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard MTTR Dies - Maintenance Dies System</title>
+    <link rel="stylesheet" href="assets/style/style_dashboard_mttr.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="32" height="32" rx="8" fill="white"/>
+                            <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M16 16L8 12M16 16L24 12M16 16V24" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>MTC DIES</h1>
+                        <p>Monitoring System</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dies_inputpg.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 3L3 7V13L10 17L17 13V7L10 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Input Breakdown</span>
+                </a>
+                <a href="dies_breakdown.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M3 8H17M8 3V17" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>Data Breakdown</span>
+                </a>
+                <a href="dies_mttr.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="8" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="8" y="3" width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="13" y="10" width="4" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>Dashboard MTTR</span>
+                </a>
+                <a href="dies_mtbf.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 10L7 6L11 10L17 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13 4H17V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Dashboard MTBF</span>
+                </a>
+                <a href="dies_availability.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Dashboard Availability</span>
+                </a>
+                <a href="index.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 17H16C16.5523 17 17 16.5523 17 16V4C17 3.44772 16.5523 3 16 3H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M8 13L3 10M3 10L8 7M3 10H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Kembali ke Menu</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <div class="header-left">
+                    <h2>Dashboard MTTR Dies</h2>
+                    <p>Mean Time To Repair - Rata-rata waktu perbaikan per dies</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-refresh" onclick="loadMTTRData()">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9C2 5.13401 5.13401 2 9 2C11.7 2 14 3.6 15.4 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M15 2V6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Refresh
+                    </button>
+                    <button class="btn-export" onclick="exportToExcel()">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 11V15C15 15.5523 14.5523 16 14 16H4C3.44772 16 3 15.5523 3 15V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M9 3V12M9 12L5.5 8.5M9 12L12.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+
+            <!-- Info Cards -->
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="card-icon primary">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M3 9H21M9 3V21" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="totalDies">-</h3>
+                        <p>Total Dies</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon success">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="totalBreakdown">-</h3>
+                        <p>Total Breakdown</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon warning">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="avgMTTR">-</h3>
+                        <p>Rata-rata MTTR</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon error">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="maxMTTR">-</h3>
+                        <p>MTTR Tertinggi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M12.5 12.5L16.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="searchDies" 
+                            placeholder="Cari berdasarkan ID Dies, Nama Dies, Customer, atau Proses..."
+                        >
+                    </div>
+                    
+                    <select id="filterCustomer" class="filter-select">
+                        <option value="">Semua Customer</option>
+                    </select>
+                    
+                    <button class="btn-reset-filter" onclick="resetFilters()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M8 2L11 5M8 2L11 -1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-info">
+                        <span class="data-count">Total: <strong id="totalData">0</strong> dies</span>
+                    </div>
+                    <div class="table-legend">
+                        <span class="legend-item">
+                            <span class="legend-dot good"></span>
+                            Baik (&lt; 2 jam)
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-dot warning"></span>
+                            Perhatian (2-4 jam)
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-dot critical"></span>
+                            Kritis (&gt; 4 jam)
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="table-wrapper" id="mttrTable">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Memuat data MTTR...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Detail -->
+    <div id="modalDetail" class="modal">
+        <div class="modal-overlay" onclick="closeModal('modalDetail')"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detail MTTR Dies</h2>
+                <button class="btn-close" onclick="closeModal('modalDetail')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="detailContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyydw-bAi5OpNdI6vzMlUQSosisD_kLHqrMlTxq2cGV0Ek4Edd3iDhf_rd1Bv2u8uYP/exec';
+
+        // State Management
+        let allMTTRData = [];
+        let filteredMTTRData = [];
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            loadMTTRData();
+            setupEventListeners();
+        }
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        function setupEventListeners() {
+            document.getElementById('searchDies').addEventListener('input', applyFilters);
+            document.getElementById('filterCustomer').addEventListener('change', applyFilters);
+        }
+
+        // ========================================
+        // LOAD MTTR DATA
+        // ========================================
+        async function loadMTTRData() {
+            showLoadingState();
+            
+            try {
+                const url = `${SCRIPT_URL}?action=getMTTRDashboard&_=${Date.now()}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    allMTTRData = result.data;
+                    filteredMTTRData = result.data;
+                    populateCustomerFilter(result.data);
+                    displayMTTRTable(result.data);
+                    updateInfoCards(result.data);
+                    updateDataCount(result.data.length);
+                } else {
+                    showError('Gagal memuat data MTTR');
+                }
+            } catch (error) {
+                console.error('Error loading MTTR data:', error);
+                showError('Gagal memuat data MTTR. Periksa koneksi Anda.');
+            }
+        }
+
+        function showLoadingState() {
+            document.getElementById('mttrTable').innerHTML = `
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Memuat data MTTR...</p>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('mttrTable').innerHTML = `
+                <div class="loading-state">
+                    <p style="color: var(--color-error);">${message}</p>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // POPULATE CUSTOMER FILTER
+        // ========================================
+        function populateCustomerFilter(data) {
+            const filterSelect = document.getElementById('filterCustomer');
+            const customers = [...new Set(data.map(d => {
+                if (!d.id_cust) return null;
+                const match = d.id_cust.match(/^([A-Z]+)/);
+                return match ? match[1] : null;
+            }).filter(Boolean))];
+            
+            customers.sort().forEach((cust) => {
+                const option = document.createElement("option");
+                option.value = cust;
+                option.textContent = cust;
+                filterSelect.appendChild(option);
+            });
+        }
+
+        // ========================================
+        // UPDATE INFO CARDS
+        // ========================================
+        function updateInfoCards(data) {
+            if (!data || data.length === 0) {
+                document.getElementById('totalDies').textContent = '0';
+                document.getElementById('totalBreakdown').textContent = '0';
+                document.getElementById('avgMTTR').textContent = '-';
+                document.getElementById('maxMTTR').textContent = '-';
+                return;
+            }
+            
+            // Total Dies
+            document.getElementById('totalDies').textContent = data.length;
+            
+            // Total Breakdown
+            const totalBreakdown = data.reduce((sum, item) => sum + (item.total_breakdown || 0), 0);
+            document.getElementById('totalBreakdown').textContent = totalBreakdown;
+            
+            // Average MTTR
+            const avgMTTR = data.reduce((sum, item) => sum + (item.mttr_hours || 0), 0) / data.length;
+            document.getElementById('avgMTTR').textContent = avgMTTR.toFixed(2) + ' jam';
+            
+            // Max MTTR
+            const maxMTTR = Math.max(...data.map(item => item.mttr_hours || 0));
+            document.getElementById('maxMTTR').textContent = maxMTTR.toFixed(2) + ' jam';
+        }
+
+        // ========================================
+        // DISPLAY TABLE
+        // ========================================
+        function displayMTTRTable(data) {
+            const container = document.getElementById('mttrTable');
+            
+            if (!data || data.length === 0) {
+                container.innerHTML = `
+                    <div class="loading-state">
+                        <p>Tidak ada data MTTR yang ditemukan</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>ID Customer</th>
+                            <th>ID Dies</th>
+                            <th>Nama Dies</th>
+                            <th>Proses</th>
+                            <th>Total Breakdown</th>
+                            <th>Total Repair Time</th>
+                            <th>MTTR (Jam)</th>
+                            <th>MTTR (Hari)</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            data.forEach((row, index) => {
+                const mttrClass = getMTTRClass(row.mttr_hours);
+                const mttrStatus = getMTTRStatus(row.mttr_hours);
+                
+                html += `
+                    <tr>
+                        <td><strong>${index + 1}</strong></td>
+                        <td>${row.id_cust || '-'}</td>
+                        <td><strong>${row.id_dies || '-'}</strong></td>
+                        <td>${row.nama_dies || '-'}</td>
+                        <td>${row.id_proses || '-'}<br><small style="color: #666;">${row.nama_proses || '-'}</small></td>
+                        <td>${row.total_breakdown || 0}</td>
+                        <td>${formatNumber(row.total_repair_time)} jam</td>
+                        <td><span class="mttr-indicator ${mttrClass}">${formatNumber(row.mttr_hours)} jam</span></td>
+                        <td>${formatNumber(row.mttr_days)} hari</td>
+                        <td><span class="mttr-indicator ${mttrClass}">${mttrStatus}</span></td>
+                        <td>
+                            <button class="btn-detail" onclick='viewDetail(${index})'>
+                                Detail
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function getMTTRClass(mttrHours) {
+            if (mttrHours < 2) return 'mttr-good';
+            if (mttrHours < 4) return 'mttr-warning';
+            return 'mttr-critical';
+        }
+
+        function getMTTRStatus(mttrHours) {
+            if (mttrHours < 2) return 'Baik';
+            if (mttrHours < 4) return 'Perhatian';
+            return 'Kritis';
+        }
+
+        // ========================================
+        // FILTER & SEARCH
+        // ========================================
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchDies').value.toLowerCase();
+            const customerFilter = document.getElementById('filterCustomer').value;
+            
+            filteredMTTRData = allMTTRData.filter(row => {
+                const matchesSearch = !searchTerm || 
+                    (row.id_dies && row.id_dies.toLowerCase().includes(searchTerm)) ||
+                    (row.nama_dies && row.nama_dies.toLowerCase().includes(searchTerm)) ||
+                    (row.id_cust && row.id_cust.toLowerCase().includes(searchTerm)) ||
+                    (row.id_proses && row.id_proses.toLowerCase().includes(searchTerm)) ||
+                    (row.nama_proses && row.nama_proses.toLowerCase().includes(searchTerm));
+                
+                const matchesCustomer = !customerFilter || (row.id_cust && row.id_cust.startsWith(customerFilter));
+                
+                return matchesSearch && matchesCustomer;
+            });
+            
+            displayMTTRTable(filteredMTTRData);
+            updateInfoCards(filteredMTTRData);
+            updateDataCount(filteredMTTRData.length);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchDies').value = '';
+            document.getElementById('filterCustomer').value = '';
+            filteredMTTRData = allMTTRData;
+            displayMTTRTable(allMTTRData);
+            updateInfoCards(allMTTRData);
+            updateDataCount(allMTTRData.length);
+        }
+
+        function updateDataCount(count) {
+            document.getElementById('totalData').textContent = count;
+        }
+
+        // ========================================
+        // VIEW DETAIL
+        // ========================================
+        function viewDetail(index) {
+            const data = filteredMTTRData[index];
+            if (!data) return;
+            
+            const mttrClass = getMTTRClass(data.mttr_hours);
+            const mttrStatus = getMTTRStatus(data.mttr_hours);
+            
+            let html = `
+                <div style="display: grid; gap: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="detail-group">
+                            <div class="detail-label">ID Dies</div>
+                            <div class="detail-value" style="font-weight: 700; font-size: 1.25rem;">
+                                ${data.id_dies || '-'}
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Nama Dies</div>
+                            <div class="detail-value" style="font-weight: 700; font-size: 1.25rem;">
+                                ${data.nama_dies || '-'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="detail-group">
+                            <div class="detail-label">ID Customer</div>
+                            <div class="detail-value" style="font-weight: 600;">
+                                ${data.id_cust || '-'}
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">ID Proses</div>
+                            <div class="detail-value">
+                                ${data.id_proses || '-'}
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Nama Proses</div>
+                            <div class="detail-value">
+                                ${data.nama_proses || '-'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="detail-group">
+                            <div class="detail-label">Total Breakdown</div>
+                            <div class="detail-value" style="font-weight: 700; font-size: 1.5rem; color: var(--color-info);">
+                                ${data.total_breakdown || 0} kali
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Total Repair Time</div>
+                            <div class="detail-value" style="font-weight: 700; font-size: 1.5rem; color: var(--color-warning);">
+                                ${formatNumber(data.total_repair_time)} jam
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 1.5rem; background: linear-gradient(135deg, var(--color-gray-50), var(--color-gray-100)); border-radius: 1rem; border: 2px solid var(--color-gray-200);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.875rem; font-weight: 700; color: var(--color-gray-600); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">
+                                Mean Time To Repair (MTTR)
+                            </div>
+                            <div style="display: flex; align-items: baseline; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 3rem; font-weight: 700; font-family: var(--font-mono); color: var(--color-gray-900);">
+                                    ${formatNumber(data.mttr_hours)}
+                                </span>
+                                <span style="font-size: 1.5rem; color: var(--color-gray-600);">jam</span>
+                            </div>
+                            <div style="font-size: 1rem; color: var(--color-gray-600); margin-bottom: 1rem;">
+                                atau setara dengan <strong style="color: var(--color-gray-900);">${formatNumber(data.mttr_days)} hari</strong>
+                            </div>
+                            <span class="mttr-indicator ${mttrClass}" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
+                                ${mttrStatus}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Keterangan</div>
+                        <div class="detail-value">
+                            <p style="margin-bottom: 0.5rem;">
+                                <strong>MTTR (Mean Time To Repair)</strong> adalah rata-rata waktu yang dibutuhkan untuk memperbaiki dies setelah terjadi breakdown.
+                            </p>
+                            <p style="margin-bottom: 0.5rem;">Kategori MTTR:</p>
+                            <ul style="margin-left: 1.5rem; color: var(--color-gray-700);">
+                                <li><strong style="color: var(--color-success);">Baik:</strong> MTTR &lt; 2 jam</li>
+                                <li><strong style="color: var(--color-warning);">Perhatian:</strong> 2 jam ≤ MTTR &lt; 4 jam</li>
+                                <li><strong style="color: var(--color-error);">Kritis:</strong> MTTR ≥ 4 jam</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Rekomendasi</div>
+                        <div class="detail-value">
+                            ${getRecommendation(data.mttr_hours)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detailContent').innerHTML = html;
+            openModal('modalDetail');
+        }
+
+        function getRecommendation(mttrHours) {
+            if (mttrHours < 2) {
+                return `
+                    <p style="color: var(--color-success-dark); font-weight: 600;">✅ Performa perbaikan dies sudah baik.</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
+                        <li>Pertahankan kecepatan respon tim maintenance dies</li>
+                        <li>Lakukan preventive maintenance secara rutin</li>
+                        <li>Dokumentasikan best practices untuk referensi</li>
+                        <li>Monitor kondisi dies secara berkala</li>
+                    </ul>
+                `;
+            } else if (mttrHours < 4) {
+                return `
+                    <p style="color: var(--color-warning-dark); font-weight: 600;">⚠️ Waktu perbaikan perlu perhatian.</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
+                        <li>Review proses diagnosis kerusakan dies</li>
+                        <li>Pastikan ketersediaan spare part dies yang memadai</li>
+                        <li>Tingkatkan keterampilan tim maintenance dies</li>
+                        <li>Pertimbangkan penambahan tool atau equipment khusus dies</li>
+                        <li>Evaluasi material dan kualitas dies</li>
+                    </ul>
+                `;
+            } else {
+                return `
+                    <p style="color: var(--color-error-dark); font-weight: 600;">🚨 Waktu perbaikan kritis, perlu tindakan segera!</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--color-gray-700);">
+                        <li>Audit mendalam terhadap proses maintenance dies</li>
+                        <li>Review stock dan supply chain spare part dies</li>
+                        <li>Evaluasi kompetensi dan jumlah tim maintenance dies</li>
+                        <li>Pertimbangkan replacement atau remanufacturing dies</li>
+                        <li>Implementasi sistem monitoring kondisi dies real-time</li>
+                        <li>Analisa pola kerusakan untuk preventive action</li>
+                    </ul>
+                `;
+            }
+        }
+
+        // ========================================
+        // EXPORT TO EXCEL
+        // ========================================
+        function exportToExcel() {
+            if (!filteredMTTRData || filteredMTTRData.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk diekspor', 'error');
+                return;
+            }
+            
+            let csv = 'No,ID Customer,ID Dies,Nama Dies,ID Proses,Nama Proses,Total Breakdown,Total Repair Time (jam),MTTR (jam),MTTR (hari),Status\n';
+            
+            filteredMTTRData.forEach((row, index) => {
+                const mttrStatus = getMTTRStatus(row.mttr_hours);
+                csv += `${index + 1},"${row.id_cust || ''}","${row.id_dies || ''}","${row.nama_dies || ''}","${row.id_proses || ''}","${row.nama_proses || ''}",${row.total_breakdown || 0},"${formatNumber(row.total_repair_time)}","${formatNumber(row.mttr_hours)}","${formatNumber(row.mttr_days)}","${mttrStatus}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `dies_mttr_dashboard_${formatDateForFilename(new Date())}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showAlert('✅ Data MTTR Dies berhasil diekspor!', 'success');
+        }
+
+        // ========================================
+        // MODAL FUNCTIONS
+        // ========================================
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function formatNumber(num) {
+            if (num === null || num === undefined) return '-';
+            return parseFloat(num).toFixed(2);
+        }
+
+        function formatDateForFilename(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}${m}${d}`;
+        }
+
+        function showAlert(message, type) {
+            const container = document.getElementById('alertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass}`;
+            alertDiv.innerHTML = message;
+            
+            container.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.style.animation = 'slideUp 200ms cubic-bezier(0.4, 0, 0.2, 1)';
+                setTimeout(() => alertDiv.remove(), 200);
+            }, 5000);
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
