@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Data Dandori - VCB Dandori System</title>
-    <link rel="stylesheet" href="assets/style/style_input_dandori.css">
+    <title>Input Data Dandori - Production System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style/style_input_dandori.css">
 </head>
 <body>
     <div class="page-wrapper">
@@ -23,20 +23,27 @@
                         </svg>
                     </div>
                     <div class="logo-text">
-                        <h1>VCB DANDORI</h1>
-                        <p>Monitoring System</p>
+                        <h1>DANDORI SYSTEM</h1>
+                        <p>Production Management</p>
                     </div>
                 </div>
             </div>
             
             <nav class="sidebar-nav">
-                <a href="prod_inputdandori.html" class="nav-item active">
+                <a href="#" class="nav-item active">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 3L3 7V13L10 17L17 13V7L10 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
                     </svg>
-                    <span>Input Data Dandori</span>
+                    <span>Input Dandori</span>
                 </a>
-                <a href="prod_vcbdandori.html" class="nav-item">
+                <a href="#" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M3 8H17M8 3V17" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>Data Dandori</span>
+                </a>
+                <a href="#" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="8" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                         <rect x="8" y="3" width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
@@ -44,12 +51,19 @@
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                <a href="data_dandori.html" class="nav-item">
+                <a href="#" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M3 8H17M8 3V17" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M3 10L7 6L11 10L17 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13 4H17V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <span>Data Dandori</span>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Settings</span>
                 </a>
                 <a href="index.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +80,16 @@
             <div class="content-header">
                 <div class="header-left">
                     <h2>Input Data Dandori</h2>
-                    <p>Form pengisian data dandori activity untuk monitoring waktu dan status</p>
+                    <p>Form pengisian data dandori produksi untuk monitoring waktu pergantian</p>
+                </div>
+                <div class="header-right">
+                    <div class="info-badge">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M2 6H14M5 1V3M11 1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span class="badge-value" id="currentDate">Loading...</span>
+                    </div>
                 </div>
             </div>
 
@@ -76,15 +99,19 @@
             <!-- Form Container -->
             <div class="form-container">
                 <form id="dandoriForm">
-                    <!-- Section: General Information -->
+                    <!-- Section: Informasi Umum -->
                     <div class="form-section">
                         <div class="section-header">
-                            <h3>General Information</h3>
-                            <p>Informasi umum aktivitas dandori</p>
+                            <h3>Informasi Umum</h3>
+                            <p>Data tanggal, operator dan mesin produksi</p>
                         </div>
                         <div class="form-grid">
                             <div class="form-field">
                                 <label for="tanggal" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M2 6H14M5 1V3M11 1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
                                     Tanggal
                                 </label>
                                 <input 
@@ -95,174 +122,226 @@
                                 >
                             </div>
                             <div class="form-field">
-                                <label for="pic_dandori" class="field-label required">
-                                    PIC Name
+                                <label for="shift" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M8 4V8L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Shift
+                                </label>
+                                <select id="shift" class="field-input" required>
+                                    <option value="">Pilih Shift...</option>
+                                    <option value="1">Shift 1</option>
+                                    <option value="2">Shift 2</option>
+                                    <option value="3">Shift 3</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label for="operator" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M2 14C2 11.2386 4.23858 9 7 9H9C11.7614 9 14 11.2386 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Operator
                                 </label>
                                 <input 
                                     type="text" 
-                                    id="pic_dandori" 
+                                    id="operator" 
                                     class="field-input" 
-                                    placeholder="Masukkan nama PIC"
+                                    placeholder="Nama Operator..." 
                                     required
                                 >
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Section: Machine & Part -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Machine & Part</h3>
-                            <p>Pilih mesin dan part yang akan di-dandori</p>
-                        </div>
-                        <div class="form-grid">
                             <div class="form-field">
-                                <label for="mesin_search" class="field-label required">
-                                    Machine
+                                <label for="selectMesin" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="4" width="12" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M5 2V4M11 2V4M2 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Mesin
                                 </label>
-                                <div class="searchable-dropdown" id="mesinDropdown">
-                                    <div class="search-input-wrapper">
-                                        <input 
-                                            type="text" 
-                                            id="mesin_search" 
-                                            class="field-input searchable-input" 
-                                            placeholder="Ketik untuk mencari mesin..."
-                                            autocomplete="off"
-                                            required
-                                        >
-                                        <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/>
-                                            <path d="M12 12L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                        </svg>
-                                    </div>
-                                    <div class="dropdown-list" id="mesinList"></div>
-                                </div>
-                            </div>
-                            <div class="form-field">
-                                <label for="part_search" class="field-label required">
-                                    Part Name
-                                </label>
-                                <div class="searchable-dropdown" id="partDropdown">
-                                    <div class="search-input-wrapper">
-                                        <input 
-                                            type="text" 
-                                            id="part_search" 
-                                            class="field-input searchable-input" 
-                                            placeholder="Ketik untuk mencari part..."
-                                            autocomplete="off"
-                                            required
-                                        >
-                                        <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/>
-                                            <path d="M12 12L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                        </svg>
-                                    </div>
-                                    <div class="dropdown-list" id="partList"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Info Display -->
-                        <div class="info-box" id="mesinPartInfo">
-                            <div class="info-grid">
-                                <div class="info-item">
-                                    <span class="info-label">Line</span>
-                                    <span class="info-value" id="displayLine">-</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Standard Time</span>
-                                    <span class="info-value" id="displayStandard">-</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Part Number</span>
-                                    <span class="info-value" id="displayPartNo">-</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Process ID</span>
-                                    <span class="info-value" id="displayIdProses">-</span>
+                                <select id="selectMesin" class="field-input" onchange="updateLine()" required>
+                                    <option value="" disabled selected>Loading Data...</option>
+                                </select>
+                                <div class="field-hint">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M7 10V7M7 4H7.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <span>Line Production: <strong id="lineBadge">-</strong></span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Section: Dandori Time -->
+                    <!-- Section: Data Part -->
                     <div class="form-section">
                         <div class="section-header">
-                            <h3>Dandori Time</h3>
-                            <p>Waktu mulai dan selesai aktivitas dandori</p>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label for="jam_mulai" class="field-label required">
-                                    Start Time
-                                </label>
-                                <input 
-                                    type="time" 
-                                    id="jam_mulai" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                            <div class="form-field">
-                                <label for="jam_selesai" class="field-label required">
-                                    End Time
-                                </label>
-                                <input 
-                                    type="time" 
-                                    id="jam_selesai" 
-                                    class="field-input" 
-                                    required
-                                >
-                            </div>
-                        </div>
-
-                        <!-- Duration Display -->
-                        <div class="info-box duration-box" id="waktuInfo">
-                            <div class="duration-display">
-                                <div class="duration-item">
-                                    <span class="duration-label">Duration</span>
-                                    <span class="duration-value" id="displayDurasi">-</span>
-                                </div>
-                                <div class="duration-divider"></div>
-                                <div class="duration-item">
-                                    <span class="duration-label">Status</span>
-                                    <span id="displayStatus">-</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section: Problem Notes -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3>Problem Notes</h3>
-                            <p>Catatan kendala atau masalah (opsional)</p>
+                            <h3>Data Part & Proses</h3>
+                            <p>Identitas part dan proses yang di-dandori</p>
                         </div>
                         <div class="form-grid">
                             <div class="form-field full-width">
-                                <label for="problem_dandori" class="field-label">
-                                    Description
-                                    <span class="optional-label">(Optional)</span>
+                                <label for="searchPartName" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M11 11L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Nama Part / Dies
                                 </label>
-                                <textarea 
-                                    id="problem_dandori" 
-                                    class="field-textarea" 
-                                    rows="4"
-                                    placeholder="Deskripsikan kendala atau masalah yang terjadi..."
-                                ></textarea>
+                                <div class="autocomplete-container">
+                                    <input 
+                                        type="text" 
+                                        id="searchPartName" 
+                                        class="field-input" 
+                                        placeholder="Ketik untuk mencari nama part..." 
+                                        autocomplete="off"
+                                        required
+                                    >
+                                    <div class="autocomplete-list" id="autocompleteList"></div>
+                                </div>
+                                <div class="field-hint">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M7 10V7M7 4H7.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <span>Ketik minimal 2 karakter untuk mencari part</span>
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <label for="displayPartNo" class="field-label">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3" y="2" width="10" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M6 5H10M6 8H10M6 11H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Part No
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="displayPartNo" 
+                                    class="field-input" 
+                                    placeholder="Otomatis terisi" 
+                                    readonly
+                                >
+                            </div>
+                            <div class="form-field">
+                                <label for="displayIdProses" class="field-label">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2 8H14M8 2V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    ID Proses
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="displayIdProses" 
+                                    class="field-input" 
+                                    placeholder="Otomatis terisi" 
+                                    readonly
+                                >
+                            </div>
+                            <div class="form-field">
+                                <label for="displayNamaProses" class="field-label">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="4" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                        <circle cx="8" cy="8" r="2" fill="currentColor"/>
+                                    </svg>
+                                    Nama Proses
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="displayNamaProses" 
+                                    class="field-input" 
+                                    placeholder="Otomatis terisi" 
+                                    readonly
+                                >
+                            </div>
+                            <div class="form-field">
+                                <label for="displayStdTime" class="field-label">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M8 4V8L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Standard Dandori (Menit)
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="displayStdTime" 
+                                    class="field-input std-time-display" 
+                                    placeholder="0" 
+                                    readonly
+                                >
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Cancel Checkbox -->
-                        <div class="checkbox-wrapper">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="isCancel" class="field-checkbox">
-                                <svg class="checkbox-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
-                                    <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Section: Rincian Aktivitas -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Rincian Aktivitas Dandori</h3>
+                            <p>Input kode aktivitas dan durasi dalam menit</p>
+                        </div>
+
+                        <div class="activities-wrapper">
+                            <table class="activities-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">
+                                            <div class="table-header">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                                    <path d="M5 7H11M8 4V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                </svg>
+                                                Kode
+                                            </div>
+                                        </th>
+                                        <th style="width: 45%;">
+                                            <div class="table-header">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M2 4H14M2 8H14M2 12H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                </svg>
+                                                Deskripsi
+                                            </div>
+                                        </th>
+                                        <th style="width: 25%;">
+                                            <div class="table-header">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                                    <path d="M8 4V8L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                </svg>
+                                                Menit
+                                            </div>
+                                        </th>
+                                        <th style="width: 10%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matrixBody">
+                                </tbody>
+                            </table>
+
+                            <button type="button" class="btn-add-row" onclick="addRow()">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 9H12M9 6V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
-                                <span class="checkbox-text">Cancel this dandori activity</span>
-                            </label>
+                                <span>Tambah Baris Aktivitas</span>
+                            </button>
+
+                            <div class="total-box">
+                                <div class="total-left">
+                                    <div class="total-label">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <span>Total Aktual Dandori</span>
+                                    </div>
+                                    <span class="status-badge" id="statusLabel">-</span>
+                                </div>
+                                <div class="total-right">
+                                    <span class="total-value" id="totalAktual">0</span>
+                                    <span class="total-unit">Menit</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -273,14 +352,14 @@
                                 <path d="M2 9C2 5.13401 5.13401 2 9 2C12.866 2 16 5.13401 16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9Z" stroke="currentColor" stroke-width="1.5"/>
                                 <path d="M9 5V9L11.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                             </svg>
-                            Reset Form
+                            <span>Reset Form</span>
                         </button>
                         <button type="submit" class="btn-primary" id="btnSubmit">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 9L9 15L3 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M9 3V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M9 2L3 6V12L9 16L15 12V6L9 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                                <path d="M9 9L3 6M9 9L15 6M9 9V16" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
                             </svg>
-                            Simpan Data
+                            <span>Simpan Data</span>
                         </button>
                     </div>
                 </form>
@@ -289,12 +368,16 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxEJ2R8WF2iKGjEM9fOKhwlXxquCUIZ9bzmvTtdrALw848aj-DCXIJUAQs95Zb60rJY/exec';
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_d98hagrN6lw5JIvB7gkACpKMZ75QGcdGx0J9JRKRggYOWq4qmVDNeGShdjM-pv0/exec"; 
 
-        let masterMesin = [];
-        let masterDies = [];
-        let selectedMesin = null;
-        let selectedPart = null;
+        // State Management
+        let masterData = {};
+        let lossMap = {};
+        let partsList = [];
+        let selectedPartData = null;
 
         // ========================================
         // INITIALIZATION
@@ -304,306 +387,367 @@
         });
 
         function initializeApp() {
-            setDefaultDate();
-            setupEventListeners();
             loadMasterData();
+            setCurrentDate();
+            setDefaultDate();
+            addRow();
+            initializeAutocomplete();
+        }
+
+        function setCurrentDate() {
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('id-ID', options);
         }
 
         function setDefaultDate() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('tanggal').value = today;
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            document.getElementById('tanggal').value = `${year}-${month}-${day}`;
         }
 
         // ========================================
-        // EVENT LISTENERS
-        // ========================================
-        function setupEventListeners() {
-            document.getElementById('dandoriForm').addEventListener('submit', handleFormSubmit);
-            
-            const mesinSearch = document.getElementById('mesin_search');
-            const partSearch = document.getElementById('part_search');
-            
-            mesinSearch.addEventListener('input', (e) => filterDropdown(e.target.value, 'mesin'));
-            mesinSearch.addEventListener('focus', () => showDropdown('mesin'));
-            
-            partSearch.addEventListener('input', (e) => filterDropdown(e.target.value, 'part'));
-            partSearch.addEventListener('focus', () => showDropdown('part'));
-            
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.searchable-dropdown')) {
-                    hideAllDropdowns();
-                }
-            });
-            
-            document.getElementById('jam_mulai').addEventListener('change', calculateDuration);
-            document.getElementById('jam_selesai').addEventListener('change', calculateDuration);
-            document.getElementById('isCancel').addEventListener('change', calculateDuration);
-        }
-
-        // ========================================
-        // LOAD MASTER DATA
+        // MASTER DATA FUNCTIONS
         // ========================================
         async function loadMasterData() {
             try {
-                const mesinResponse = await fetch(`${API_URL}?action=getMasterMesin&_=${Date.now()}`, {
-                    method: 'GET',
-                    redirect: 'follow'
-                });
-                const mesinData = await mesinResponse.json();
-                
-                if (mesinData.success) {
-                    masterMesin = mesinData.data;
-                    renderMesinDropdown(masterMesin);
-                }
-
-                const diesResponse = await fetch(`${API_URL}?action=getMasterDies&_=${Date.now()}`, {
-                    method: 'GET',
-                    redirect: 'follow'
-                });
-                const diesData = await diesResponse.json();
-                
-                if (diesData.success) {
-                    masterDies = diesData.data;
-                    renderPartDropdown(masterDies);
-                }
+                const response = await fetch(`${WEB_APP_URL}?action=getMaster&_=${Date.now()}`);
+                const data = await response.json();
+                masterData = data;
+                populateDropdowns(data);
             } catch (error) {
                 console.error('Error loading master data:', error);
-                showAlert('Gagal memuat data master. Periksa koneksi dan URL deployment.', 'error');
+                showAlert('❌ Gagal memuat data master. Periksa koneksi dan URL deployment.', 'error');
             }
         }
 
+        function populateDropdowns(data) {
+            // Populate Mesin dropdown
+            const selMesin = document.getElementById('selectMesin');
+            selMesin.innerHTML = '<option value="" disabled selected>Pilih Mesin...</option>';
+            data.mesin.forEach(row => {
+                let opt = new Option(`${row[1]}`, row[1]); 
+                opt.dataset.line = row[2];
+                selMesin.add(opt);
+            });
+
+            // Store parts data for autocomplete
+            // Create unique entries for each part-process combination
+            partsList = data.dies.map(row => ({
+                partNo: row[0],
+                partName: row[1],
+                idProses: row[2],
+                namaProses: row[3],
+                stdTime: row[4],
+                uniqueKey: `${row[0]}-${row[2]}` // Unique key: partNo-idProses
+            }));
+
+            // Create loss time lookup map
+            data.losstime.forEach(row => lossMap[row[0].toString()] = row[1]);
+        }
+
         // ========================================
-        // RENDER DROPDOWNS
+        // AUTOCOMPLETE FUNCTIONALITY
         // ========================================
-        function renderMesinDropdown(data) {
-            const list = document.getElementById('mesinList');
-            
-            if (data.length === 0) {
-                list.innerHTML = '<div class="dropdown-empty">Tidak ada mesin ditemukan</div>';
-                return;
-            }
-            
-            list.innerHTML = data.map(mesin => `
-                <div class="dropdown-item" data-value="${mesin.nama_mesin}" data-mesin='${JSON.stringify(mesin)}'>
-                    <div class="dropdown-item-title">${mesin.nama_mesin}</div>
-                    <div class="dropdown-item-subtitle">Line: ${mesin.line} | Standard: ${mesin.standard_dandori} min</div>
-                </div>
-            `).join('');
-            
-            list.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', () => selectMesin(item));
+        function initializeAutocomplete() {
+            const searchInput = document.getElementById('searchPartName');
+            const autocompleteList = document.getElementById('autocompleteList');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.trim().toLowerCase();
+                
+                if (searchTerm.length < 2) {
+                    autocompleteList.classList.remove('active');
+                    return;
+                }
+
+                const filteredParts = partsList.filter(part => 
+                    part.partName.toLowerCase().includes(searchTerm) ||
+                    part.partNo.toLowerCase().includes(searchTerm)
+                );
+
+                displayAutocompleteResults(filteredParts);
+            });
+
+            searchInput.addEventListener('focus', function() {
+                if (this.value.trim().length >= 2) {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    const filteredParts = partsList.filter(part => 
+                        part.partName.toLowerCase().includes(searchTerm) ||
+                        part.partNo.toLowerCase().includes(searchTerm)
+                    );
+                    displayAutocompleteResults(filteredParts);
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.autocomplete-container')) {
+                    autocompleteList.classList.remove('active');
+                }
             });
         }
 
-        function renderPartDropdown(data) {
-            const list = document.getElementById('partList');
+        function displayAutocompleteResults(parts) {
+            const autocompleteList = document.getElementById('autocompleteList');
             
-            if (data.length === 0) {
-                list.innerHTML = '<div class="dropdown-empty">Tidak ada part ditemukan</div>';
+            if (parts.length === 0) {
+                autocompleteList.innerHTML = '<div class="autocomplete-no-results">Tidak ada hasil ditemukan</div>';
+                autocompleteList.classList.add('active');
                 return;
             }
-            
-            list.innerHTML = data.map(part => `
-                <div class="dropdown-item" data-value="${part.part_name}" data-part='${JSON.stringify(part)}'>
-                    <div class="dropdown-item-title">${part.part_name}</div>
-                    <div class="dropdown-item-subtitle">Part No: ${part.part_no} | Process: ${part.nama_proses}</div>
+
+            autocompleteList.innerHTML = parts.map(part => `
+                <div class="autocomplete-item" onclick="selectPart('${part.uniqueKey}')">
+                    <div class="autocomplete-item-main">
+                        <div class="autocomplete-item-name">${part.partName}</div>
+                        <div class="autocomplete-item-id">Part No: ${part.partNo}</div>
+                    </div>
+                    <div class="autocomplete-item-sub">
+                        <span class="autocomplete-item-badge">${part.namaProses}</span>
+                        <span class="autocomplete-item-time">${part.stdTime} min</span>
+                    </div>
                 </div>
             `).join('');
+
+            autocompleteList.classList.add('active');
+        }
+
+        function selectPart(uniqueKey) {
+            const part = partsList.find(p => p.uniqueKey === uniqueKey);
+            if (!part) return;
+
+            selectedPartData = part;
             
-            list.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', () => selectPart(item));
-            });
+            document.getElementById('searchPartName').value = part.partName;
+            document.getElementById('displayPartNo').value = part.partNo;
+            document.getElementById('displayIdProses').value = part.idProses;
+            document.getElementById('displayNamaProses').value = part.namaProses;
+            document.getElementById('displayStdTime').value = part.stdTime;
+            
+            document.getElementById('autocompleteList').classList.remove('active');
+            
+            calculateTotal();
         }
 
         // ========================================
-        // DROPDOWN FUNCTIONS
+        // UI UPDATE FUNCTIONS
         // ========================================
-        function filterDropdown(query, type) {
-            const data = type === 'mesin' ? masterMesin : masterDies;
-            const searchField = type === 'mesin' ? 'nama_mesin' : 'part_name';
-            
-            const filtered = data.filter(item => 
-                item[searchField].toLowerCase().includes(query.toLowerCase())
-            );
-            
-            if (type === 'mesin') {
-                renderMesinDropdown(filtered);
+        function updateLine() {
+            const sel = document.getElementById('selectMesin');
+            if (sel.selectedIndex > 0) {
+                const line = sel.options[sel.selectedIndex].dataset.line;
+                document.getElementById('lineBadge').innerText = line;
+            }
+        }
+
+        function lookupLoss(el) {
+            const code = el.value.trim();
+            const desc = el.closest('tr').querySelector('.desc-text');
+            if(lossMap[code]) {
+                desc.innerText = lossMap[code];
+                desc.className = "desc-text text-success";
             } else {
-                renderPartDropdown(filtered);
+                desc.innerText = code ? "Tidak Dikenal" : "-";
+                desc.className = "desc-text";
             }
-            
-            showDropdown(type);
-        }
-
-        function showDropdown(type) {
-            const listId = type === 'mesin' ? 'mesinList' : 'partList';
-            document.getElementById(listId).classList.add('show');
-        }
-
-        function hideAllDropdowns() {
-            document.getElementById('mesinList').classList.remove('show');
-            document.getElementById('partList').classList.remove('show');
-        }
-
-        function selectMesin(item) {
-            const mesinData = JSON.parse(item.dataset.mesin);
-            selectedMesin = mesinData;
-            
-            document.getElementById('mesin_search').value = mesinData.nama_mesin;
-            displayMesinInfo();
-            calculateDuration();
-            hideAllDropdowns();
-        }
-
-        function selectPart(item) {
-            const partData = JSON.parse(item.dataset.part);
-            selectedPart = partData;
-            
-            document.getElementById('part_search').value = partData.part_name;
-            displayPartInfo();
-            hideAllDropdowns();
         }
 
         // ========================================
-        // DISPLAY INFO
+        // TABLE MANAGEMENT
         // ========================================
-        function displayMesinInfo() {
-            document.getElementById('displayLine').textContent = selectedMesin.line;
-            document.getElementById('displayStandard').textContent = `${selectedMesin.standard_dandori} min`;
-            document.getElementById('mesinPartInfo').classList.add('show');
-        }
-
-        function displayPartInfo() {
-            document.getElementById('displayPartNo').textContent = selectedPart.part_no;
-            document.getElementById('displayIdProses').textContent = selectedPart.id_proses;
-        }
-
-        // ========================================
-        // CALCULATE DURATION
-        // ========================================
-        function calculateDuration() {
-            const jamMulai = document.getElementById('jam_mulai').value;
-            const jamSelesai = document.getElementById('jam_selesai').value;
-            const isCancel = document.getElementById('isCancel').checked;
-
-            if (!jamMulai || !jamSelesai || !selectedMesin) return;
-
-            const startTime = new Date(`1970-01-01T${jamMulai}`);
-            const endTime = new Date(`1970-01-01T${jamSelesai}`);
-            const durationMinutes = Math.round((endTime - startTime) / (1000 * 60));
-
-            if (durationMinutes <= 0) {
-                showAlert('Waktu selesai harus lebih besar dari waktu mulai', 'error');
-                return;
-            }
-
-            document.getElementById('displayDurasi').textContent = `${durationMinutes} min`;
-
-            const status = determineStatus(durationMinutes, selectedMesin.standard_dandori, isCancel);
-            displayStatus(status);
-
-            document.getElementById('waktuInfo').classList.add('show');
-        }
-
-        function determineStatus(duration, standard, isCancel) {
-            if (isCancel) {
-                return { text: 'Cancel', class: 'status-cancel' };
-            }
-            if (duration <= standard) {
-                return { text: 'On Time', class: 'status-ontime' };
-            }
-            const delay = duration - standard;
-            return { text: `Delay (+${delay} min)`, class: 'status-delay' };
-        }
-
-        function displayStatus(status) {
-            document.getElementById('displayStatus').innerHTML = `
-                <span class="status-badge ${status.class}">${status.text}</span>
+        function addRow() {
+            const tbody = document.getElementById('matrixBody');
+            const tr = document.createElement('tr');
+            tr.className = 'input-row';
+            tr.innerHTML = `
+                <td>
+                    <input type="text" class="code-input" placeholder="00" oninput="lookupLoss(this)" onkeydown="checkEnter(event, this)">
+                </td>
+                <td>
+                    <div class="desc-text">-</div>
+                </td>
+                <td>
+                    <input type="number" class="min-input" placeholder="0" oninput="calculateTotal()" onkeydown="checkEnter(event, this)">
+                </td>
+                <td style="text-align: center;">
+                    <button type="button" class="btn-delete" onclick="deleteRow(this)" title="Hapus baris">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 4H13M5 4V3C5 2.44772 5.44772 2 6 2H10C10.5523 2 11 2.44772 11 3V4M6.5 7.5V11.5M9.5 7.5V11.5M4 4H12V13C12 13.5523 11.5523 14 11 14H5C4.44772 14 4 13.5523 4 13V4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </td>
             `;
+            tbody.appendChild(tr);
+            tr.querySelector('.code-input').focus();
+        }
+
+        function deleteRow(btn) {
+            if(document.querySelectorAll('.input-row').length > 1) {
+                btn.closest('tr').remove();
+                calculateTotal();
+            } else {
+                showAlert('⚠️ Minimal harus ada 1 baris aktivitas', 'error');
+            }
+        }
+
+        function checkEnter(e, el) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const row = el.closest('tr');
+                if (el.classList.contains('code-input')) {
+                    row.querySelector('.min-input').focus();
+                } else if (el.classList.contains('min-input')) {
+                    addRow();
+                }
+            }
+        }
+
+        // ========================================
+        // CALCULATION
+        // ========================================
+        function calculateTotal() {
+            let total = 0;
+            document.querySelectorAll('.min-input').forEach(i => {
+                total += Number(i.value || 0);
+            });
+            document.getElementById('totalAktual').innerText = total;
+
+            const std = Number(document.getElementById('displayStdTime').value || 0);
+            const label = document.getElementById('statusLabel');
+
+            if(total > std && std > 0) {
+                label.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 3V8M8 11H8.01M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    OVER +${total - std}
+                `;
+                label.className = "status-badge status-over";
+            } else if(total > 0 && std > 0) {
+                label.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    OK
+                `;
+                label.className = "status-badge status-ok";
+            } else {
+                label.innerHTML = '-';
+                label.className = "status-badge";
+            }
         }
 
         // ========================================
         // FORM SUBMISSION
         // ========================================
-        async function handleFormSubmit(e) {
+        document.getElementById('dandoriForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const total = Number(document.getElementById('totalAktual').innerText);
+            if(total === 0) {
+                showAlert('⚠️ Isi aktivitas dandori terlebih dahulu!', 'error');
+                return;
+            }
 
-            if (!selectedMesin || !selectedPart) {
-                showAlert('Silakan pilih mesin dan part terlebih dahulu', 'error');
+            const searchInput = document.getElementById('searchPartName');
+            if (!selectedPartData && searchInput.value.trim() === '') {
+                showAlert('⚠️ Pilih nama part/dies terlebih dahulu!', 'error');
+                searchInput.focus();
                 return;
             }
 
             const btn = document.getElementById('btnSubmit');
-            const originalText = btn.innerHTML;
+            const originalHTML = btn.innerHTML;
             
             btn.disabled = true;
             btn.innerHTML = `
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation: spin 1s linear infinite;">
                     <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" stroke-dasharray="32" stroke-dashoffset="8"/>
                 </svg>
-                <style>
-                    @keyframes spin {
-                        to { transform: rotate(360deg); }
-                    }
-                </style>
-                Menyimpan...
+                <span>Menyimpan...</span>
             `;
 
-            const formData = new URLSearchParams();
-            formData.append('action', 'addDataDandori');
-            formData.append('tanggal', document.getElementById('tanggal').value);
-            formData.append('mesin', selectedMesin.nama_mesin);
-            formData.append('part_no', selectedPart.part_no);
-            formData.append('part_name', selectedPart.part_name);
-            formData.append('id_proses', selectedPart.id_proses);
-            formData.append('nama_proses', selectedPart.nama_proses);
-            formData.append('jam_mulai_dandori', document.getElementById('jam_mulai').value);
-            formData.append('jam_selesai_dandori', document.getElementById('jam_selesai').value);
-            formData.append('standard_dandori', selectedMesin.standard_dandori);
-            formData.append('problem_dandori', document.getElementById('problem_dandori').value.trim());
-            formData.append('pic_dandori', document.getElementById('pic_dandori').value.trim());
-            formData.append('isCancel', document.getElementById('isCancel').checked);
+            let rincianArr = [];
+            document.querySelectorAll('.input-row').forEach(row => {
+                const k = row.querySelector('.code-input').value;
+                const m = row.querySelector('.min-input').value;
+                if(k && m) rincianArr.push({kode: k, menit: m});
+            });
+
+            const selMesin = document.getElementById('selectMesin');
+
+            const payload = {
+                tanggal: document.getElementById('tanggal').value,
+                shift: document.getElementById('shift').value,
+                operator: document.getElementById('operator').value,
+                nama_mesin: selMesin.value,
+                line: selMesin.options[selMesin.selectedIndex].dataset.line,
+                part_no: document.getElementById('displayPartNo').value,
+                part_name: searchInput.value.trim(),
+                id_proses: document.getElementById('displayIdProses').value,
+                nama_proses: document.getElementById('displayNamaProses').value,
+                standard_time: document.getElementById('displayStdTime').value,
+                rincian_detail: rincianArr
+            };
 
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(WEB_APP_URL, {
                     method: 'POST',
-                    body: formData,
-                    redirect: 'follow'
+                    body: JSON.stringify(payload)
                 });
-
                 const result = await response.json();
 
-                if (result.success) {
+                if(result.status === 'SUCCESS') {
                     const successMessage = `
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <div style="font-weight: 600; font-size: 1rem;">✅ Data berhasil disimpan!</div>
-                            <div style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem; font-size: 0.875rem;">
-                                <span style="font-weight: 500;">Mesin:</span>
-                                <span>${selectedMesin.nama_mesin}</span>
-                                <span style="font-weight: 500;">Part:</span>
-                                <span>${selectedPart.part_name}</span>
-                                <span style="font-weight: 500;">Duration:</span>
-                                <span>${result.data.selisih} minutes</span>
-                                <span style="font-weight: 500;">Status:</span>
-                                <span style="color: ${result.data.status === 'On Time' ? '#10b981' : '#ef4444'};">${result.data.status}</span>
+                        <div class="alert-content">
+                            <div class="alert-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="alert-text">
+                                <div class="alert-title">Data berhasil disimpan!</div>
+                                <div class="alert-details">
+                                    <div class="alert-detail-item">
+                                        <span class="label">Tanggal:</span>
+                                        <span class="value">${new Date(payload.tanggal).toLocaleDateString('id-ID')}</span>
+                                    </div>
+                                    <div class="alert-detail-item">
+                                        <span class="label">Operator:</span>
+                                        <span class="value">${payload.operator}</span>
+                                    </div>
+                                    <div class="alert-detail-item">
+                                        <span class="label">Part:</span>
+                                        <span class="value">${payload.part_name}</span>
+                                    </div>
+                                    <div class="alert-detail-item">
+                                        <span class="label">Total Dandori:</span>
+                                        <span class="value">${total} menit</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     `;
                     showAlert(successMessage, 'success');
                     
-                    resetForm();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => {
+                        resetForm();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 3000);
                 } else {
-                    showAlert('❌ ' + (result.error || 'Gagal menyimpan data'), 'error');
+                    showAlert('❌ Error: ' + result.message, 'error');
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
                 showAlert('❌ Gagal menyimpan data: ' + error.message, 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = originalText;
+                btn.innerHTML = originalHTML;
             }
-        }
+        });
 
         // ========================================
         // UTILITY FUNCTIONS
@@ -621,39 +765,28 @@
             setTimeout(() => {
                 alertDiv.style.animation = 'slideUp 200ms cubic-bezier(0.4, 0, 0.2, 1)';
                 setTimeout(() => alertDiv.remove(), 200);
-            }, 5000);
+            }, 6000);
         }
 
         function resetForm() {
             if (confirm('Apakah Anda yakin ingin mereset form? Semua data yang belum disimpan akan hilang.')) {
                 document.getElementById('dandoriForm').reset();
+                document.getElementById('matrixBody').innerHTML = '';
+                document.getElementById('searchPartName').value = '';
+                document.getElementById('displayPartNo').value = '';
+                document.getElementById('displayIdProses').value = '';
+                document.getElementById('displayNamaProses').value = '';
+                document.getElementById('displayStdTime').value = '';
+                document.getElementById('lineBadge').innerText = '-';
+                document.getElementById('totalAktual').innerText = '0';
+                document.getElementById('statusLabel').innerHTML = '-';
+                document.getElementById('statusLabel').className = 'status-badge';
+                document.getElementById('autocompleteList').classList.remove('active');
+                selectedPartData = null;
                 setDefaultDate();
-                document.getElementById('mesin_search').value = '';
-                document.getElementById('part_search').value = '';
-                document.getElementById('mesinPartInfo').classList.remove('show');
-                document.getElementById('waktuInfo').classList.remove('show');
-                selectedMesin = null;
-                selectedPart = null;
-                hideAllDropdowns();
-                document.getElementById('alertContainer').innerHTML = '';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                addRow();
             }
         }
-
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideUp {
-                from {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-                to {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
