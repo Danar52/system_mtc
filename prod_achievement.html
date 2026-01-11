@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Produksi - Production System V2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style/style_prod_achv.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Processing data...</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-container success">
+            <div class="modal-header">
+                <div class="modal-icon success-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="3"/>
+                        <path d="M14 24L20 30L34 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Data Berhasil Disimpan!</h3>
+            </div>
+            <div class="modal-body">
+                <div class="metrics-grid">
+                    <div class="metric-card performance">
+                        <div class="metric-label">Performance Score</div>
+                        <div class="metric-value" id="modalPerformance">-</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="performanceProgress"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Quantity Achievement</div>
+                        <div class="metric-value" id="modalQtyAch">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Efficiency Achievement</div>
+                        <div class="metric-value" id="modalEffAch">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">SPH Actual</div>
+                        <div class="metric-value" id="modalSph">-</div>
+                    </div>
+                </div>
+                <div class="alert-flags" id="alertFlags"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeSuccessModal()">
+                    <span>Input Data Baru</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal-overlay" id="errorModal">
+        <div class="modal-container error">
+            <div class="modal-header">
+                <div class="modal-icon error-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="3"/>
+                        <path d="M24 14V26M24 34V34.1" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Terjadi Kesalahan</h3>
+            </div>
+            <div class="modal-body">
+                <p class="error-message" id="errorMessage">-</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeErrorModal()">
+                    <span>Tutup</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="8" fill="white"/>
+                            <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" stroke="black" stroke-width="2"/>
+                            <path d="M16 16L8 12M16 16L24 12M16 16V24" stroke="black" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>PRD SYSTEM</h1>
+                        <p>Production Management</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="prod_input_dandori.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 3L3 7V13L10 17L17 13V7L10 3Z" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>Input Dandori</span>
+                </a>
+                <a href="prod_achievement.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M6 8H14M6 12H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Input Achievement</span>
+                </a>
+                <a href="prod_dashb_dandori.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M3 8H17M8 3V17" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>Dashboard Dandori</span>
+                </a>
+                <a href="prod_dashb_achv.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="3" y="8" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="8" y="3" width="4" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="13" y="10" width="4" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>Dashboard Achievement</span>
+                </a>
+                <a href="index.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 17H16C16.5523 17 17 16.5523 17 16V4C17 3.44772 16.5523 3 16 3H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M8 13L3 10M3 10L8 7M3 10H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Kembali ke Menu</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <div class="header-left">
+                    <h2>Input Achievement</h2>
+                    <p>Form input hasil produksi harian dengan tracking performa</p>
+                </div>
+                <div class="header-right">
+                    <div class="info-badge">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M2 6H14M5 1V3M11 1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span class="badge-value" id="currentDate">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container">
+                <form id="prodForm">
+                    <!-- Informasi Produksi -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Informasi Produksi</h3>
+                            <p>Data tanggal dan identitas produksi</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="tglProduksi" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M2 6H14M5 1V3M11 1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Tanggal Produksi
+                                </label>
+                                <input type="date" id="tglProduksi" class="field-input" required>
+                                <div class="field-error" id="tglProduksiError"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Part & Proses -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Data Part & Proses</h3>
+                            <p>Pilih part dan proses produksi</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="partName" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <rect x="3" y="2" width="10" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M6 5H10M6 8H10M6 11H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Part Name
+                                </label>
+                                <div class="autocomplete-wrapper">
+                                    <input type="text" id="partName" class="field-input" placeholder="Ketik untuk mencari part..." autocomplete="off" required>
+                                    <div class="autocomplete-list" id="partList"></div>
+                                </div>
+                                <div class="field-hint">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M7 10V7M7 4H7.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <span id="partCount">0 items loaded</span>
+                                </div>
+                                <div class="field-error" id="partNameError"></div>
+                            </div>
+                            <div class="form-field">
+                                <label for="proses" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <rect x="2" y="4" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                        <circle cx="8" cy="8" r="2" fill="currentColor"/>
+                                    </svg>
+                                    Proses
+                                </label>
+                                <div class="autocomplete-wrapper">
+                                    <input type="text" id="proses" class="field-input" placeholder="Pilih part terlebih dahulu..." autocomplete="off" disabled required>
+                                    <div class="autocomplete-list" id="prosesList"></div>
+                                </div>
+                                <div class="field-hint">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M7 10V7M7 4H7.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <span id="prosesCount">0 items</span>
+                                </div>
+                                <div class="field-error" id="prosesError"></div>
+                            </div>
+                            <div class="form-field full-width">
+                                <label for="mesinAktual" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <rect x="2" y="4" width="12" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M5 2V4M11 2V4M2 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Mesin Aktual (Tempat Jalan)
+                                </label>
+                                <select class="field-select" id="mesinAktual" disabled required>
+                                    <option value="">Loading Mesin...</option>
+                                </select>
+                                <div class="field-hint">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M7 10V7M7 4H7.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <span id="mesinCount">0 items loaded</span>
+                                </div>
+                                <div class="field-error" id="mesinAktualError"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Hasil Produksi -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Data Hasil Produksi</h3>
+                            <p>Input quantity dan waktu kerja aktual</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="qtySpk" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M5 7H11M8 4V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Qty SPK (Plan)
+                                </label>
+                                <input type="number" id="qtySpk" class="field-input" placeholder="0" required min="1">
+                                <div class="field-error" id="qtySpkError"></div>
+                            </div>
+                            <div class="form-field">
+                                <label for="actQty" class="field-label required">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                                    </svg>
+                                    Actual Result (OK)
+                                </label>
+                                <input type="number" id="actQty" class="field-input" placeholder="Output Pcs" required min="0">
+                                <div class="field-error" id="actQtyError"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Waktu Kerja Aktual -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Waktu Kerja Aktual</h3>
+                            <p>Pilih salah satu metode input waktu</p>
+                        </div>
+                        <div class="time-method-selector">
+                            <label class="radio-card">
+                                <input type="radio" name="timeMethod" value="minutes" checked>
+                                <div class="radio-content">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M10 5V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <div>
+                                        <strong>Input Menit</strong>
+                                        <span>Total waktu dalam menit</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="timeMethod" value="startEnd">
+                                <div class="radio-content">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M3 10H17M17 10L13 6M17 10L13 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        <circle cx="3" cy="10" r="2" fill="currentColor"/>
+                                    </svg>
+                                    <div>
+                                        <strong>Jam Mulai - Selesai</strong>
+                                        <span>Input waktu start dan finish</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="time-input-section" id="minutesSection">
+                            <div class="form-grid">
+                                <div class="form-field full-width">
+                                    <label for="actMenit" class="field-label required">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M8 4V8L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        Total Waktu Kerja
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="number" class="field-input" id="actMenit" placeholder="Contoh: 120" min="1">
+                                        <span class="input-group-text">Menit</span>
+                                    </div>
+                                    <div class="time-hint" id="jamHint">0.00 Jam (0 Jam 0 Menit)</div>
+                                    <div class="field-error" id="actMenitError"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="time-input-section" id="startEndSection" style="display: none;">
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="jamMulai" class="field-label required">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M8 5V8H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        Jam Mulai Produksi
+                                    </label>
+                                    <input type="time" id="jamMulai" class="field-input">
+                                    <div class="field-error" id="jamMulaiError"></div>
+                                </div>
+                                <div class="form-field">
+                                    <label for="jamSelesai" class="field-label required">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M8 5V8H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                            <path d="M13 4L11 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        Jam Selesai Produksi
+                                    </label>
+                                    <input type="time" id="jamSelesai" class="field-input">
+                                    <div class="field-error" id="jamSelesaiError"></div>
+                                </div>
+                                <div class="form-field full-width">
+                                    <div class="time-result">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                            <rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M6 9H12M9 6V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <div>
+                                            <strong>Total Durasi:</strong>
+                                            <span id="durasiHint">0 menit (0.00 jam)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="btnSubmit">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <path d="M9 2L3 6V12L9 16L15 12V6L9 2Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M9 9L3 6M9 9L15 6M9 9V16" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                            <span>SIMPAN LAPORAN</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="assets/js/script_prod_achv.js"></script>
+</body>
+</html>
