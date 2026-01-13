@@ -7,7 +7,7 @@
 // CONFIGURATION
 // ========================================
 const CONFIG = {
-    API_URL: "https://script.google.com/macros/s/AKfycbwW0n_KP1TU906c3TGeq59Lb-SphHLJGYsVYDsxhoNIs30ViVUfGOd9O0byWGL3_as5/exec",
+    API_URL: "https://script.google.com/macros/s/AKfycbxR5tICOc_bBlUxJ49RTpaI2_TlYwfAsM78jAvVxfg_wri3hZR0gDu7iSo-KYuTurmw/exec",
     DEBOUNCE_DELAY: 300,
     CHART_COLORS: {
         excellent: '#10b981',    // Green >= 90%
