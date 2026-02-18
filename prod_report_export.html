@@ -3,38 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Production Report Export - PT. Kunco</title>
+    <title>Production Report Export V7.1 - PT. Kunco</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="prod_report_export.css">
-    <!-- External Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="assets/style/style_prod_report_export.css">
 </head>
 <body>
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner">
             <div class="spinner"></div>
-            <p id="loadingText">Loading report data...</p>
+            <p id="loadingText">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Date Picker Modal -->
+    <div class="date-picker-modal active" id="datePickerModal">
+        <div class="date-picker-content">
+            <div class="date-picker-header">
+                <h3>📅 Generate Production Report</h3>
+                <p>Select date range and production lines • V7.1 Production Ready</p>
+            </div>
+            
+            <!-- Date Range Section -->
+            <div class="date-picker-section">
+                <div class="section-title">
+                    <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                        <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M2 6H14" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    Date Range
+                </div>
+                <div class="date-picker-body">
+                    <div class="date-input-group">
+                        <label>From Date</label>
+                        <input type="date" id="inputDateFrom" class="date-input">
+                    </div>
+                    <div class="date-separator">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="date-input-group">
+                        <label>To Date</label>
+                        <input type="date" id="inputDateTo" class="date-input">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Group Line Selection -->
+            <div class="date-picker-section">
+                <div class="section-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Production Lines
+                </div>
+                <div class="group-line-selector">
+                    <div class="checkbox-group" id="groupLineCheckboxes">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            Loading available lines...
+                        </div>
+                    </div>
+                    <div class="selector-controls">
+                        <button class="btn-control" onclick="selectAllLines()">Select All</button>
+                        <button class="btn-control" onclick="deselectAllLines()">Deselect All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selection Preview -->
+            <div class="selection-preview" id="selectionPreview" style="display: none;">
+                <div class="preview-title">📊 Preview</div>
+                <div class="preview-items" id="previewContent"></div>
+            </div>
+
+            <!-- Actions -->
+            <div class="date-picker-actions">
+                <button class="btn-cancel" onclick="closeDatePicker()">Cancel</button>
+                <button class="btn-generate" id="btnGenerate" onclick="generateReport()" disabled>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path d="M9 1V9M9 9H17M9 9L15 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Generate Report
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Action Bar -->
-    <div class="action-bar" id="actionBar">
+    <div class="action-bar" id="actionBar" style="display: none;">
         <div class="action-left">
             <button class="btn-back" onclick="backToDashboard()">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                Back to Dashboard
+                Back
             </button>
         </div>
         <div class="action-right">
-            <button class="btn-export btn-pdf" onclick="exportToPDF()">
+            <button class="btn-export btn-pdf" id="btnExport" onclick="exportToPDF()" disabled>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M4 4C4 2.89543 4.89543 2 6 2H11L16 7V16C16 17.1046 15.1046 18 14 18H6C4.89543 18 4 17.1046 4 16V4Z" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M11 2V7H16" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
                 Download PDF
             </button>
@@ -42,7 +114,7 @@
     </div>
 
     <!-- Report Container -->
-    <div class="report-wrapper">
+    <div class="report-wrapper" id="reportWrapper" style="display: none;">
         <div class="report-page" id="reportContainer">
             <!-- Header -->
             <div class="report-header">
@@ -54,7 +126,7 @@
                         </svg>
                     </div>
                     <div class="company-info">
-                        <h1>PT. KUNCO MANUFACTUR INDONESIA</h1>
+                        <h1>PT. KENCO MANUFACTUR INDONESIA</h1>
                         <p>DIES, JIGS & PARTS MANUFACTURING</p>
                     </div>
                 </div>
@@ -70,6 +142,10 @@
                         <div class="meta-row">
                             <span class="meta-label">NOMOR ACHIEVEMENT</span>
                             <span class="meta-value" id="achievementNo">-</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">FILTERED LINES</span>
+                            <span class="meta-value" id="filteredLines">-</span>
                         </div>
                         <div class="meta-row line-badge">
                             <span class="badge-line" id="lineName">-</span>
@@ -91,26 +167,28 @@
                                 <th rowspan="2">ID<br>MESIN</th>
                                 <th rowspan="2">MESIN</th>
                                 <th rowspan="2">SPH</th>
-                                <th class="section-plan" rowspan="2">PLAN<br><br>QTY SPK</th>
+                                <th class="section-plan" rowspan="2">QTY<br>SPK</th>
                                 <th colspan="7" class="section-actual">ACTUAL PRODUKSI</th>
-                                <th rowspan="2">PERFORMANCE<br>SCORE</th>
+                                <th rowspan="2">PERF<br>SCORE</th>
                                 <th colspan="1" class="section-loading" id="machineLoadingHeader">MACHINE LOADING</th>
-                                <th rowspan="2">KODE<br>PROBLEM</th>
+                                <th rowspan="2">KODE<br>PROB</th>
                             </tr>
                             <tr>
                                 <th class="section-actual">QTY<br>PROD</th>
-                                <th class="section-actual">ACTUAL<br>TIME</th>
+                                <th class="section-actual">ACT<br>TIME</th>
                                 <th class="section-actual">SPH<br>ACT</th>
                                 <th class="section-actual">CYCLE<br>TIME</th>
                                 <th class="section-actual">DAND<br>ORI</th>
                                 <th class="section-actual">NEED<br>TIME</th>
-                                <th class="section-actual">PROSES<br>TIME</th>
-                                <th class="section-loading" id="machineHeaderRow"></th>
+                                <th class="section-actual">PROC<br>TIME</th>
+                                <th class="section-loading" id="machineHeaderPlaceholder"></th>
                             </tr>
                         </thead>
                         <tbody id="reportTableBody">
                             <tr>
-                                <td colspan="18" class="table-loading">Loading data...</td>
+                                <td colspan="18" style="text-align: center; padding: 30px; color: #666;">
+                                    Waiting for report generation...
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -131,21 +209,17 @@
                     <div class="summary-section">
                         <div class="summary-kapasitas">
                             <h4>KAPASITAS TERPAKAI</h4>
-                            <div class="kapasitas-grid" id="kapasitasGrid">
-                                <!-- Dynamic content -->
-                            </div>
+                            <div id="kapasitasGrid"></div>
                         </div>
                         <div class="summary-machines">
-                            <table class="summary-table">
+                            <table>
                                 <thead>
                                     <tr>
                                         <th>MACHINE</th>
                                         <th>AVG PERF</th>
                                     </tr>
                                 </thead>
-                                <tbody id="summaryTableBody">
-                                    <!-- Dynamic content -->
-                                </tbody>
+                                <tbody id="summaryTableBody"></tbody>
                             </table>
                         </div>
                     </div>
@@ -154,534 +228,10 @@
         </div>
     </div>
 
-    <script>
-// ========================================
-// PRODUCTION REPORT EXPORT - V4.1 FIXED
-// FIELD MAPPING SYNCHRONIZED
-// ========================================
-
-let reportData = null;
-let chartInstance = null;
-
-// ========================================
-// INITIALIZATION
-// ========================================
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Production Report Export V4.1 - Field Mapping Fixed');
-    loadReportData();
-});
-
-// ========================================
-// LOAD REPORT DATA
-// ========================================
-function loadReportData() {
-    showLoading('Loading report data...');
-    
-    try {
-        const storedData = sessionStorage.getItem('reportData');
-        
-        if (!storedData) {
-            throw new Error('No report data found!\n\nSilakan generate report dari dashboard terlebih dahulu.');
-        }
-        
-        reportData = JSON.parse(storedData);
-        console.log('📊 Report data loaded:', reportData);
-        
-        // Validate structure
-        if (!validateReportData(reportData)) {
-            throw new Error('Invalid report data structure!\n\nData tidak lengkap. Silakan regenerate report dari dashboard.');
-        }
-        
-        // Render report
-        renderReport();
-        hideLoading();
-        
-    } catch (error) {
-        console.error('❌ Load error:', error);
-        hideLoading();
-        showError(error.message);
-    }
-}
-
-// ========================================
-// VALIDATE DATA
-// ========================================
-function validateReportData(data) {
-    if (!data) {
-        console.error('❌ Data is null');
-        return false;
-    }
-    
-    if (!data.header || !data.header.dateFrom || !data.header.dateTo) {
-        console.error('❌ Missing header data');
-        return false;
-    }
-    
-    if (!Array.isArray(data.records) || data.records.length === 0) {
-        console.error('❌ Records invalid or empty');
-        return false;
-    }
-    
-    if (!Array.isArray(data.machines) || data.machines.length === 0) {
-        console.error('❌ Machines invalid or empty');
-        return false;
-    }
-    
-    if (!data.chartData || !data.chartData.labels || !data.chartData.values) {
-        console.error('❌ Chart data invalid');
-        return false;
-    }
-    
-    if (!data.summary) {
-        console.error('❌ Summary data missing');
-        return false;
-    }
-    
-    console.log('✅ Data validation passed');
-    return true;
-}
-
-// ========================================
-// RENDER REPORT
-// ========================================
-function renderReport() {
-    try {
-        console.log('🎨 Rendering report components...');
-        
-        renderHeader();
-        renderTable();
-        renderChart();
-        renderSummary();
-        
-        console.log('✅ Report rendered successfully');
-    } catch (error) {
-        console.error('❌ Render error:', error);
-        throw new Error('Failed to render report: ' + error.message);
-    }
-}
-
-// ========================================
-// RENDER HEADER
-// ========================================
-function renderHeader() {
-    const { dateFrom, dateTo, achievementNo, lineName } = reportData.header;
-    
-    // Format date display
-    let dateDisplay = '';
-    if (dateFrom === dateTo) {
-        const date = new Date(dateFrom);
-        dateDisplay = date.toLocaleDateString('id-ID', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
-    } else {
-        const from = new Date(dateFrom);
-        const to = new Date(dateTo);
-        dateDisplay = `${from.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })} s/d ${to.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}`;
-    }
-    
-    document.getElementById('reportDate').textContent = dateDisplay;
-    document.getElementById('achievementNo').textContent = achievementNo || '-';
-    document.getElementById('lineName').textContent = lineName || 'PRODUCTION LINE';
-}
-
-// ========================================
-// RENDER TABLE
-// ========================================
-function renderTable() {
-    const { records, machines } = reportData;
-    const tbody = document.getElementById('reportTableBody');
-    
-    if (!records || records.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="18" class="table-error">No data available</td></tr>';
-        return;
-    }
-    
-    // Update machine headers
-    updateMachineHeaders(machines);
-    
-    // Render rows
-    const fragment = document.createDocumentFragment();
-    
-    records.forEach(record => {
-        const row = createTableRow(record, machines);
-        fragment.appendChild(row);
-    });
-    
-    tbody.innerHTML = '';
-    tbody.appendChild(fragment);
-    
-    console.log(`✅ Rendered ${records.length} records with ${machines.length} machines`);
-}
-
-// ========================================
-// UPDATE MACHINE HEADERS
-// ========================================
-function updateMachineHeaders(machines) {
-    const machineLoadingHeader = document.getElementById('machineLoadingHeader');
-    const machineHeaderRow = document.getElementById('machineHeaderRow');
-    
-    if (!machineLoadingHeader || !machineHeaderRow) {
-        console.warn('Machine header elements not found');
-        return;
-    }
-    
-    // Update colspan
-    machineLoadingHeader.setAttribute('colspan', machines.length);
-    
-    // Clear existing machine headers
-    const parent = machineHeaderRow.parentElement;
-    const existingHeaders = parent.querySelectorAll('.section-loading:not(#machineLoadingHeader)');
-    existingHeaders.forEach(h => h.remove());
-    
-    // Add new machine headers
-    machines.forEach((machine, index) => {
-        const th = document.createElement('th');
-        th.className = 'section-loading';
-        th.textContent = machine.shortName || machine.name || `M${index + 1}`;
-        parent.insertBefore(th, machineHeaderRow);
-    });
-    
-    machineHeaderRow.remove();
-    
-    console.log(`✅ Machine headers updated: ${machines.length} columns`);
-}
-
-// ========================================
-// CREATE TABLE ROW
-// ========================================
-function createTableRow(record, machines) {
-    const tr = document.createElement('tr');
-    
-    // Parse performance score safely
-    let perfScore = 0;
-    if (record.performanceScore !== null && record.performanceScore !== undefined) {
-        if (typeof record.performanceScore === 'string') {
-            perfScore = parseFloat(record.performanceScore.replace('%', '').trim()) || 0;
-        } else {
-            perfScore = Number(record.performanceScore) || 0;
-        }
-    }
-    
-    const performanceClass = getPerformanceClass(perfScore);
-    
-    // Build row HTML
-    let rowHtml = `
-        <td class="col-part-name">${escapeHtml(record.partName || '')}</td>
-        <td class="col-part-no">${escapeHtml(record.partNo || '')}</td>
-        <td>${escapeHtml(record.idProses || '-')}</td>
-        <td>${escapeHtml(record.proses || '')}</td>
-        <td>${escapeHtml(record.idMesin || '-')}</td>
-        <td>${escapeHtml(record.mesin || '')}</td>
-        <td>${formatNumber(record.sph, 0)}</td>
-        <td>${formatNumber(record.qtySpk, 0)}</td>
-        <td>${formatNumber(record.qtyProd, 0)}</td>
-        <td>${formatNumber(record.actTime, 2)}</td>
-        <td>${formatNumber(record.sphAct, 0)}</td>
-        <td>${formatNumber(record.cycleTime, 1)}</td>
-        <td>${formatNumber(record.dandori, 0)}</td>
-        <td>${formatNumber(record.needTime, 2)}</td>
-        <td>${formatNumber(record.actTime, 2)}</td>
-        <td class="col-performance ${performanceClass}">${formatNumber(perfScore, 1)}%</td>
-    `;
-    
-    // Add machine loading cells
-    machines.forEach(machine => {
-        const machineKey = machine.name || machine.shortName;
-        const value = record.machineLoading && record.machineLoading[machineKey] 
-            ? Number(record.machineLoading[machineKey]) 
-            : 0;
-        const displayValue = value > 0 ? formatNumber(value, 2) : '';
-        rowHtml += `<td class="machine-loading-cell">${displayValue}</td>`;
-    });
-    
-    // Add problem code
-    rowHtml += `<td>${escapeHtml(record.kodeProblem || '')}</td>`;
-    
-    tr.innerHTML = rowHtml;
-    return tr;
-}
-
-// ========================================
-// GET PERFORMANCE CLASS
-// ========================================
-function getPerformanceClass(score) {
-    if (score >= 90) return 'performance-excellent';
-    if (score >= 70) return 'performance-good';
-    return 'performance-poor';
-}
-
-// ========================================
-// RENDER CHART
-// ========================================
-function renderChart() {
-    const { chartData } = reportData;
-    
-    const ctx = document.getElementById('reportChart');
-    if (!ctx) {
-        console.warn('Chart canvas not found');
-        return;
-    }
-    
-    // Destroy existing chart
-    if (chartInstance) {
-        chartInstance.destroy();
-        chartInstance = null;
-    }
-    
-    // Generate colors based on performance
-    const colors = chartData.values.map(value => {
-        if (value >= 90) return '#10b981';
-        if (value >= 70) return '#f59e0b';
-        return '#ef4444';
-    });
-    
-    // Create chart
-    chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: chartData.labels,
-            datasets: [{
-                label: 'Performance (%)',
-                data: chartData.values,
-                backgroundColor: colors,
-                borderColor: colors,
-                borderWidth: 2,
-                borderRadius: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 2.5,
-            plugins: {
-                legend: { 
-                    display: false 
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    padding: 10,
-                    titleFont: { size: 11, weight: 'bold' },
-                    bodyFont: { size: 10 },
-                    callbacks: {
-                        label: (context) => `Performance: ${context.parsed.y.toFixed(1)}%`
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    ticks: {
-                        callback: (value) => value + '%',
-                        font: { size: 9, weight: '600' }
-                    },
-                    grid: { 
-                        color: 'rgba(0, 0, 0, 0.1)',
-                        drawBorder: true
-                    }
-                },
-                x: {
-                    ticks: {
-                        font: { size: 9, weight: 'bold' }
-                    },
-                    grid: { 
-                        display: false 
-                    }
-                }
-            }
-        }
-    });
-    
-    console.log('✅ Chart rendered');
-}
-
-// ========================================
-// RENDER SUMMARY
-// ========================================
-function renderSummary() {
-    const { summary, machines } = reportData;
-    
-    // Kapasitas Terpakai
-    const kapasitasGrid = document.getElementById('kapasitasGrid');
-    if (kapasitasGrid && summary.kapasitasTerpakai) {
-        const kapasitasHtml = machines.map((machine, index) => {
-            const machineKey = machine.name || machine.shortName;
-            const value = summary.kapasitasTerpakai[machineKey] || 0;
-            return `
-                <div class="kapasitas-item">
-                    <span class="kapasitas-label">${machine.shortName || machine.name || `M${index + 1}`}</span>
-                    <span class="kapasitas-value">${value > 0 ? formatNumber(value, 2) : '-'}</span>
-                </div>
-            `;
-        }).join('');
-        
-        kapasitasGrid.innerHTML = kapasitasHtml;
-    }
-    
-    // Machine Performance Summary
-    const summaryTableBody = document.getElementById('summaryTableBody');
-    if (summaryTableBody && summary.machinePerformance) {
-        const tableHtml = summary.machinePerformance.map(item => {
-            const perfValue = Number(item.avgPerformance) || 0;
-            return `
-                <tr>
-                    <td>${escapeHtml(item.machine || '')}</td>
-                    <td>${perfValue > 0 ? formatNumber(perfValue, 1) + '%' : '-'}</td>
-                </tr>
-            `;
-        }).join('');
-        
-        summaryTableBody.innerHTML = tableHtml;
-    }
-    
-    console.log('✅ Summary rendered');
-}
-
-// ========================================
-// EXPORT TO PDF - HIGH QUALITY
-// ========================================
-async function exportToPDF() {
-    showLoading('Generating PDF...');
-    
-    try {
-        console.log('📄 Starting PDF export...');
-        
-        // Hide action bar for clean export
-        const actionBar = document.getElementById('actionBar');
-        const originalDisplay = actionBar.style.display;
-        actionBar.style.display = 'none';
-        
-        // Get report container
-        const reportContainer = document.getElementById('reportContainer');
-        
-        // Capture as image with high quality
-        const canvas = await html2canvas(reportContainer, {
-            scale: 2, // Higher quality
-            useCORS: true,
-            logging: false,
-            backgroundColor: '#ffffff',
-            windowWidth: 1122, // A4 landscape width in pixels (297mm)
-            windowHeight: 794   // A4 landscape height in pixels (210mm)
-        });
-        
-        // Restore action bar
-        actionBar.style.display = originalDisplay;
-        
-        // Create PDF
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({
-            orientation: 'landscape',
-            unit: 'mm',
-            format: 'a4',
-            compress: true
-        });
-        
-        // Calculate dimensions to fit A4
-        const imgWidth = 297; // A4 landscape width in mm
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        
-        // Add image to PDF
-        const imgData = canvas.toDataURL('image/png');
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, '', 'FAST');
-        
-        // Generate filename
-        const { dateFrom, dateTo, lineName } = reportData.header;
-        const filename = `Production_Report_${lineName || 'LINE'}_${dateFrom}_${dateTo}.pdf`;
-        
-        // Save PDF
-        pdf.save(filename);
-        
-        console.log('✅ PDF exported:', filename);
-        hideLoading();
-        
-    } catch (error) {
-        console.error('❌ PDF export error:', error);
-        hideLoading();
-        alert('Error generating PDF: ' + error.message + '\n\nPlease try again or contact support.');
-    }
-}
-
-// ========================================
-// NAVIGATION
-// ========================================
-function backToDashboard() {
-    // Cleanup
-    if (chartInstance) {
-        chartInstance.destroy();
-        chartInstance = null;
-    }
-    
-    // Clear session data
-    sessionStorage.removeItem('reportData');
-    
-    // Navigate back
-    window.location.href = 'prod_dashb_achv.html';
-}
-
-// ========================================
-// ERROR HANDLING
-// ========================================
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.innerHTML = `
-        <h3>⚠️ Error</h3>
-        <p>${escapeHtml(message)}</p>
-        <button onclick="backToDashboard()">Back to Dashboard</button>
-    `;
-    document.body.appendChild(errorDiv);
-}
-
-// ========================================
-// LOADING OVERLAY
-// ========================================
-function showLoading(message = 'Loading...') {
-    const overlay = document.getElementById('loadingOverlay');
-    const loadingText = document.getElementById('loadingText');
-    if (loadingText) loadingText.textContent = message;
-    if (overlay) overlay.classList.add('active');
-}
-
-function hideLoading() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) overlay.classList.remove('active');
-}
-
-// ========================================
-// UTILITY FUNCTIONS
-// ========================================
-function formatNumber(value, decimals = 0) {
-    if (value === null || value === undefined || value === '' || isNaN(value)) {
-        return '-';
-    }
-    return Number(value).toFixed(decimals);
-}
-
-function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = String(text);
-    return div.innerHTML;
-}
-
-// ========================================
-// CLEANUP ON EXIT
-// ========================================
-window.addEventListener('beforeunload', () => {
-    if (chartInstance) {
-        chartInstance.destroy();
-        chartInstance = null;
-    }
-});
-
-// Make functions globally accessible
-window.backToDashboard = backToDashboard;
-window.exportToPDF = exportToPDF;
-
-console.log('✅ Report Export Script V4.1 Loaded - Field Mapping Fixed');
-    </script>
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="assets/js/script_prod_report_export.js"></script>
 </body>
 </html>

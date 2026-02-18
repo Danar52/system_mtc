@@ -1,0 +1,843 @@
+/* ========================================
+   PRODUCTION REPORT EXPORT V7.1 - STYLES
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #1a1a1a;
+    --color-border: #000000;
+    --color-header-bg: #f5f5f5;
+    --color-plan: #c6e0b4;
+    --color-actual: #fce4d6;
+    --color-loading: #dae3f3;
+    --color-yellow: #ffeb9c;
+    --color-blue: #4472c4;
+    --font-family: "Plus Jakarta Sans", Arial, sans-serif;
+    --row-count: 10;
+}
+
+body {
+    font-family: var(--font-family);
+    background: #f0f0f0;
+    padding: 0;
+    margin: 0;
+}
+
+/* ========================================
+   ACTION BAR
+   ======================================== */
+.action-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.action-left,
+.action-right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-back,
+.btn-export {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(-2px);
+}
+
+.btn-pdf {
+    background: linear-gradient(135deg, #d32f2f 0%, #e57373 100%);
+    color: white;
+}
+
+.btn-export:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-export:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ========================================
+   REPORT CONTAINER
+   ======================================== */
+.report-wrapper {
+    padding-top: 90px;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.report-page {
+    width: 297mm;
+    min-height: 210mm;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 8mm;
+    position: relative;
+}
+
+/* ========================================
+   TABLE - OPTIMIZED FOR PDF
+   ======================================== */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: clamp(4.5px, calc(8px - var(--row-count) * 0.05px), 8px);
+    table-layout: fixed;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid var(--color-border);
+    padding: clamp(1.5px, calc(3.5px - var(--row-count) * 0.015px), 3.5px);
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.2;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.report-table thead th {
+    background: var(--color-header-bg);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.section-plan {
+    background: var(--color-plan) !important;
+    font-weight: 700;
+}
+
+.section-actual {
+    background: var(--color-actual) !important;
+    font-weight: 700;
+}
+
+.section-loading {
+    background: var(--color-loading) !important;
+    font-weight: 700;
+}
+
+.col-part-name {
+    text-align: left !important;
+    padding-left: 5px !important;
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.col-performance {
+    font-weight: 700;
+}
+
+.performance-excellent {
+    background: #d4edda !important;
+    color: #155724;
+    font-weight: 700;
+}
+
+.performance-good {
+    background: #fff3cd !important;
+    color: #856404;
+    font-weight: 700;
+}
+
+.performance-poor {
+    background: #f8d7da !important;
+    color: #721c24;
+    font-weight: 700;
+}
+
+.machine-loading-cell {
+    font-weight: 600;
+    color: var(--color-blue);
+}
+
+.machine-loading-cell:not(:empty) {
+    background: rgba(218, 227, 243, 0.4);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+.report-header {
+    border: 2px solid var(--color-border);
+    margin-bottom: 6px;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.company-info h1 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.company-info p {
+    font-size: 9px;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.header-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.report-title {
+    padding: 8px 10px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px solid var(--color-border);
+}
+
+.report-title h2 {
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-primary);
+}
+
+.report-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    font-size: 8px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.meta-row:last-child {
+    border-bottom: none;
+}
+
+.meta-label {
+    padding: 4px 8px;
+    background: var(--color-header-bg);
+    font-weight: 700;
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+}
+
+.meta-value {
+    padding: 4px 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.line-badge {
+    grid-template-columns: 1fr;
+    background: var(--color-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge-line {
+    font-weight: 800;
+    font-size: 10px;
+    color: var(--color-primary);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.report-footer {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 6px;
+    border: 2px solid var(--color-border);
+    padding: 6px;
+    min-height: 100px;
+}
+
+.chart-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    min-height: 100px;
+    position: relative;
+}
+
+.chart-wrapper canvas {
+    max-height: 90px !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.chart-section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chart-section h3 {
+    font-size: 9px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+    color: var(--color-primary);
+}
+
+.summary-kapasitas {
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.summary-kapasitas h4 {
+    background: var(--color-yellow);
+    padding: 4px;
+    margin: 0 0 4px 0;
+    border: 1px solid var(--color-border);
+    font-size: 9px;
+    text-align: center;
+}
+
+#kapasitasGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 3px;
+}
+
+.summary-machines table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7px;
+}
+
+.summary-machines th,
+.summary-machines td {
+    border: 1px solid var(--color-border);
+    padding: 4px;
+}
+
+.summary-machines th {
+    background: var(--color-header-bg);
+    font-weight: 700;
+}
+
+/* ========================================
+   DATE PICKER MODAL
+   ======================================== */
+.date-picker-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.date-picker-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.date-picker-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    padding: 32px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.date-picker-modal.active .date-picker-content {
+    transform: scale(1);
+}
+
+.date-picker-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.date-picker-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+}
+
+.date-picker-header p {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.date-picker-section {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title svg {
+    opacity: 0.6;
+}
+
+.date-picker-body {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: end;
+}
+
+.date-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.date-input-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.date-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 500;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+}
+
+.date-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    padding-bottom: 8px;
+}
+
+/* ========================================
+   GROUP LINE SELECTOR
+   ======================================== */
+.group-line-selector {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.checkbox-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-item.checked {
+    background: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.checkbox-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.line-info {
+    flex: 1;
+}
+
+.line-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 2px;
+}
+
+.line-desc {
+    font-size: 11px;
+    color: #666;
+    font-weight: 500;
+}
+
+.record-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    min-width: 32px;
+    padding: 4px 10px;
+    background: #2196f3;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.record-badge.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(0.95);
+    }
+}
+
+.checkbox-item.disabled .record-badge {
+    background: #ccc;
+}
+
+.selector-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn-control {
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: white;
+    color: var(--color-primary);
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-control:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+/* ========================================
+   PREVIEW SECTION
+   ======================================== */
+.selection-preview {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.preview-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #856404;
+    margin-bottom: 8px;
+}
+
+.preview-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: #856404;
+}
+
+.preview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-warning {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: rgba(255, 87, 34, 0.1);
+    border-left: 3px solid #ff5722;
+    font-size: 11px;
+    color: #d84315;
+    font-weight: 600;
+}
+
+/* ========================================
+   MODAL ACTIONS
+   ======================================== */
+.date-picker-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.btn-cancel,
+.btn-generate {
+    padding: 12px 24px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-cancel {
+    background: #f5f5f5;
+    color: var(--color-primary);
+    border-color: #e0e0e0;
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
+
+.btn-generate {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+}
+
+.btn-generate:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-generate:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========================================
+   LOADING OVERLAY
+   ======================================== */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-spinner {
+    text-align: center;
+    color: white;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media screen and (max-width: 768px) {
+    .checkbox-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .date-picker-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .date-separator {
+        transform: rotate(90deg);
+    }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+    .action-bar,
+    .loading-overlay,
+    .date-picker-modal {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .report-wrapper {
+        padding: 0;
+        display: block;
+    }
+    
+    .report-page {
+        box-shadow: none;
+        width: 297mm !important;
+        min-height: 210mm !important;
+        margin: 0;
+        padding: 8mm;
+        page-break-after: avoid;
+    }
+    
+    .report-table {
+        page-break-inside: avoid;
+    }
+    
+    .chart-wrapper canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
