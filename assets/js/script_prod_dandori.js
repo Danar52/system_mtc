@@ -1,7 +1,7 @@
  // ========================================
         // CONFIGURATION
         // ========================================
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_d98hagrN6lw5JIvB7gkACpKMZ75QGcdGx0J9JRKRggYOWq4qmVDNeGShdjM-pv0/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyRPye4nSQlAdMcE_ggYiu75lyo2ijFEYGJ-_khrZpVufeBwosZNJqa2Py7Zo9maRGg/exec"; 
 
         // State Management
         let masterData = {};
