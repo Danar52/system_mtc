@@ -397,7 +397,7 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    const btn          = document.getElementById('btnSubmit');
+    const btn          = document.getElementById('btnNext');
     const originalHTML = btn.innerHTML;
 
     btn.disabled = true;
@@ -455,6 +455,7 @@ async function handleFormSubmit(e) {
             updateNoLkdPreview();
             document.getElementById('durationPreview').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.wizardGoToStep) wizardGoToStep(1);
 
         } else {
             showAlert('❌ ' + result.message, 'error');
@@ -482,6 +483,7 @@ function resetForm() {
     document.getElementById('durationPreview').style.display = 'none';
     document.getElementById('alertContainer').innerHTML = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.wizardGoToStep) wizardGoToStep(1);
 }
 
 // ============================================
