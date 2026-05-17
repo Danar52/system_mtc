@@ -44,11 +44,11 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote { margin: 0; p
   --yellow-bg:    #fefce8;
   --yellow-border:#fef08a;
 
-  --r-sm:  6px;
-  --r-md:  10px;
-  --r-lg:  14px;
-  --r-xl:  18px;
-  --r-pill: 999px;
+  --r-sm:  0px;
+  --r-md:  0px;
+  --r-lg:  0px;
+  --r-xl:  0px;
+  --r-pill: 0px;
 
   --sh-sm: none;
   --sh-md: none;
@@ -59,8 +59,8 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote { margin: 0; p
   --ring-error: 0 0 0 3px rgba(239,68,68,0.10);
   --ring-amber: 0 0 0 3px rgba(245,158,11,0.15);
 
-  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: Arial, Helvetica, sans-serif;
 
   /* ---- Backward compat — old CSS files use these names ---- */
   --color-primary:       #1c2025;
@@ -94,17 +94,17 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote { margin: 0; p
   --spacing-xl:  2rem;
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
-  --radius-sm:  6px;
-  --radius-md:  10px;
-  --radius-lg:  14px;
-  --radius-xl:  18px;
-  --radius-2xl: 24px;
-  --radius-full: 9999px;
+  --radius-sm:  0px;
+  --radius-md:  0px;
+  --radius-lg:  0px;
+  --radius-xl:  0px;
+  --radius-2xl: 0px;
+  --radius-full: 0px;
   --shadow-sm: none;
   --shadow-md: none;
   --shadow-lg: none;
   --shadow-xl: none;
-  --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-family: Arial, Helvetica, sans-serif;
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 180ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -140,8 +140,9 @@ body {
 .main-content {
   margin-left: var(--sidebar-width);
   flex: 1;
-  padding: 36px 40px 64px;
-  max-width: 980px;
+  padding: 32px 36px 64px;
+  width: calc(100% - var(--sidebar-width));
+  max-width: none;
 }
 
 /* ============ 5. SIDEBAR ============ */
@@ -189,19 +190,19 @@ body {
 
 .sidebar-nav {
   flex: 1;
-  padding: 12px 10px;
+  padding: 8px 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0;
   overflow-y: auto;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: var(--r-md);
+  gap: 12px;
+  padding: 11px 20px;
+  border-radius: 0;
   color: var(--sidebar-text);
   text-decoration: none;
   font-size: 0.8rem;
@@ -209,6 +210,7 @@ body {
   transition: all var(--t);
   position: relative;
   white-space: nowrap;
+  height: 44px;
 }
 
 .nav-item:hover {
@@ -229,12 +231,10 @@ body {
 .nav-item.active::before {
   content: '';
   position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%);
+  left: 0; top: 0;
   width: 3px;
-  height: 55%;
+  height: 100%;
   background: var(--amber);
-  border-radius: 0 2px 2px 0;
 }
 
 .nav-item svg { flex-shrink: 0; }
@@ -242,7 +242,7 @@ body {
 .nav-divider {
   height: 1px;
   background: var(--sidebar-border);
-  margin: 6px 0;
+  margin: 4px 0;
 }
 
 .nav-back { color: rgba(255,255,255,0.35); }
@@ -265,7 +265,7 @@ body {
 .user-avatar {
   width: 30px; height: 30px;
   background: rgba(255,255,255,0.12);
-  border-radius: 50%;
+  border-radius: 0;
   display: flex; align-items: center; justify-content: center;
   font-size: 0.72rem; font-weight: 700;
   color: var(--sidebar-text-on);
@@ -413,7 +413,7 @@ body {
 
 .step-bubble {
   width: 28px; height: 28px;
-  border-radius: 50%;
+  border-radius: 0;
   border: 2px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   font-size: 0.72rem; font-weight: 700;
@@ -553,15 +553,16 @@ body {
 .field-input,
 .field-textarea {
   width: 100%;
-  padding: 10px 13px;
+  padding: 9px 12px;
+  height: 38px;
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
   background: var(--bg-surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  border-radius: 0;
   outline: none;
-  transition: all var(--t);
+  transition: border-color var(--t);
   -webkit-appearance: none;
   appearance: none;
 }
@@ -607,6 +608,7 @@ body {
 
 .field-textarea {
   resize: vertical;
+  height: auto;
   min-height: 88px;
   line-height: 1.6;
 }
@@ -638,10 +640,11 @@ select.field-input {
 .lkd-input-group {
   display: flex;
   align-items: center;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  border-radius: 0;
   overflow: hidden;
-  transition: all var(--t);
+  height: 38px;
+  transition: border-color var(--t);
   background: var(--bg-surface);
 }
 
@@ -705,6 +708,7 @@ select.field-input {
   border-radius: 50%;
   animation: spin 500ms linear infinite;
 }
+/* keep 50% on loader — must be circular to animate correctly */
 
 .autocomplete-list {
   position: absolute;
@@ -803,14 +807,15 @@ select.field-input {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 10px 22px;
-  border-radius: var(--r-md);
+  padding: 0 20px;
+  height: 38px;
+  border-radius: 0;
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: all var(--t);
+  transition: background var(--t), border-color var(--t);
   white-space: nowrap;
   text-decoration: none;
   line-height: 1;
@@ -865,13 +870,14 @@ select.field-input {
 
 .code-input,
 .min-input {
-  padding: 8px 12px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-md);
-  font-size: 0.875rem;
+  padding: 0 12px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-size: 0.85rem;
   text-align: center;
   font-weight: 700;
-  transition: all var(--t);
+  transition: border-color var(--t);
   width: 100%;
   font-family: var(--font-mono);
   outline: none;
@@ -887,16 +893,17 @@ select.field-input {
   background: var(--red);
   color: var(--text-inverse);
   border: none;
-  width: 34px; height: 34px;
-  border-radius: var(--r-md);
+  width: 38px; height: 38px;
+  border-radius: 0;
   cursor: pointer;
-  transition: all var(--t);
+  transition: background var(--t);
   display: flex; align-items: center; justify-content: center;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .btn-delete svg { width: 14px; height: 14px; }
-.btn-delete:hover { background: #dc2626; transform: scale(1.08); }
+.btn-delete:hover { background: #dc2626; }
 
 .btn-add-row {
   margin-top: 10px;
@@ -970,9 +977,8 @@ select.field-input {
   width: 80px; height: 80px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: 50%;
+  border-radius: 0;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: var(--sh-md);
   color: var(--text-primary);
 }
 
