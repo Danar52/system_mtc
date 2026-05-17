@@ -288,7 +288,7 @@
                 return;
             }
 
-            const btn = document.getElementById('btnSubmit');
+            const btn = document.getElementById('btnNext');
             const originalHTML = btn.innerHTML;
             
             btn.disabled = true;
@@ -415,5 +415,6 @@
                 selectedPartData = null;
                 setDefaultDate();
                 addRow();
+                if (window.wizardGoToStep) wizardGoToStep(1);
             }
         }
