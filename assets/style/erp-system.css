@@ -50,9 +50,9 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote { margin: 0; p
   --r-xl:  18px;
   --r-pill: 999px;
 
-  --sh-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --sh-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-  --sh-lg: 0 10px 30px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.04);
+  --sh-sm: none;
+  --sh-md: none;
+  --sh-lg: none;
 
   --t: 180ms cubic-bezier(0.4, 0, 0.2, 1);
   --ring-focus: 0 0 0 3px rgba(28,32,37,0.08);
@@ -100,10 +100,10 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote { margin: 0; p
   --radius-xl:  18px;
   --radius-2xl: 24px;
   --radius-full: 9999px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.10);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,0.12);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
   --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 180ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -456,12 +456,19 @@ body {
 .step-panel { display: none; }
 .step-panel.active { display: block; }
 
-/* Wizard bottom bar */
+/* Wizard bottom bar — sticky so Next is always visible */
 .wizard-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 0 0;
+  padding: 14px 20px;
+  margin-top: 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
 }
 
 .step-counter {
@@ -483,7 +490,7 @@ body {
   transition: box-shadow var(--t);
 }
 
-.form-section:hover { box-shadow: var(--sh-md); }
+.form-section:hover { border-color: var(--border-focus); }
 
 .section-header {
   display: flex;
@@ -810,7 +817,7 @@ select.field-input {
 }
 
 .btn-primary { background: var(--text-primary); color: var(--text-inverse); }
-.btn-primary:hover:not(:disabled) { background: #2d3748; transform: translateY(-1px); box-shadow: var(--sh-md); }
+.btn-primary:hover:not(:disabled) { background: #2d3748; }
 .btn-primary:active { transform: translateY(0); }
 .btn-primary:focus-visible {
   outline: 2px solid var(--amber);
