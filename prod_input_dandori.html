@@ -6,8 +6,8 @@
     <title>Input Data Dandori - Production System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/style/style_input_dandori.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style/erp-system.css">
 </head>
 <body>
     <div class="page-wrapper">
@@ -71,16 +71,19 @@
         <main class="main-content">
             <div class="content-header">
                 <div class="header-left">
+                    <div class="header-eyebrow">Form Input</div>
                     <h2>Input Data Dandori</h2>
-                    <p>Form pengisian data dandori produksi untuk monitoring waktu pergantian</p>
+                    <p>Pengisian data dandori produksi untuk monitoring waktu pergantian</p>
                 </div>
                 <div class="header-right">
-                    <div class="info-badge">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M2 6H14M5 1V3M11 1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        <span class="badge-value" id="currentDate">Loading...</span>
+                    <div class="header-badge">
+                        <div class="badge-icon">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 6H14M5 1V3M11 1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        </div>
+                        <div>
+                            <span class="badge-label">Tanggal</span>
+                            <span class="badge-value" id="currentDate">Loading...</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -88,15 +91,22 @@
             <!-- Alert Container -->
             <div id="alertContainer"></div>
 
+            <!-- Wizard Steps Indicator -->
+            <div class="wizard-steps">
+                <div class="wizard-step"><div class="step-bubble">1</div><span class="step-label">Info Umum</span></div>
+                <div class="wizard-step"><div class="step-bubble">2</div><span class="step-label">Data Part</span></div>
+                <div class="wizard-step"><div class="step-bubble">3</div><span class="step-label">Aktivitas</span></div>
+            </div>
+
             <!-- Form Container -->
             <div class="form-container">
                 <form id="dandoriForm">
                     <!-- Section: Informasi Umum -->
+                    <div class="step-panel" data-step="1">
                     <div class="form-section">
-                        <div class="section-header">
-                            <h3>Informasi Umum</h3>
+                        <div class="section-header"><div class="section-number">01</div><div><h3>Informasi Umum</h3>
                             <p>Data tanggal, operator dan mesin produksi</p>
-                        </div>
+                        </div></div>
                         <div class="form-grid">
                             <div class="form-field">
                                 <label for="tanggal" class="field-label required">
@@ -166,12 +176,14 @@
                         </div>
                     </div>
 
+                    </div></div>
+
                     <!-- Section: Data Part -->
+                    <div class="step-panel" data-step="2">
                     <div class="form-section">
-                        <div class="section-header">
-                            <h3>Data Part & Proses</h3>
+                        <div class="section-header"><div class="section-number">02</div><div><h3>Data Part &amp; Proses</h3>
                             <p>Identitas part dan proses yang di-dandori</p>
-                        </div>
+                        </div></div>
                         <div class="form-grid">
                             <div class="form-field full-width">
                                 <label for="searchPartName" class="field-label required">
@@ -266,12 +278,14 @@
                         </div>
                     </div>
 
+                    </div></div>
+
                     <!-- Section: Rincian Aktivitas -->
+                    <div class="step-panel" data-step="3">
                     <div class="form-section">
-                        <div class="section-header">
-                            <h3>Rincian Aktivitas Dandori</h3>
+                        <div class="section-header"><div class="section-number">03</div><div><h3>Rincian Aktivitas Dandori</h3>
                             <p>Input kode aktivitas dan durasi dalam menit</p>
-                        </div>
+                        </div></div>
 
                         <div class="activities-wrapper">
                             <table class="activities-table">
@@ -337,21 +351,18 @@
                         </div>
                     </div>
 
-                    <!-- Form Actions -->
-                    <div class="form-actions">
-                        <button type="button" class="btn-secondary" onclick="resetForm()">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 9C2 5.13401 5.13401 2 9 2C12.866 2 16 5.13401 16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9Z" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M9 5V9L11.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
-                            <span>Reset Form</span>
+                    </div></div>
+
+                    <!-- Wizard Navigation -->
+                    <div class="wizard-actions">
+                        <button type="button" id="btnBack" class="btn-secondary" onclick="wizardPrevStep()">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Back
                         </button>
-                        <button type="submit" class="btn-primary" id="btnSubmit">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 2L3 6V12L9 16L15 12V6L9 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                                <path d="M9 9L3 6M9 9L15 6M9 9V16" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Simpan Data</span>
+                        <span class="step-counter" id="stepCounter">Step 1 / 3</span>
+                        <button type="button" id="btnNext" class="btn-primary" onclick="wizardNextStep()">
+                            Next
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
                     </div>
                 </form>
@@ -359,6 +370,7 @@
         </main>
     </div>
 
+    <script src="assets/js/erp-wizard.js"></script>
     <script src="assets/js/script_prod_dandori.js"></script>
 </body>
 </html>
