@@ -185,11 +185,13 @@ function showAutocomplete(matches) {
         item.className = 'autocomplete-item';
 
         item.innerHTML = `
-            <div class="autocomplete-item-id">${highlightMatch(dies.id_dies, query)}</div>
-            <div class="autocomplete-item-name">
-                ${highlightMatch(dies.nama_dies, query)}
-                ${dies.nama_proses ? ` &middot; ${highlightMatch(dies.nama_proses, query)}` : ''}
-                ${dies.id_cust    ? ` &middot; ${dies.id_cust}` : ''}
+            <div class="autocomplete-item-main">
+                <div class="autocomplete-item-id">${highlightMatch(dies.nama_dies, query)}</div>
+                <div class="autocomplete-item-name">ID: ${highlightMatch(dies.id_dies, query)}</div>
+            </div>
+            <div class="autocomplete-item-sub">
+                <span class="autocomplete-item-badge">${dies.id_proses ? dies.id_proses + ' &middot; ' : ''}${dies.nama_proses ? highlightMatch(dies.nama_proses, query) : ''}</span>
+                ${dies.id_cust ? `<span class="autocomplete-item-time">${dies.id_cust}</span>` : ''}
             </div>
         `;
 
