@@ -131,11 +131,11 @@
             autocompleteList.innerHTML = parts.map(part => `
                 <div class="autocomplete-item" onclick="selectPart('${part.uniqueKey}')">
                     <div class="autocomplete-item-main">
-                        <div class="autocomplete-item-name">${part.partName}</div>
-                        <div class="autocomplete-item-id">Part No: ${part.partNo}</div>
+                        <div class="autocomplete-item-id">${part.partName}</div>
+                        <div class="autocomplete-item-name">Part No: ${part.partNo}</div>
                     </div>
                     <div class="autocomplete-item-sub">
-                        <span class="autocomplete-item-badge">${part.namaProses}</span>
+                        <span class="autocomplete-item-badge">${part.idProses} &middot; ${part.namaProses}</span>
                         <span class="autocomplete-item-time">${part.stdTime} min</span>
                     </div>
                 </div>
