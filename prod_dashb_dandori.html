@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Monitoring Loss Time Dandori - PT. Kenco</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f0f0f0;
+            color: #1a1a1a;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===== LOADING ===== */
+        .loading-overlay {
+            position: fixed; inset: 0;
+            background: rgba(255,255,255,0.95);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 14px;
+            z-index: 999;
+            font-size: 0.9rem; color: #333;
+        }
+        .loading-overlay.hidden { display: none; }
+        .loading-spinner {
+            width: 38px; height: 38px;
+            border: 3px solid #ddd;
+            border-top-color: #1B6B79;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            background: white;
+            border-bottom: 2px solid #ccc;
+            flex-shrink: 0;
+        }
+
+        .company-bar {
+            display: flex;
+            align-items: center;
+            padding: 6px 14px;
+            border-bottom: 1px solid #ddd;
+            gap: 12px;
+        }
+
+        .company-logo-box {
+            background: #8B1A1A;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            min-width: 52px;
+            flex-shrink: 0;
+        }
+        .logo-k {
+            font-size: 1.6rem;
+            font-weight: 900;
+            line-height: 1;
+            display: block;
+        }
+
+        .company-info { flex-shrink: 0; }
+        .company-name {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #8B1A1A;
+            letter-spacing: 0.03em;
+        }
+        .company-sub {
+            font-size: 0.65rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .dash-title {
+            flex: 1;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: #1a1a1a;
+        }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 10px;
+            border: 1px solid #bbb;
+            background: none;
+            font-size: 0.73rem; color: #555;
+            cursor: pointer;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .back-btn:hover { background: #f5f5f5; }
+
+        /* ===== INFO BAR ===== */
+        .info-bar {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 5px 14px;
+            font-size: 0.8rem;
+        }
+        .info-item { display: flex; align-items: center; gap: 0; }
+        .info-label { font-weight: 700; min-width: 100px; }
+        .info-colon { color: #666; margin-right: 6px; }
+        .info-value { color: #1a1a1a; }
+
+        .periode-input {
+            background: #FFFF00;
+            border: 1px solid #aaa;
+            padding: 2px 5px;
+            font-size: 0.78rem;
+            font-family: Arial, sans-serif;
+            color: #1a1a1a;
+            cursor: pointer;
+        }
+        .periode-sep { margin: 0 5px; font-weight: 700; color: #333; }
+
+        /* ===== MAIN BODY ===== */
+        .dashboard-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background: #e8e8e8;
+            gap: 2px;
+        }
+
+        /* ===== FILTER PANEL ===== */
+        .filter-panel {
+            width: 190px;
+            min-width: 190px;
+            background: white;
+            overflow-y: auto;
+            border-right: 2px solid #ccc;
+            flex-shrink: 0;
+        }
+
+        .filter-group { border-bottom: 1px solid #ddd; }
+
+        .filter-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 8px;
+            background: #f2f2f2;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .filter-icons { display: flex; gap: 4px; }
+        .filter-icon {
+            cursor: pointer;
+            color: #555;
+            font-size: 0.8rem;
+            padding: 1px 3px;
+            border: 1px solid transparent;
+        }
+        .filter-icon:hover { background: #e0e0e0; border-color: #ccc; }
+
+        .filter-chips {
+            padding: 4px 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .filter-chip {
+            display: block;
+            width: 100%;
+            padding: 4px 8px;
+            font-size: 0.71rem;
+            font-weight: 600;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            border: none;
+            border-radius: 1px;
+            text-align: left;
+            color: white;
+            background: #27AE60;
+            transition: opacity 0.12s;
+        }
+        .filter-chip.inactive {
+            background: #bdc3c7;
+            color: #555;
+        }
+        .filter-chip:hover { opacity: 0.8; }
+
+        /* ===== CHARTS AREA ===== */
+        .charts-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 2px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .chart-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chart-card.top  { flex: 1.4; min-height: 0; }
+        .chart-card.half { flex: 1; min-height: 0; min-width: 0; }
+
+        .chart-title {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+
+        .chart-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .charts-row {
+            display: flex;
+            gap: 2px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* ===== SUMMARY PANEL ===== */
+        .summary-panel {
+            width: 270px;
+            min-width: 270px;
+            background: white;
+            border-left: 2px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .total-card {
+            background: #1B2631;
+            color: white;
+            padding: 14px 12px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .total-card-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 6px;
+        }
+        .total-card-number {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .summary-tables {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.73rem;
+            margin-bottom: 1px;
+        }
+        .summary-table thead th {
+            background: #1B2631;
+            color: white;
+            padding: 5px 8px;
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .summary-table tbody tr:nth-child(even) { background: #f4f6f7; }
+        .summary-table tbody tr:hover { background: #eaf2ff; }
+        .summary-table tbody td {
+            padding: 4px 8px;
+            border-bottom: 1px solid #eee;
+            color: #1a1a1a;
+        }
+        .summary-table tbody td:last-child {
+            text-align: right;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+        .summary-table tfoot td {
+            padding: 5px 8px;
+            font-weight: 800;
+            background: #d5dbdb;
+            border-top: 2px solid #aaa;
+            font-size: 0.73rem;
+        }
+        .summary-table tfoot td:last-child {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .table-spacer { height: 6px; background: #e8e8e8; }
+    </style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <span>Memuat data dashboard...</span>
+</div>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="page-header">
+    <div class="company-bar">
+        <div class="company-logo-box">
+            <span class="logo-k">K</span>
+        </div>
+        <div class="company-info">
+            <div class="company-name">PT. KENCO MANUFACTUR INDONESIA</div>
+            <div class="company-sub">DIES, JIGS &amp; PARTS MANUFACTURING</div>
+        </div>
+        <div class="dash-title">DASHBOARD MONITORING LOSS TIME PRODUKSI GLOBAL</div>
+        <a href="index.html" class="back-btn">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <path d="M8 2L3 6.5L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Kembali
+        </a>
+    </div>
+
+    <div class="info-bar">
+        <div class="info-item">
+            <span class="info-label">DEPARTEMENT</span>
+            <span class="info-colon">:</span>
+            <span class="info-value">PRODUCTION</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">SECTION</span>
+            <span class="info-colon">:</span>
+            <span class="info-value">STAMPING</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">TANGGAL</span>
+            <span class="info-colon">:</span>
+            <span class="info-value" id="todayDate">-</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">PERIODE</span>
+            <span class="info-colon">:</span>
+            <input type="date" id="dateFrom" class="periode-input" onchange="applyFilters()">
+            <span class="periode-sep">s/d</span>
+            <input type="date" id="dateTo" class="periode-input" onchange="applyFilters()">
+        </div>
+    </div>
+</div>
+
+<!-- ===== MAIN BODY ===== -->
+<div class="dashboard-body">
+
+    <!-- LEFT: FILTER SLICERS -->
+    <div class="filter-panel">
+        <div class="filter-group">
+            <div class="filter-group-header">
+                <span>nama_mesin</span>
+                <div class="filter-icons">
+                    <span class="filter-icon" onclick="selectAll('mesin')" title="Pilih Semua">&#8801;</span>
+                    <span class="filter-icon" onclick="clearAll('mesin')" title="Reset">&#10005;</span>
+                </div>
+            </div>
+            <div class="filter-chips" id="mesinChips"></div>
+        </div>
+
+        <div class="filter-group">
+            <div class="filter-group-header">
+                <span>month</span>
+                <div class="filter-icons">
+                    <span class="filter-icon" onclick="selectAll('month')" title="Pilih Semua">&#8801;</span>
+                    <span class="filter-icon" onclick="clearAll('month')" title="Reset">&#10005;</span>
+                </div>
+            </div>
+            <div class="filter-chips" id="monthChips"></div>
+        </div>
+
+        <div class="filter-group">
+            <div class="filter-group-header">
+                <span>week</span>
+                <div class="filter-icons">
+                    <span class="filter-icon" onclick="selectAll('week')" title="Pilih Semua">&#8801;</span>
+                    <span class="filter-icon" onclick="clearAll('week')" title="Reset">&#10005;</span>
+                </div>
+            </div>
+            <div class="filter-chips" id="weekChips"></div>
+        </div>
+    </div>
+
+    <!-- CENTER: CHARTS -->
+    <div class="charts-area">
+        <div class="chart-card top">
+            <div class="chart-title">GRAFIK LOSS TIME (menit)</div>
+            <div class="chart-wrap">
+                <canvas id="chartJenis"></canvas>
+            </div>
+        </div>
+        <div class="charts-row">
+            <div class="chart-card half">
+                <div class="chart-title">GRAFIK LOSS TIME/WEEK (menit)</div>
+                <div class="chart-wrap">
+                    <canvas id="chartWeek"></canvas>
+                </div>
+            </div>
+            <div class="chart-card half">
+                <div class="chart-title">GRAFIK LOSS TIME/MONTH (menit)</div>
+                <div class="chart-wrap">
+                    <canvas id="chartMonth"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <div class="summary-panel">
+        <div class="total-card">
+            <div class="total-card-title">TOTAL LOSS TIME</div>
+            <div class="total-card-number" id="totalNumber">0</div>
+        </div>
+        <div class="summary-tables">
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>JENIS LOSS TIME</th>
+                        <th>TOTAL LOSS TIME</th>
+                    </tr>
+                </thead>
+                <tbody id="jenisTableBody"></tbody>
+                <tfoot id="jenisTableFoot"></tfoot>
+            </table>
+            <div class="table-spacer"></div>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>NAMA MESIN</th>
+                        <th>TOTAL LOSS TIME</th>
+                    </tr>
+                </thead>
+                <tbody id="mesinTableBody"></tbody>
+                <tfoot id="mesinTableFoot"></tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxnn-G2SxyjV3V9bONE45zrMcv6fW9EYZIIw4wBYqn7CBy9Io0nIXwhztyiss9E5ORs/exec';
+
+const BAR_COLOR       = '#1B6B79';
+const BAR_COLOR_HOVER = '#154F5A';
+
+// ============================================================
+// STATE
+// ============================================================
+let allRows  = [];
+let meta     = { mesin: [], months: [], weeks: [] };
+let selected = { mesin: new Set(), month: new Set(), week: new Set() };
+
+let chartJenis = null;
+let chartWeek  = null;
+let chartMonth = null;
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    setTodayDate();
+    setDefaultPeriod();
+    loadData();
+});
+
+function setTodayDate() {
+    const t = new Date();
+    const dd = String(t.getDate()).padStart(2,'0');
+    const mm = String(t.getMonth()+1).padStart(2,'0');
+    const yy = String(t.getFullYear()).slice(2);
+    document.getElementById('todayDate').textContent = `${dd}/${mm}/${yy}`;
+}
+
+function setDefaultPeriod() {
+    const t = new Date();
+    const y = t.getFullYear(), m = t.getMonth();
+    document.getElementById('dateFrom').value = fmtDate(new Date(y, m, 1));
+    document.getElementById('dateTo').value   = fmtDate(new Date(y, m+1, 0));
+}
+
+function fmtDate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ============================================================
+// DATA LOAD
+// ============================================================
+async function loadData() {
+    showLoading(true);
+    try {
+        const res  = await fetch(`${WEB_APP_URL}?action=getDashboardDandori&_=${Date.now()}`);
+        const json = await res.json();
+
+        if (json.error) { alert('API Error: ' + json.error); return; }
+
+        allRows = json.rows || [];
+        meta    = json.meta || { mesin: [], months: [], weeks: [] };
+
+        buildChips('mesinChips', meta.mesin,   'mesin');
+        buildChips('monthChips', meta.months,  'month');
+        buildChips('weekChips',  meta.weeks,   'week');
+
+        applyFilters();
+    } catch (e) {
+        console.error(e);
+        alert('Gagal memuat data. Periksa koneksi dan URL deployment.');
+    } finally {
+        showLoading(false);
+    }
+}
+
+function showLoading(v) {
+    document.getElementById('loadingOverlay').classList.toggle('hidden', !v);
+}
+
+// ============================================================
+// FILTER CHIPS
+// ============================================================
+function buildChips(containerId, items, key) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = '';
+    items.forEach(item => {
+        selected[key].add(item);
+        const btn = document.createElement('button');
+        btn.className   = 'filter-chip';
+        btn.textContent = item;
+        btn.dataset.val = item;
+        btn.addEventListener('click', () => toggleChip(btn, key, item));
+        el.appendChild(btn);
+    });
+}
+
+function toggleChip(btn, key, val) {
+    if (selected[key].has(val)) {
+        selected[key].delete(val);
+        btn.classList.add('inactive');
+    } else {
+        selected[key].add(val);
+        btn.classList.remove('inactive');
+    }
+    applyFilters();
+}
+
+function selectAll(key) {
+    const chips = document.querySelectorAll(`#${key}Chips .filter-chip`);
+    chips.forEach(b => { selected[key].add(b.dataset.val); b.classList.remove('inactive'); });
+    applyFilters();
+}
+
+function clearAll(key) {
+    const chips = document.querySelectorAll(`#${key}Chips .filter-chip`);
+    chips.forEach(b => { selected[key].delete(b.dataset.val); b.classList.add('inactive'); });
+    applyFilters();
+}
+
+// ============================================================
+// APPLY FILTERS & AGGREGATE
+// ============================================================
+function applyFilters() {
+    const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo   = document.getElementById('dateTo').value;
+
+    const byJenis = {}, byWeek = {}, byMonth = {}, byMesin = {};
+    let total = 0;
+
+    allRows.forEach(([tanggal, month, week, mesin, jenis, menit]) => {
+        if (dateFrom && tanggal < dateFrom) return;
+        if (dateTo   && tanggal > dateTo)   return;
+        if (selected.mesin.size && !selected.mesin.has(mesin)) return;
+        if (selected.month.size && !selected.month.has(month)) return;
+        if (selected.week.size  && !selected.week.has(week))   return;
+
+        const m = parseFloat(menit) || 0;
+        total             += m;
+        byJenis[jenis]     = (byJenis[jenis]  || 0) + m;
+        byWeek[week]       = (byWeek[week]    || 0) + m;
+        byMonth[month]     = (byMonth[month]  || 0) + m;
+        byMesin[mesin]     = (byMesin[mesin]  || 0) + m;
+    });
+
+    updateTotal(total);
+    updateCharts(byJenis, byWeek, byMonth);
+    updateTables(byJenis, byMesin, total);
+}
+
+// ============================================================
+// TOTAL
+// ============================================================
+function updateTotal(total) {
+    document.getElementById('totalNumber').textContent = Math.round(total).toLocaleString('id-ID');
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+function updateCharts(byJenis, byWeek, byMonth) {
+    // Jenis chart — alphabetical order (matching screenshot)
+    const jenisEntries = Object.entries(byJenis).sort((a, b) => a[0].localeCompare(b[0]));
+    drawBar('chartJenis', 'chartJenis', jenisEntries.map(e=>e[0]), jenisEntries.map(e=>Math.round(e[1])), true);
+
+    // Week chart
+    const weekOrder = ['WEEK 1','WEEK 2','WEEK 3','WEEK 4','WEEK 5'];
+    const wLabels   = weekOrder.filter(w => byWeek[w] != null);
+    drawBar('chartWeek', 'chartWeek', wLabels, wLabels.map(w => Math.round(byWeek[w]||0)), false);
+
+    // Month chart
+    const monthOrder = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const mLabels    = monthOrder.filter(m => byMonth[m] != null);
+    drawBar('chartMonth', 'chartMonth', mLabels, mLabels.map(m => Math.round(byMonth[m]||0)), false);
+}
+
+const chartInstances = {};
+
+function drawBar(id, key, labels, values, rotateLabels) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+
+    if (chartInstances[key]) { chartInstances[key].destroy(); }
+
+    chartInstances[key] = new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                data: values,
+                backgroundColor: BAR_COLOR,
+                hoverBackgroundColor: BAR_COLOR_HOVER,
+                borderWidth: 0,
+                borderRadius: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => '  ' + ctx.raw.toLocaleString('id-ID') + ' menit'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        font: { size: 9, family: 'Arial' },
+                        maxRotation: rotateLabels ? 60 : 0,
+                        minRotation: rotateLabels ? 45 : 0,
+                        color: '#333',
+                        autoSkip: false
+                    },
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: {
+                        font: { size: 9, family: 'Arial' },
+                        color: '#333',
+                        callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v
+                    },
+                    grid: { color: '#efefef', lineWidth: 1 }
+                }
+            },
+            layout: { padding: { top: 18 } },
+            animation: { duration: 350 }
+        },
+        plugins: [{
+            // Value labels on top of each bar
+            id: 'topLabels',
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                ctx.save();
+                chart.getDatasetMeta(0).data.forEach((bar, i) => {
+                    const val = chart.data.datasets[0].data[i];
+                    if (!val) return;
+                    ctx.fillStyle = '#1a1a1a';
+                    ctx.font = 'bold 8.5px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText(val.toLocaleString('id-ID'), bar.x, bar.y - 2);
+                });
+                ctx.restore();
+            }
+        }]
+    });
+}
+
+// ============================================================
+// TABLES
+// ============================================================
+function updateTables(byJenis, byMesin, total) {
+    const fmt = n => Math.round(n).toLocaleString('id-ID');
+
+    // Jenis table — sorted desc
+    const jenisSorted = Object.entries(byJenis).sort((a, b) => b[1] - a[1]);
+    document.getElementById('jenisTableBody').innerHTML =
+        jenisSorted.map(([j, v]) => `<tr><td>${j}</td><td>${fmt(v)}</td></tr>`).join('');
+    document.getElementById('jenisTableFoot').innerHTML =
+        `<tr><td>Grand Total</td><td>${fmt(total)}</td></tr>`;
+
+    // Mesin table — sorted desc
+    const mesinSorted = Object.entries(byMesin).sort((a, b) => b[1] - a[1]);
+    document.getElementById('mesinTableBody').innerHTML =
+        mesinSorted.map(([m, v]) => `<tr><td>${m}</td><td>${fmt(v)}</td></tr>`).join('');
+    document.getElementById('mesinTableFoot').innerHTML =
+        `<tr><td>Grand Total</td><td>${fmt(total)}</td></tr>`;
+}
+</script>
+</body>
+</html>
