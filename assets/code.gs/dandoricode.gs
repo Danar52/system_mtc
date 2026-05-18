@@ -581,10 +581,10 @@ function getDashboardDandoriData() {
       const month     = row[2];   // C: month
       const week      = row[3];   // D: week
       const namaMesin = row[7];   // H: nama_mesin
-      const jenisLoss = row[13];  // N: jenis_loss
-      const menitLoss = parseFloat(row[14]) || 0; // O: menit_loss
+      const jenisLoss  = row[13];  // N: jenis_loss
+      const menitOver  = parseFloat(row[15]) || 0; // P: menit_over
 
-      if (!tanggal || !namaMesin || menitLoss <= 0) return;
+      if (!tanggal || !namaMesin || menitOver <= 0) return;
 
       let tanggalStr = '';
       if (tanggal instanceof Date) {
@@ -596,7 +596,7 @@ function getDashboardDandoriData() {
         tanggalStr = String(tanggal).substring(0, 10);
       }
 
-      rows.push([tanggalStr, month || '', week || '', namaMesin, jenisLoss || 'Unknown', menitLoss]);
+      rows.push([tanggalStr, month || '', week || '', namaMesin, jenisLoss || 'Unknown', menitOver]);
 
       if (namaMesin) mesinSet.add(namaMesin);
       if (month)     monthSet.add(month);
