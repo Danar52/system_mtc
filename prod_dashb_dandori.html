@@ -342,12 +342,15 @@
             <div class="company-sub">DIES, JIGS &amp; PARTS MANUFACTURING</div>
         </div>
         <div class="dash-title">DASHBOARD MONITORING LOSS TIME PRODUKSI GLOBAL</div>
-        <a href="index.html" class="back-btn">
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M8 2L3 6.5L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Kembali
-        </a>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;">
+            <a href="index.html" class="back-btn">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M8 2L3 6.5L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Kembali
+            </a>
+            <span id="lastRefreshLabel" style="font-size:0.65rem;color:#888;white-space:nowrap;">–</span>
+        </div>
     </div>
 
     <div class="info-bar">
@@ -476,7 +479,7 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxnn-G2SxyjV3V9bONE45zrMcv6fW9EYZIIw4wBYqn7CBy9Io0nIXwhztyiss9E5ORs/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzv9uXvSWmsgjWgMIXDizdyp_BL5hKxkkuPpbz3krQtp5ho7ZeJYaHRZY2rA8d9mcBq/exec';
 
 const BAR_COLOR       = '#1B6B79';
 const BAR_COLOR_HOVER = '#154F5A';
@@ -495,10 +498,13 @@ let chartMonth = null;
 // ============================================================
 // INIT
 // ============================================================
+const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 menit
+
 document.addEventListener('DOMContentLoaded', () => {
     setTodayDate();
     setDefaultPeriod();
     loadData();
+    setInterval(silentRefresh, AUTO_REFRESH_MS);
 });
 
 function setTodayDate() {
@@ -511,9 +517,10 @@ function setTodayDate() {
 
 function setDefaultPeriod() {
     const t = new Date();
-    const y = t.getFullYear(), m = t.getMonth();
-    document.getElementById('dateFrom').value = fmtDate(new Date(y, m, 1));
-    document.getElementById('dateTo').value   = fmtDate(new Date(y, m+1, 0));
+    const y = t.getFullYear();
+    // Default: seluruh tahun berjalan (1 Jan – 31 Des)
+    document.getElementById('dateFrom').value = fmtDate(new Date(y, 0, 1));
+    document.getElementById('dateTo').value   = fmtDate(new Date(y, 11, 31));
 }
 
 function fmtDate(d) {
@@ -539,6 +546,7 @@ async function loadData() {
         buildChips('weekChips',  meta.weeks,   'week');
 
         applyFilters();
+        updateRefreshLabel();
     } catch (e) {
         console.error(e);
         alert('Gagal memuat data. Periksa koneksi dan URL deployment.');
@@ -549,6 +557,55 @@ async function loadData() {
 
 function showLoading(v) {
     document.getElementById('loadingOverlay').classList.toggle('hidden', !v);
+}
+
+// Refresh tanpa loading overlay (untuk auto-refresh di background)
+async function silentRefresh() {
+    try {
+        const res  = await fetch(`${WEB_APP_URL}?action=getDashboardDandori&_=${Date.now()}`);
+        const json = await res.json();
+        if (json.error || !json.rows) return;
+
+        allRows = json.rows;
+        meta    = json.meta || { mesin: [], months: [], weeks: [] };
+
+        // Rebuild chips — pertahankan state selected yang sudah ada
+        rebuildChips('mesinChips', meta.mesin,  'mesin');
+        rebuildChips('monthChips', meta.months, 'month');
+        rebuildChips('weekChips',  meta.weeks,  'week');
+
+        applyFilters();
+        updateRefreshLabel();
+    } catch (e) {
+        console.warn('Auto-refresh gagal:', e);
+    }
+}
+
+function updateRefreshLabel() {
+    const now = new Date();
+    const hh  = String(now.getHours()).padStart(2,'0');
+    const mm  = String(now.getMinutes()).padStart(2,'0');
+    const ss  = String(now.getSeconds()).padStart(2,'0');
+    const el  = document.getElementById('lastRefreshLabel');
+    if (el) el.textContent = `Diperbarui: ${hh}:${mm}:${ss}`;
+}
+
+// Rebuild chips tanpa mereset selected state
+function rebuildChips(containerId, items, key) {
+    const el = document.getElementById(containerId);
+    // Tambahkan item baru yang belum ada
+    const existing = new Set(Array.from(el.querySelectorAll('.filter-chip')).map(b => b.dataset.val));
+    items.forEach(item => {
+        if (!existing.has(item)) {
+            selected[key].add(item);
+            const btn = document.createElement('button');
+            btn.className   = 'filter-chip';
+            btn.textContent = item;
+            btn.dataset.val = item;
+            btn.addEventListener('click', () => toggleChip(btn, key, item));
+            el.appendChild(btn);
+        }
+    });
 }
 
 // ============================================================
